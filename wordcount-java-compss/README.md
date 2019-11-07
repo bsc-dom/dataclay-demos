@@ -98,7 +98,7 @@ $ docker build . -t wccompss
 The Wordcount application can now be run, we only have to specify the alias of the collection:
 
 ```bash
-$ docker run wccompss mydatasetalias
+$ docker run --network=dcwordcount wccompss mydatasetalias
 ```
 
 Note that this `mydatasetalias` is the alias of the persistent collection, as set in previous steps.

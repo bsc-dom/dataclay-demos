@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  ####################################
+  #  LOGIC MODULE                    #
+  ####################################
+  logicmodule:
+    image: "elastic/dataclay-logicmodule"
+    environment:
+      - DATACLAY_ADMIN_USER=admin
+      - DATACLAY_ADMIN_PASSWORD=admin
+      - LOGICMODULE_PORT_TCP=11034
+    command: ["dataclay.logic.server.LogicModuleSrv"]
+
+  ####################################
+  #  JAVA DATA SERVICES              #
+  ####################################
+  dsjava:
+    image: "elastic/dataclay-dsjava"
+    depends_on:
+      - logicmodule
+    environment:
+      - DATASERVICE_NAME=DS1
+      - DATASERVICE_JAVA_PORT_TCP=2127
+      - LOGICMODULE_PORT_TCP=11034
+      - LOGICMODULE_HOST=logicmodule
+    volumes:
+      - ./text:/text
+    command: ["dataclay.dataservice.server.DataServiceSrv"]
+
+networks:
+  default:
+    external:
+      name: dcwordcount

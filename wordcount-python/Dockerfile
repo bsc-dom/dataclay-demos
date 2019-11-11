@@ -38,7 +38,7 @@ RUN mkdir -p ${STUBSPATH}
 RUN ${DATACLAYCMD} GetStubs ${USER} ${PASS} ${NAMESPACE} ${STUBSPATH}
 
 # Working dir
-WORKDIR /usr/src/demo/app/src
+WORKDIR /usr/src/demo/app
 
 # Generate text
 RUN python src/textcollectiongen.py Words

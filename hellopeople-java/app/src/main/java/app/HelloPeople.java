@@ -26,9 +26,10 @@ public class HelloPeople {
 		DataClay.init();
 
 		// Create person
+		System.out.println("[LOG] Creating " + pName);
 		Person person = new Person(pName, pAge);
 		person.makePersistent();
-		
+		System.out.println("[LOG] " + pName + " created ");
 		// Access (or create collection)
 		People people = null;
 		try {
@@ -39,11 +40,12 @@ public class HelloPeople {
 			people = new People();
 			try {
 				people.makePersistent(peopleAlias);
+				System.out.println("[LOG] People created ");
 			} catch (Exception e) { 
 				e.printStackTrace();
 			}
 		}
-
+		System.out.println("[LOG] Adding " + pName + " to People ");
 		// person is added to people
 		people.add(person);
 
@@ -52,5 +54,8 @@ public class HelloPeople {
 
 		// Finish dataClay session
 		DataClay.finish();
+		
+		// Call this to shutdown all logging threads
+		System.exit(0);
 	}
 }

@@ -40,13 +40,12 @@
         <Logger name="MetaDataService" level="off" />
         
         <!--  Communication -->
-        <Logger name="io.grpc" level="debug"/>
-        <Logger name="io.netty" level="debug"/>
+        <Logger name="io.grpc" level="off"/>
+        <Logger name="io.netty" level="off"/>
         <Logger name="NettyClientHandler" level="off"/>
         <Logger name="grpc.client" level="debug"/>
-        <Logger name="communication.LogicModule.service" level="off"/>
         <Logger name="grpc.client.logicmodule" level="off"/>
-        
+	<Logger name="communication.LogicModule.service" level="debug"/> 
         <!--  Databases -->
         <Logger name="dataclay.dbhandler" level="off"/>
         <Logger name="dbhandler.PostgresConnection" level="off" />
@@ -58,7 +57,8 @@
         <Logger name="util" level="debug" />
         <Logger name="exceptions" level="debug"/>
         <Logger name="Paraver" level="info"/>        
-        
+                <Logger name="DataClaySerializationLib" level="debug"/>        
+        <Logger name="DataClayDeserializationLib" level="debug"/>
         <!--  ROOT LOGGER -->
     <Root level="debug">
       <AppenderRef ref="ConsoleAppender" />

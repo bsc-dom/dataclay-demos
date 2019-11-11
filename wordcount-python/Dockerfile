@@ -1,5 +1,4 @@
-ARG DATACLAY_DOCKER_TAG
-FROM bscdataclay/client:${DATACLAY_DOCKER_TAG}
+FROM bscdataclay/client:2.0
 LABEL maintainer dataClay team <support-dataclay@bsc.es>
 
 # Prepare environment
@@ -39,12 +38,12 @@ RUN mkdir -p ${STUBSPATH}
 RUN ${DATACLAYCMD} GetStubs ${USER} ${PASS} ${NAMESPACE} ${STUBSPATH}
 
 # Working dir
-WORKDIR /usr/src/demo/app
+WORKDIR /usr/src/demo/app/src
 
 # Generate text
 RUN python src/textcollectiongen.py Words
 
 # Run 
-ENTRYPOINT ["/usr/src/dataclay/pyclay/python-entry-point.sh", "src/wordcount.py"] 
+ENTRYPOINT ["/usr/src/dataclay/pyclay/python-entry-point.sh"] 
 
 

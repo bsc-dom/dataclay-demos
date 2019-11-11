@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   logicmodule:
-    image: "bscdataclay/logicmodule:${DATACLAY_JAVA_CONTAINER_VERSION}"
+    image: "bscdataclay/logicmodule:2.0"
     ports:
       - "11034:11034"
     environment:
@@ -18,7 +18,7 @@ services:
        test: ["CMD-SHELL", "/usr/src/dataclay/health_check.sh"]
            
   dsjava:
-    image: "bscdataclay/dsjava:${DATACLAY_JAVA_CONTAINER_VERSION}"
+    image: "bscdataclay/dsjava:2.0"
     ports:
       - "2127:2127"
     depends_on:

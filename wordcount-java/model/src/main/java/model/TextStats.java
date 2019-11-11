@@ -1,11 +1,9 @@
 package model;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import es.bsc.dataclay.DataClayObject;
 
-public class TextStats extends DataClayObject {
+public class TextStats {
 	HashMap<String, Integer> currentWordCount;
 	boolean debug;
 

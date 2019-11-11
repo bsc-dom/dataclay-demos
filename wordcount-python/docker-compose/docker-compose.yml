@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   logicmodule:
-    image: "bscdataclay/logicmodule:${DATACLAY_JAVA_CONTAINER_VERSION}"
+    image: "bscdataclay/logicmodule:2.0"
     command: "${COMMAND_OPTS}"
     ports:
       - "11034:11034"
@@ -15,7 +15,7 @@ services:
       - ./prop/log4j2.xml:/usr/src/dataclay/log4j2.xml:ro
        
   dsjava:
-    image: "bscdataclay/dsjava:${DATACLAY_JAVA_CONTAINER_VERSION}"
+    image: "bscdataclay/dsjava:2.0"
     command: "${COMMAND_OPTS}"
     ports:
       - "2127:2127"
@@ -31,7 +31,7 @@ services:
       - ./prop/log4j2.xml:/usr/src/dataclay/log4j2.xml:ro
        
   dspython:
-    image: "bscdataclay/dspython:${DATACLAY_PYTHON_CONTAINER_VERSION}"
+    image: "bscdataclay/dspython:2.0"
     command: "${COMMAND_OPTS}"
     depends_on:
       - logicmodule

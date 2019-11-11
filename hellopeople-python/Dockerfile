@@ -1,5 +1,4 @@
-ARG DATACLAY_DOCKER_TAG
-FROM bscdataclay/client:${DATACLAY_DOCKER_TAG}
+FROM bscdataclay/client:2.0
 LABEL maintainer dataClay team <support-dataclay@bsc.es>
 
 # Prepare environment
@@ -42,6 +41,6 @@ RUN ${DATACLAYCMD} GetStubs ${USER} ${PASS} ${NAMESPACE} ${STUBSPATH}
 WORKDIR /usr/src/demo/app
 
 # Run 
-ENTRYPOINT ["python", "src/hellopeople.py"] 
+ENTRYPOINT ["/usr/src/dataclay/pyclay/python-entry-point.sh"] 
 
 

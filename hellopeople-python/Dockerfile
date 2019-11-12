@@ -18,7 +18,6 @@ ARG CACHEBUST=1
 # Copy files 
 COPY ./model /usr/src/demo/model
 COPY ./app /usr/src/demo/app 
-COPY ./cfgfiles /usr/src/demo/app/cfgfiles
 RUN cp /usr/src/demo/app/cfgfiles/log4j2.xml ${LOG4J_CLASSPATH}
 
 # Wait for dataclay to be alive (max retries 10 and 5 seconds per retry)

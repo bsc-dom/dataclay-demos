@@ -6,7 +6,7 @@ blu=$'\e[1;34m'
 end=$'\e[0m'
 
 function printMsg { 
-  printf " \n\n  ${grn}[Tram Demo steps $1]${end} \n  ${blu}$2${end} \n\n\n"
+  printf " \n\n  ${grn}[Demo steps $1]${end} \n  ${blu}$2${end} \n\n\n"
 }
 
 # ==================================== REQUIREMENTS CHECK ==================================== #
@@ -36,22 +36,18 @@ done
 echo "Machine ips: ${MACHINES_IPS[@]}"
 
 # ==================================== DATACLAY START ==================================== #
-pushd dataclay
 for MACHINE in ${MACHINES[@]}; do
 	echo " ****** Starting dataClay on $MACHINE... ******"
-	docker-machine ssh $MACHINE -f 'rm -rf dataclay' #sanity check
-	docker-machine scp -r $SCRIPTDIR/dataclay/ $MACHINE:~/ # log42j.xml and global.properties files
-	
+	pushd $SCRIPTDIR/hosts/common/dataclay
 	MACHINE_IP=${MACHINES_IPS[$MACHINE]}
 	export LOGICMODULE_HOST=$MACHINE_IP
 	export EXPOSED_IP_FOR_CLIENT=$MACHINE_IP
-
 	eval $(docker-machine env $MACHINE)
 	docker-compose kill
 	docker-compose down -v
 	docker-compose up -d
+	popd
 done 
-popd
 
 # ==================================== DEMO ==================================== #
 
@@ -72,137 +68,126 @@ echo " #################################### "
 echo ""
 
 
-printMsg "1" " 
-1. Citta creates and stores CittyInfo object named citta in its dataClay instance 
-"
+printMsg "1" "Citta creates and stores CittyInfo object named citta in its dataClay instance"
+echo "NOTE: it may take a while waiting for dataclay to be alive"
 eval $(docker-machine env citta)
 docker run --network=dataclay_default dataclaydemo/citta src/citta.py register_city
 
-printMsg "2" " 
-2. Citta creates and stores TramSystem object named tram-system in its dataClay instance 
-"
+printMsg "2" "Citta creates and stores TramSystem object named tram-system in its dataClay instance"
 eval $(docker-machine env citta)
 docker run --network=dataclay_default dataclaydemo/citta src/citta.py register_tram_system
 
-printMsg "3 - 5" "
-3. Tram creates and stores TramInfo object named florence2025 in its dataClay instance. 
-Note that this object also contains TramDynamicInfo and Position objects. 
-4. Tram federates object named florence2025 to Citta using Citta's IP and dataClay port
-5. Citta receives TramInfo object and adds it to the list of trams in TramSystem 
-using the when_federated method defined in TramInfo class (see data model) 
-"
+printMsg "3" "Tram creates and stores TramInfo object named florence2025 in its dataClay instance. 
+Note that this object also contains TramDynamicInfo and Position objects." 
+printMsg "4"  "Tram federates object named florence2025 to Citta using Citta's IP and dataClay port"
+printMsg "5" "Citta receives TramInfo object and adds it to the list of trams in TramSystem 
+using the when_federated method defined in TramInfo class (see data model)"
+
 eval $(docker-machine env tram)
 docker run --network=dataclay_default dataclaydemo/tram src/tram.py register_tram $TRAM_NAME $CITTA_IP $DATACLAY_PORT
 
 
-printMsg "6 - 8" " 
-6. Fermata creates and stores FermataInfo object named pontevecchio in its dataClay instance
-7. Fermata federates object named pontevecchio to Citta using Citta's IP and dataClay port
-8. Citta receives FermataInfo object and adds it to the list of fermatas in Citta using the 
-when_federated method defined in FermataInfo class (see data model)
- "
+printMsg "6" "Fermata creates and stores FermataInfo object named pontevecchio in its dataClay instance"
+printMsg "7" "Fermata federates object named pontevecchio to Citta using Citta's IP and dataClay port"
+printMsg "8" "Citta receives FermataInfo object and adds it to the list of fermatas in Citta using the
+when_federated method defined in FermataInfo class (see data model)"
+ 
 eval $(docker-machine env fermata)
 docker run --network=dataclay_default dataclaydemo/fermata src/fermata.py register_fermata $FERMATA_NAME $CITTA_IP $DATACLAY_PORT
 
-printMsg "9" " 
-9. Citta prints all fermatas and trams available
-"
+printMsg "9" "Citta prints all fermatas and trams available"
+
 eval $(docker-machine env citta)
 docker run --network=dataclay_default dataclaydemo/citta src/citta.py print_city_info
 docker run --network=dataclay_default dataclaydemo/citta src/citta.py print_tram_system_info
 
-printMsg "10 - 12" " 
-10. Camera creates and stores CameraInfo object named pontevecchio-camera-left 
-in its dataClay instance
-11. Camera federates CameraInfo object named pontevecchio-camera-left to Fermata
-using Fermata's IP and dataClay port
-12. Fermata receives CameraInfo object and adds it to the list of cameras in Fermata 
-using the when_federated method defined in CameraInfo class (see data model)
-" 
+printMsg "10" "Camera creates and stores CameraInfo object named pontevecchio-camera-left 
+in its dataClay instance"
+printMsg "11" "Camera federates CameraInfo object named pontevecchio-camera-left to Fermata
+using Fermata's IP and dataClay port"
+printMsg "12" "Fermata receives CameraInfo object and adds it to the list of cameras in Fermata 
+using the when_federated method defined in CameraInfo class (see data model)"
+
 eval $(docker-machine env camera)
 docker run --network=dataclay_default dataclaydemo/camera src/camera.py register_camera $CAMERA_NAME $FERMATA_NAME $FERMATA_IP $DATACLAY_PORT
 
-printMsg "13 - 15" "
-13. Semaforo creates and stores SemaforoInfo object named pontevecchio-semaforo-left in its 
- dataClay instance 
-14. Semaforo federates SemaforoInfo object named pontevecchio-semaforo-left to Fermata
-using Fermata's IP and dataClay port
-15. Fermata receives SemaforoInfo object and adds it to the list of semaforos in Fermata using
-the when_federated method defined in SemaforoInfo class (see data model) 
- " 
+printMsg "13" "Semaforo creates and stores SemaforoInfo object named pontevecchio-semaforo-left in its 
+ dataClay instance"
+printMsg "14" "Semaforo federates SemaforoInfo object named pontevecchio-semaforo-left to Fermata
+using Fermata's IP and dataClay port"
+printMsg "15" "Fermata receives SemaforoInfo object and adds it to the list of semaforos in Fermata using
+the when_federated method defined in SemaforoInfo class (see data model)" 
+ 
 eval $(docker-machine env semaforo)
 docker run --network=dataclay_default dataclaydemo/semaforo src/semaforo.py register_semaforo $SEMAFORO_NAME $FERMATA_NAME $FERMATA_IP $DATACLAY_PORT
 
-printMsg "16 - 17" "
-16. Tram is approaching to pontevecchio Fermata and federates 
-its TramDynamicInfo (only the dynamic information) to Fermata using Fermata's IP and dataClay port
-17. Fermata receives TramDynamicInfo object and adds it to the list of trams
-in Fermata using the when_federated method defined in TramDynamicInfo class (see data model)
-"
+printMsg "16" "Tram is approaching to pontevecchio Fermata and federates 
+its TramDynamicInfo (only the dynamic information) to Fermata using Fermata's IP and dataClay port"
+printMsg "17" "Fermata receives TramDynamicInfo object and adds it to the list of trams
+in Fermata using the when_federated method defined in TramDynamicInfo class (see data model)"
+
 eval $(docker-machine env tram)
 docker run --network=dataclay_default dataclaydemo/tram src/tram.py approach_to_fermata $TRAM_NAME $FERMATA_NAME $FERMATA_IP $DATACLAY_PORT
 eval $(docker-machine env fermata)
 docker run --network=dataclay_default dataclaydemo/fermata src/fermata.py print_fermata $FERMATA_NAME 
 
-printMsg "18 - 19" " 
-18. An ambulance is arriving from the left side of the fermata and the Camera detects it.
-19. Camera updates the information in CameraInfo. This information is automatically synchronized
-with the Fermata  
-"
+printMsg "18" "An ambulance is arriving from the left side of the fermata and the Camera detects it."
+printMsg "19" "Camera updates the information in CameraInfo. This information is automatically synchronized
+with the Fermata"  
+
 eval $(docker-machine env camera)
 docker run --network=dataclay_default dataclaydemo/camera src/camera.py set_ambulances $CAMERA_NAME 1
 
-printMsg "20 - 21" "
-20. Fermata checks if tram must stop due to the presence of an ambulance
-21. Fermata updates SemaforoInfo object to color RED. This information is automatically synchronized
-with the Semaforo
- "
+printMsg "20" "Fermata checks if tram must stop due to the presence of an ambulance"
+printMsg "21" "Fermata updates SemaforoInfo object to color RED. This information is automatically synchronized
+with the Semaforo"
+ 
 eval $(docker-machine env fermata)
 docker run --network=dataclay_default dataclaydemo/fermata src/fermata.py priorize_ambulances $FERMATA_NAME 
 
-printMsg "22" "
-22. Semaforo checks the color of the light and set it to red. 
-" 
+printMsg "22" "Semaforo checks the color of the light and set it to red." 
 eval $(docker-machine env semaforo)
 docker run --network=dataclay_default dataclaydemo/semaforo src/semaforo.py print_color $SEMAFORO_NAME
 
 
-printMsg "23 - 24" "
-23. The ambulance is not visible anymore from the camera
-24. Camera updates the information in CameraInfo. This information is automatically synchronized
-with the Fermata 
-"
+printMsg "23" "The ambulance is not visible anymore from the camera"
+printMsg "24" "Camera updates the information in CameraInfo. This information is automatically synchronized
+with the Fermata"
+
 eval $(docker-machine env camera)
 docker run --network=dataclay_default dataclaydemo/camera src/camera.py set_ambulances $CAMERA_NAME 0
 
-printMsg "25 - 26" "
-25. Fermata checks if tram must stop due to the presence of an ambulance
-26. Fermata updates SemaforoInfo object to color GREEN. This information is automatically synchronized 
-with the Semaforo 
-"
+printMsg "25" "Fermata checks if tram must stop due to the presence of an ambulance"
+printMsg "26" "Fermata updates SemaforoInfo object to color GREEN. This information is automatically synchronized 
+with the Semaforo "
+
 eval $(docker-machine env fermata)
 docker run --network=dataclay_default dataclaydemo/fermata src/fermata.py priorize_ambulances $FERMATA_NAME 
 
-printMsg "27" "
-27. Semaforo checks the color of the light and set it to green. 
-"
+printMsg "27" "Semaforo checks the color of the light and set it to green. "
+
 eval $(docker-machine env semaforo)
 docker run --network=dataclay_default dataclaydemo/semaforo src/semaforo.py print_color $SEMAFORO_NAME
 
-printMsg "28" "
-28. Tram leaves pontevecchio and unfederates the TramDynamicInfo with the Fermata.
-"
+printMsg "28" "Tram leaves pontevecchio and unfederates the TramDynamicInfo with the Fermata."
+
 eval $(docker-machine env tram)
 docker run --network=dataclay_default dataclaydemo/tram src/tram.py leave_fermata $TRAM_NAME $FERMATA_NAME $FERMATA_IP $DATACLAY_PORT
 
-printMsg "29" "
-29. Fermata removes the tram in Fermata using the when_unfederated method defined in TramDynamicInfo
- class (see data model) 
-"
+printMsg "29" "Fermata removes the tram in Fermata using the when_unfederated method defined in TramDynamicInfo
+ class (see data model) "
+ 
 eval $(docker-machine env fermata)
 docker run --network=dataclay_default dataclaydemo/fermata src/fermata.py print_fermata $FERMATA_NAME 
 
-echo ""
-echo " #################################### " 
-echo " DEMO FINISHED "
-echo " #################################### " 
+# ==================================== DATACLAY STOP ==================================== #
+for MACHINE in ${MACHINES[@]}; do
+	echo " ****** Finishing dataClay on $MACHINE... ******"
+	pushd $SCRIPTDIR/hosts/common/dataclay
+	MACHINE_IP=${MACHINES_IPS[$MACHINE]}
+	export LOGICMODULE_HOST=$MACHINE_IP
+	export EXPOSED_IP_FOR_CLIENT=$MACHINE_IP
+	eval $(docker-machine env $MACHINE)
+	docker-compose down
+	popd
+done 

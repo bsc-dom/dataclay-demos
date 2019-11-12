@@ -44,7 +44,7 @@ RUN jar cvf ${STUBS_JAR} -C ${STUBSPATH} .
 
 # Install stubs in local repository to use it as a pom dependency
 RUN mvn install:install-file -Dfile=${STUBS_JAR} -DgroupId=es.bsc.dataclay \
-	-DartifactId=wordcount-demo-stubs -Dversion=2.0.0 -Dpackaging=jar -DcreateChecksum=true
+	-DartifactId=wordcount-demo-stubs -Dversion=2.0 -Dpackaging=jar -DcreateChecksum=true
 
 # pom.xml is located here
 WORKDIR /usr/src/demo/app

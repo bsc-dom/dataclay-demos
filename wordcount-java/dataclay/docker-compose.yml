@@ -11,8 +11,8 @@ services:
       - DATACLAY_ADMIN_USER=admin
       - DATACLAY_ADMIN_PASSWORD=admin
     volumes:
-      - ./prop/global.properties:/usr/src/dataclay/cfgfiles/global.properties:ro
-      - ./prop/log4j2.xml:/usr/src/dataclay/log4j2.xml:ro
+      - ./prop/global.properties:/usr/src/dataclay/javaclay/cfgfiles/global.properties:ro
+      - ./prop/log4j2.xml:/usr/src/dataclay/javaclay/log4j2.xml:ro
     healthcheck:
        interval: 5s
        retries: 10
@@ -31,8 +31,8 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
     volumes:
-      - ./prop/global.properties:/usr/src/dataclay/cfgfiles/global.properties:ro
-      - ./prop/log4j2.xml:/usr/src/dataclay/log4j2.xml:ro
+      - ./prop/global.properties:/usr/src/dataclay/javaclay/cfgfiles/global.properties:ro
+      - ./prop/log4j2.xml:/usr/src/dataclay/javaclay/log4j2.xml:ro
     healthcheck:
        interval: 5s
        retries: 10
@@ -51,8 +51,8 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
     volumes:
-      - ./prop/global.properties:/usr/src/dataclay/cfgfiles/global.properties:ro
-      - ./prop/log4j2.xml:/usr/src/dataclay/log4j2.xml:ro
+      - ./prop/global.properties:/usr/src/dataclay/javaclay/cfgfiles/global.properties:ro
+      - ./prop/log4j2.xml:/usr/src/dataclay/javaclay/log4j2.xml:ro
     healthcheck:
        interval: 5s
        retries: 10

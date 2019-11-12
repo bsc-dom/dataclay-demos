@@ -2,6 +2,7 @@
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 IFS=$'\r\n' GLOBIGNORE='*' command eval  "MACHINES=($(cat $SCRIPTDIR/machines.txt))"
 for MACHINE in ${MACHINES[@]}; do
+
 	if [[  $(docker-machine ls | grep $MACHINE) ]]; then
 		echo "$MACHINE exists. Checking if it is running..."
 		if docker-machine ls | grep $MACHINE | grep -q "Stopped"; then
@@ -18,4 +19,3 @@ for MACHINE in ${MACHINES[@]}; do
 	fi
 done
 echo "Done!"
-

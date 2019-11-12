@@ -20,7 +20,7 @@ ARG CACHEBUST=1
 
 # Copy app
 COPY ./${APP_NAME}/src /usr/src/demo/app/src
-COPY ./cfgfiles /usr/src/demo/app/cfgfiles
+COPY ./common/cfgfiles /usr/src/demo/app/cfgfiles
 
 # Wait for dataclay to be alive (max retries 10 and 5 seconds per retry)
 RUN ${DATACLAYCMD} WaitForDataClayToBeAlive 10 5

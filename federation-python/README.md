@@ -6,7 +6,7 @@ to optimize tram traffic. You can use it to familiarize that with
 **dataClay's federation** feature, to start developing applications, to explore the different
 components, etc.
 
-To read the usage manual, go to https://www.bsc.es/dataclay or https://www.bsc.es/compss. 
+To read the usage manual, go to https://www.bsc.es/dataclay 
 To bootstrap your environment and start testing and hacking, keep reading.
 
 ## Preflight check
@@ -35,15 +35,15 @@ $> ./run_demo.sh
 
 First step is to create a docker machine for each simulated host. We will simulate the following hosts:
 
- - **dataclay.federation-demo.fermata** This simulates a host located in a tram station 
- - **dataclay.federation-demo.camera** This simulates a camera host located next to a tram station
- - **dataclay.federation-demo.tram** This simulates a tram host 
- - **dataclay.federation-demo.semaforo** This simulates traffic lights next to a tram station
- - **dataclay.federation-demo.citta** This simulates a citty cloud 
+ - **fermata** This simulates a host located in a tram station 
+ - **camera** This simulates a camera host located next to a tram station
+ - **tram** This simulates a tram host 
+ - **semaforo** This simulates traffic lights next to a tram station
+ - **citta** This simulates a citty cloud 
 	
 In order to create them, run `create_machines.sh` 
 
-**NOTE: this script will remove previous machines with same name**
+**NOTE: careful if you have docker machines with same name**
 
 ###### Building the data model
 
@@ -53,7 +53,7 @@ In this section we will see how to extend dataClay docker images to avoid regist
 
 Also, in this example we need to use dataClay's `federation` feature which requires to have same model deployed in all nodes. 
 
-The module `data_model/src/classes.py` contains the set of classes to be registered and used in dataClay. 
+The module `model/src/classes.py` contains the set of classes to be registered and used in dataClay. 
 
 To build the model we just call `build.sh`. Once build, unless we modify the model we do not need to build it again. 
 
@@ -73,25 +73,23 @@ For that, we call `deploy_model.sh`.
 
 Now, for each machine we will create an **application docker image** so we won't need to define any environment variable or any extra configuration to run our application (just docker run will be used)
 
-In `apps`folder we will find the following: 
+In `hosts`folder we will find the following: 
 
  - Dockerfile: docker file to create the application in an isolated way. We use one unique docker file with a build argument to change the entrypoint application and keep the configurations. Each application is developed in **python 3.6** 
- - dClayTool.sh: dataClay script to get stubs (explained below)
-
-Per each host, we have a sub-folder with the following structure:
- - cfgfiles: contains dataClay configuration files
- - src: contains code of the application using dataClay model (register the tram, print information...)
+ - common/cfgfiles: contains dataClay configuration files (same in all hosts)
+ - common/dataclay: contains dataclay docker-compose to start in each simulated host 
+ - Per each host, we have a sub-folder with the code of the application using dataClay model (register the tram, print information...)
 
 At this point we have N machines with dataClay docker images. 
 
-"When we implement a class model we do not take into account 
+When we implement a class model we do not take into account 
 anything about persistence, but when using it persistent objects
 have methods such as makePersistent that have not been defined as part of the class. In order to
 be able to use such methods, and thus enable persistence of objects, the application needs to be
 linked with an automatically modified version of the classes. This modified version is what we
 refer as stub classes or simply stubs. A stub is a class file containing the modified version of the
 original class in order to be compatible with dataClay. It is important to understand that, besides
-the newly added methods, the rest of the class behaves just like the original one." - dataClay manual section 3.4
+the newly added methods, the rest of the class behaves just like the original one.
 
 To ease this process we will obtain the stubs and copy them into our **application docker image** as defined in the application Dockerfile.
 
@@ -141,17 +139,20 @@ With this demo we can see how `federation`,`unfederation` and `synchronization` 
 
 ## Structure
 
-- apps: contains all the applications per simulated host
+- hosts: contains all the applications per simulated host
     - Dockerfile: docker file to build application docker images 
-    - dClayTool.sh: dataclay script to get stubs for application docker images 
-- data_model: contains the data model and docker files to extend dataclay docker images 
-    - tools: set of tools to register accounts, namespaces, model ... 
+	- common/dataclay: contains dataclay docker-compose to start in each simulated host 
+ 	- common/cfgfiles: contains dataClay configuration files (same in all hosts)
+
+- model: contains the data model and docker files to extend dataclay docker images 
     - src: the data model itself
-    - dockers: docker-compose and properties to be used during the extension of dataclay images (section 2)
-- dockers: contains dataclay docker-compose to start in each simulated host 
+    - dataclay: docker-compose and properties to be used during the extension of dataclay images (section 2)
+    
 - build.sh: script to build the data model as dataclay docker images
 - check_requirements.sh: script to check if the host accomplishes the requirements to use dataclay
 - create_machines.sh: script to create simulated hosts using docker-machine
 - deploy_model.sh: script to deploy dataclay docker images with data model in each simulated host (docker-machine)
 - deploy_apps.sh: script to build application docker images in each docker-machine
-- run_demo.sh: script to run the demo 
+- run.sh: script to run demo
+- run_demo.sh: script to do all steps
+- machines.txt: list of simulated host names (used by scripts)

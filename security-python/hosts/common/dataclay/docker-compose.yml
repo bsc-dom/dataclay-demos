@@ -8,7 +8,7 @@ services:
     command: --docker --docker.exposedByDefault=false
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /home/docker/docker-compose/traefik/traefik.toml:/traefik.toml
+      - /home/docker/common/dataclay/traefik.toml:/traefik.toml
       - /home/docker/certs:/ssl:ro
     ports:
       - "80:80"
@@ -25,13 +25,13 @@ services:
       - DATACLAY_ADMIN_PASSWORD=admin
       - EXPOSED_IP_FOR_CLIENT=${EXPOSED_IP_FOR_CLIENT}
     volumes:
-      - /home/docker/dataclay/prop/global.secure.properties:/usr/src/dataclay/cfgfiles/global.properties:ro
-      - /home/docker/dataclay/prop/log4j2.xml:/usr/src/dataclay/log4j2.xml:ro
+      - /home/docker/common/dataclay/prop/global.secure.properties:/usr/src/dataclay/javaclay/cfgfiles/global.properties:ro
+      - /home/docker/common/dataclay/prop/log4j2.xml:/usr/src/dataclay/javaclay/log4j2.xml:ro
       - /home/docker/certs:/ssl/:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=logicmodule1"
-      - "traefik.frontend.rule=Headers: service-alias,logicmodule1"
+      - "traefik.backend=logicmodule"
+      - "traefik.frontend.rule=Headers: service-alias,logicmodule"
       - "traefik.port=11034"
       - "traefik.protocol=h2c"
 
@@ -40,8 +40,6 @@ services:
   ####################################
   dsjava:
     image: "dataclaydemo/dataclay-dsjava"
-    ports:
-      - "2127:2127"
     depends_on:
       - logicmodule
       - proxy
@@ -51,13 +49,11 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
     volumes:
-      - /home/docker/docker-compose/prop/global.properties:/usr/src/dataclay/cfgfiles/global.properties:ro
-      - /home/docker/docker-compose/prop/log4j2.xml:/usr/src/dataclay/log4j2.xml:ro
+      - /home/docker/common/dataclay/prop/global.properties:/usr/src/dataclay/javaclay/cfgfiles/global.properties:ro
+      - /home/docker/common/dataclay/prop/log4j2.xml:/usr/src/dataclay/javaclay/log4j2.xml:ro
 
   dspython:
-    image: "dataclaydemo/dataclay-dspython:2.0"
-    ports:
-      - "6867:6867"
+    image: "dataclaydemo/dataclay-dspython"
     depends_on:
       - logicmodule
       - dsjava
@@ -67,5 +63,5 @@ services:
       - LOGICMODULE_HOST=logicmodule
       - DEBUG=true
     volumes:
-      - /home/docker/docker-compose/prop/global.properties:/usr/src/dataclay/cfgfiles/global.properties:ro
+      - /home/docker/common/dataclay/prop/global.properties:/usr/src/dataclay/pyclay/cfgfiles/global.properties:ro
  

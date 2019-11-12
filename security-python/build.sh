@@ -7,13 +7,15 @@ pushd $MODELDIR/dataclay
 docker-compose kill 
 docker-compose down -v #sanity check
 docker-compose up -d
-popd 
+popd
 
 ### BUILD ####
+pushd $MODELDIR
 docker build --network=dataclay_default \
 	--build-arg CACHEBUST=$(date +%s) \
 	-t dataclaydemo/client .			
-	
+popd
+
 echo " ===== Retrieving execution classes into $MODELDIR/deploy  ====="
 # Copy execClasses from dsjava docker
 rm -rf $MODELDIR/deploy

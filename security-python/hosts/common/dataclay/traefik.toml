@@ -1,5 +1,5 @@
 debug = false
-logLevel = "INFO"
+logLevel = "DEBUG"
 
 defaultEntryPoints = ["http", "https"]
 
@@ -14,10 +14,10 @@ defaultEntryPoints = ["http", "https"]
    [entryPoints.https.tls]
 
      [entryPoints.https.tls.clientCA]
-     files = ["/ssl/client-ca/client-ca.crt"]
+     files = ["/ssl/dataclay-ca.crt"]
      optional = false
 
      # For secure connection on frontend.local
      [[entryPoints.https.tls.certificates]]
-     certFile = "/ssl/server/server.crt"
-     keyFile  = "/ssl/server/server.pem"
+     certFile = "/ssl/dataclay-agent.crt"
+     keyFile  = "/ssl/dataclay-agent.pem"

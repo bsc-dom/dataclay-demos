@@ -17,7 +17,7 @@ for MACHINE in ${MACHINES[@]}; do
 	docker load -i /tmp/demo-dataclay-logicmodule.tar
 	docker load -i /tmp/demo-dataclay-dsjava.tar
 	docker load -i /tmp/demo-dataclay-dspython.tar
-	docker load -i /tmp/client.tar
+	docker load -i /tmp/dataclay-client.tar
 
 done
 

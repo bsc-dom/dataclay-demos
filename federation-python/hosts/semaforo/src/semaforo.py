@@ -1,7 +1,7 @@
  #!/usr/bin/env python3
 import traceback
 import sys
-from dataclay.api import init, finish, register_external_dataclay
+from dataclay.api import init, finish, register_dataclay
 
 # Init dataClay session
 init()
@@ -10,7 +10,7 @@ from DemoNS.classes import SemaforoInfo
 
 def register_semaforo(semaforo_name, fermata_name, fermata_ip, fermata_dataclay_port):
     print("Registering external dataClay at %s:%s" % (fermata_ip, fermata_dataclay_port))
-    fermata_id = register_external_dataclay(fermata_ip, fermata_dataclay_port)
+    fermata_id = register_dataclay(fermata_ip, fermata_dataclay_port)
 
     semaforo_info = SemaforoInfo(semaforo_name, fermata_name)
     semaforo_info.make_persistent(semaforo_name)

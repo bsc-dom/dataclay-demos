@@ -1,7 +1,7 @@
  #!/usr/bin/env python3
 import traceback
 import sys
-from dataclay.api import init, finish, register_external_dataclay
+from dataclay.api import init, finish
 
 # Init dataClay session
 init()

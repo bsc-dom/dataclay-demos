@@ -42,9 +42,8 @@ for MACHINE in ${MACHINES[@]}; do
 	MACHINE_IP=${MACHINES_IPS[$MACHINE]}
 	export LOGICMODULE_HOST=$MACHINE_IP
 	export EXPOSED_IP_FOR_CLIENT=$MACHINE_IP
-	eval $(docker-machine env $MACHINE)
-	docker-compose kill
-	docker-compose down -v
+	eval $(docker-machine env $MACHINE)	
+	docker-compose down
 	docker-compose up -d
 	popd
 done 
@@ -55,21 +54,32 @@ done
 
 CITY_IP=${MACHINES_IPS[city]}
 CAR_IP=${MACHINES_IPS[car]}
-DATACLAY_PORT=11034 #all machines uses same port for dataclay in this demo
+DATACLAY_PORT=443 #all machines uses same port for dataclay in this demo
 
 echo " #################################### " 
 echo " # RUNNING DEMO "
 echo " #################################### " 
 echo ""
 
+eval $(docker-machine env city)
+docker run --network=dataclay_default \
+		-v /home/docker/common/cfgfiles/:/usr/src/dataclay/client/cfgfiles/:ro \
+		-v /home/docker/certs/:/usr/src/demo/app/certs/:ro \
+		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5 
+
+eval $(docker-machine env car)
+docker run --network=dataclay_default \
+		-v /home/docker/common/cfgfiles/:/usr/src/dataclay/client/cfgfiles/:ro \
+		-v /home/docker/certs/:/usr/src/demo/app/certs/:ro \
+		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5 
 
 printMsg "1" "City creates City object"
 eval $(docker-machine env city)
-docker run --network=dataclay_default dataclaydemo/city src/create_city.py
+docker run --network=dataclay_default dataclaydemo/city src/create_city.py 
 
 printMsg "2" "Car arrives to the city and federate events"
 eval $(docker-machine env car)
-docker run --network=dataclay_default dataclaydemo/car src/generate_events.py
+docker run --network=dataclay_default -e DATACLAY2_ADDR="$CITY_IP:$DATACLAY_PORT" dataclaydemo/car src/generate_events.py
 
 printMsg "3" "City get Events"
 eval $(docker-machine env city)

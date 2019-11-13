@@ -1,7 +1,7 @@
  #!/usr/bin/env python3
 import traceback
 import sys
-from dataclay.api import init, finish, register_external_dataclay
+from dataclay.api import init, finish, register_dataclay
 
 # Init dataClay session
 init()
@@ -14,7 +14,7 @@ def print_fermata(fermata_name):
     
 def register_fermata(fermata_name, citta_ip, citta_dataclay_port):
     print("Registering external dataClay at %s:%s" % (citta_ip, citta_dataclay_port))
-    citta_id = register_external_dataclay(citta_ip, citta_dataclay_port)
+    citta_id = register_dataclay(citta_ip, citta_dataclay_port)
 
     fermata = FermataInfo(fermata_name)
     fermata.make_persistent(fermata_name)

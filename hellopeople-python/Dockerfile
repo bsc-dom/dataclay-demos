@@ -20,6 +20,9 @@ COPY ./model /usr/src/demo/model
 COPY ./app /usr/src/demo/app 
 RUN cp /usr/src/demo/app/cfgfiles/log4j2.xml ${LOG4J_CLASSPATH}
 
+# Working dir
+WORKDIR /usr/src/demo/app
+
 # Wait for dataclay to be alive (max retries 10 and 5 seconds per retry)
 RUN ${DATACLAYCMD} WaitForDataClayToBeAlive 10 5
 
@@ -36,8 +39,6 @@ RUN ${DATACLAYCMD} NewModel ${USER} ${PASS} ${NAMESPACE} ${MODELBINPATH} python
 RUN mkdir -p ${STUBSPATH}
 RUN ${DATACLAYCMD} GetStubs ${USER} ${PASS} ${NAMESPACE} ${STUBSPATH}
 
-# Working dir
-WORKDIR /usr/src/demo/app
 
 # Run 
 ENTRYPOINT ["/usr/src/dataclay/pyclay/python-entry-point.sh"] 

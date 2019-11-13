@@ -21,6 +21,9 @@ COPY ./model /usr/src/demo/model
 COPY ./app /usr/src/demo/app 
 RUN cp /usr/src/demo/app/cfgfiles/log4j2.xml ${LOG4J_CLASSPATH}
 
+# pom.xml is located here
+WORKDIR /usr/src/demo/app
+
 # Wait for dataclay to be alive (max retries 10 and 5 seconds per retry)
 RUN ${DATACLAYCMD} WaitForDataClayToBeAlive 10 5
 
@@ -41,13 +44,9 @@ RUN ${DATACLAYCMD} GetStubs ${USER} ${PASS} ${NAMESPACE} ${STUBSPATH}
 # Package stubs 
 RUN jar cvf ${STUBS_JAR} -C ${STUBSPATH} .
 
-
 # Install stubs in local repository to use it as a pom dependency
 RUN mvn install:install-file -Dfile=${STUBS_JAR} -DgroupId=es.bsc.dataclay \
 	-DartifactId=wordcount-demo-stubs -Dversion=2.0 -Dpackaging=jar -DcreateChecksum=true
-
-# pom.xml is located here
-WORKDIR /usr/src/demo/app
 
 # Compile app
 RUN mvn compile

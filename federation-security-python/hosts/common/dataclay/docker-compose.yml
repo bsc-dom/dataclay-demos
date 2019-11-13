@@ -13,17 +13,17 @@ services:
     ports:
       - "80:80"
       - "443:443"
-
+           
   logicmodule:
     image: "dataclaydemo/dataclay-logicmodule"
+    command: --debug
     depends_on:
       - proxy
     environment:
-      - LOGICMODULE_HOST=${LOGICMODULE_HOST}
+      - LOGICMODULE_HOST=logicmodule
       - LOGICMODULE_PORT_TCP=11034
       - DATACLAY_ADMIN_USER=admin
       - DATACLAY_ADMIN_PASSWORD=admin
-      - EXPOSED_IP_FOR_CLIENT=${EXPOSED_IP_FOR_CLIENT}
     volumes:
       - /home/docker/common/dataclay/prop/global.secure.properties:/usr/src/dataclay/javaclay/cfgfiles/global.properties:ro
       - /home/docker/common/dataclay/prop/log4j2.xml:/usr/src/dataclay/javaclay/log4j2.xml:ro
@@ -34,10 +34,11 @@ services:
       - "traefik.frontend.rule=Headers: service-alias,logicmodule"
       - "traefik.port=11034"
       - "traefik.protocol=h2c"
-
-  ####################################
-  #  JAVA DATA SERVICES ON DC 1      #
-  ####################################
+    healthcheck:
+       interval: 5s
+       retries: 10
+       test: ["CMD-SHELL", "/usr/src/dataclay/javaclay/health_check.sh"]
+           
   dsjava:
     image: "dataclaydemo/dataclay-dsjava"
     depends_on:
@@ -51,7 +52,11 @@ services:
     volumes:
       - /home/docker/common/dataclay/prop/global.properties:/usr/src/dataclay/javaclay/cfgfiles/global.properties:ro
       - /home/docker/common/dataclay/prop/log4j2.xml:/usr/src/dataclay/javaclay/log4j2.xml:ro
-
+    healthcheck:
+       interval: 5s
+       retries: 10
+       test: ["CMD-SHELL", "/usr/src/dataclay/javaclay/health_check.sh"]
+       
   dspython:
     image: "dataclaydemo/dataclay-dspython"
     depends_on:
@@ -64,4 +69,8 @@ services:
       - DEBUG=true
     volumes:
       - /home/docker/common/dataclay/prop/global.properties:/usr/src/dataclay/pyclay/cfgfiles/global.properties:ro
- 
+    healthcheck:
+       interval: 5s
+       retries: 10
+       test: ["CMD-SHELL", "/usr/src/dataclay/pyclay/health_check.sh"]
+           

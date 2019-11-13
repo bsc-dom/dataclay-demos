@@ -3,7 +3,7 @@ import traceback
 import os
 import datetime
 from dataclay.api import init, finish, \
-    get_external_dataclay_id, unfederate_all_objects_with_all_dcs
+    get_dataclay_id, unfederate
 
 # Init dataClay session
 init()
@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     try:
         # Unfederate all 
-        unfederate_all_objects_with_all_dcs()
+        unfederate()
        
     except:
         traceback.print_exc()

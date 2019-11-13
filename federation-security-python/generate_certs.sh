@@ -23,7 +23,7 @@ for MACHINE in ${MACHINES[@]}; do
 	openssl genrsa -out dataclay-agent.key 2048
 	openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in dataclay-agent.key -out dataclay-agent.pem
 	echo "${MACHINE} create a sign request" 
-	openssl req -new -sha256 -key dataclay-agent.key -subj "/C=ES/ST=CAT/O=BSC/CN=$MACHINE" -out dataclay-agent.csr
+	openssl req -new -sha256 -key dataclay-agent.key -subj "/C=ES/ST=CAT/O=BSC/CN=proxy" -out dataclay-agent.csr
 	popd 
 done 
 

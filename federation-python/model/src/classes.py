@@ -35,7 +35,7 @@ class Position(DataClayObject):
 class CameraInfo(DataClayObject):
     """
     @ClassField name str
-    @dclayReplication(afterUpdate='replicateToFederated', inMaster='False')
+    @dclayReplication(afterUpdate='synchronizeFederated', inMaster='False')
     @ClassField ambulances int
     @ClassField fermata_name str
     """
@@ -66,18 +66,18 @@ class CameraInfo(DataClayObject):
         fermata.add_camera_info(self);
         
     @dclayMethod(attribute="str", value="anything")
-    def replicateToFederated(self, attribute, value):
+    def synchronizeFederated(self, attribute, value):
         from dataclay.DataClayObjProperties import DCLAY_SETTER_PREFIX
-        for dataclay_id in self.get_dataclays_object_is_federated_with():
+        for dataclay_id in self.get_federation_targets():
             self.synchronize_federated(dataclay_id, DCLAY_SETTER_PREFIX + attribute, [value])
-        dataclay_id = self.get_external_source_of_dataclay_object()
+        dataclay_id = self.get_federation_source()
         if dataclay_id is not None:
             self.synchronize_federated(dataclay_id, DCLAY_SETTER_PREFIX + attribute, [value])
                
 class SemaforoInfo(DataClayObject):
     """
     @ClassField name str
-    @dclayReplication(afterUpdate='replicateToFederated', inMaster='False')
+    @dclayReplication(afterUpdate='synchronizeFederated', inMaster='False')
     @ClassField color str
     @ClassField fermata_name str
     """
@@ -105,11 +105,11 @@ class SemaforoInfo(DataClayObject):
         return "{name=%s,color=%s}" % (self.name, self.color)
     
     @dclayMethod(attribute="str", value="anything")
-    def replicateToFederated(self, attribute, value):
+    def synchronizeFederated(self, attribute, value):
         from dataclay.DataClayObjProperties import DCLAY_SETTER_PREFIX
-        for dataclay_id in self.get_dataclays_object_is_federated_with():
+        for dataclay_id in self.get_federation_targets():
             self.synchronize_federated(dataclay_id, DCLAY_SETTER_PREFIX + attribute, [value])
-        dataclay_id = self.get_external_source_of_dataclay_object()
+        dataclay_id = self.get_federation_source()
         if dataclay_id is not None:
             self.synchronize_federated(dataclay_id, DCLAY_SETTER_PREFIX + attribute, [value])
     

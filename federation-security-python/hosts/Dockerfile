@@ -18,20 +18,23 @@ ENV STUBSPATH=/usr/src/demo/app/stubs
 # If we want to run demo again, argument must be modified 
 ARG CACHEBUST=1 
 
+
 # Copy app
 COPY ./${APP_NAME}/src /usr/src/demo/app/src
 COPY ./common/cfgfiles /usr/src/demo/app/cfgfiles
 COPY ./${APP_NAME}/certs /usr/src/demo/app/certs
+RUN cp /usr/src/demo/app/cfgfiles/log4j2.xml ${LOG4J_CLASSPATH}
+
+# Working dir
+WORKDIR /usr/src/demo/app
 
 # Wait for dataclay to be alive (max retries 10 and 5 seconds per retry)
-RUN ${DATACLAYCMD} WaitForDataClayToBeAlive 10 5 --debug
+RUN ${DATACLAYCMD} WaitForDataClayToBeAlive 10 5
 
 # Get stubs 
 RUN mkdir -p ${STUBSPATH}
 RUN ${DATACLAYCMD} GetStubs ${USER} ${PASS} ${NAMESPACE} ${STUBSPATH}
-
-# Working dir
-WORKDIR /usr/src/demo/app
+RUN ls ${STUBSPATH}
 
 # Run 
 ENTRYPOINT ["/usr/src/dataclay/pyclay/python-entry-point.sh"] 

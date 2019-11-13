@@ -1,7 +1,7 @@
  #!/usr/bin/env python3
 import traceback
 import sys
-from dataclay.api import init, finish, register_external_dataclay, get_external_dataclay_id
+from dataclay.api import init, finish, register_dataclay, get_dataclay_id
 
 # Init dataClay session
 init()
@@ -10,7 +10,7 @@ from DemoNS.classes import TramDynamicInfo, TramInfo, Position
 
 def register_tram(tram_name, tramsystem_ip, tramsystem_dataclay_port):
     print("Registering external dataClay at %s:%s" % (tramsystem_ip, tramsystem_dataclay_port))
-    tramsystem_id = register_external_dataclay(tramsystem_ip, tramsystem_dataclay_port)
+    tramsystem_id = register_dataclay(tramsystem_ip, tramsystem_dataclay_port)
 
     # Register
     position = Position(0, 0)
@@ -23,7 +23,7 @@ def register_tram(tram_name, tramsystem_ip, tramsystem_dataclay_port):
 
 def approach_to_fermata(tram_name, fermata_name, fermata_ip, fermata_port):
     print("Registering external dataClay at %s:%s" % (fermata_ip, fermata_port))
-    fermata_dataclay_id = register_external_dataclay(fermata_ip, fermata_port)
+    fermata_dataclay_id = register_dataclay(fermata_ip, fermata_port)
     print("Tram %s approaching to fermata %s" % (tram_name, fermata_name))
 
     tram_info = TramInfo.get_by_alias(tram_name)
@@ -33,7 +33,7 @@ def approach_to_fermata(tram_name, fermata_name, fermata_ip, fermata_port):
        
 
 def leave_fermata(tram_name, fermata_name, fermata_ip, fermata_port):
-    fermata_dataclay_id = get_external_dataclay_id(fermata_ip, fermata_port)
+    fermata_dataclay_id = get_dataclay_id(fermata_ip, fermata_port)
     tram_info = TramInfo.get_by_alias(tram_name)
     print("Tram %s leaving fermata %s" % (tram_name, fermata_name))
     tram_info.get_dynamic_info().unfederate(fermata_dataclay_id)

@@ -2,7 +2,7 @@
 import traceback
 import os
 import datetime
-from dataclay.api import init, finish, register_external_dataclay
+from dataclay.api import init, finish, register_dataclay
 
 # Init dataClay session
 init()
@@ -19,7 +19,7 @@ if __name__ == "__main__":
         dataclay2_ip = dataclay2_addr_split[0]
         dataclay2_port = int(dataclay2_addr_split[1])
         print("Registering external dataClay at %s" % dataclay2_addr)
-        dataclay_id2 = register_external_dataclay(dataclay2_ip, dataclay2_port)
+        dataclay_id2 = register_dataclay(dataclay2_ip, dataclay2_port)
     
         # Create thousands of event
         current_date = datetime.datetime.now().strftime("%d-%m-%Y %I:%M:%S")

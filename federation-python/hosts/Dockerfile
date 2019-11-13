@@ -22,15 +22,15 @@ ARG CACHEBUST=1
 COPY ./${APP_NAME}/src /usr/src/demo/app/src
 COPY ./common/cfgfiles /usr/src/demo/app/cfgfiles
 
+# Working dir
+WORKDIR /usr/src/demo/app
+
 # Wait for dataclay to be alive (max retries 10 and 5 seconds per retry)
 RUN ${DATACLAYCMD} WaitForDataClayToBeAlive 10 5
 
 # Get stubs 
 RUN mkdir -p ${STUBSPATH}
 RUN ${DATACLAYCMD} GetStubs ${USER} ${PASS} ${NAMESPACE} ${STUBSPATH}
-
-# Working dir
-WORKDIR /usr/src/demo/app
 
 # Run 
 ENTRYPOINT ["/usr/src/dataclay/pyclay/python-entry-point.sh"] 

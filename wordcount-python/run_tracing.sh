@@ -32,16 +32,16 @@ printMsg "Running demo"
 # Word count
 # Modify session configuration to add flag Tracing=True and mount trace volume to collect traces once done
 docker run --network=dataclay_default \
-	-v `pwd`/cfgfiles/session.extrae.properties:/usr/src/demo/app/cfgfiles/session.properties \
+	-v `pwd`/app/cfgfiles/session.extrae.properties:/usr/src/demo/app/cfgfiles/session.properties \
     -v `pwd`/trace:/usr/src/demo/app/trace:rw \
-    bscdataclay/wordcount-python-demo src/wordcount.py --tracing
+    bscdataclay/wordcount-python-demo src/wordcount.py --debug --tracing
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
 
 printMsg "Traces created at $(pwd)/trace/"
 
 printMsg "Stopping dataClay"
 pushd $SCRIPTDIR/dataclay
-docker-compose down -v
+#docker-compose down -v
 popd
 
 echo ""

@@ -13,6 +13,10 @@ services:
     volumes:
       - ./prop/global.properties:/usr/src/dataclay/javaclay/cfgfiles/global.properties:ro
       - ./prop/log4j2.xml:/usr/src/dataclay/javaclay/log4j2.xml:ro
+    healthcheck:
+       interval: 5s
+       retries: 10
+       test: ["CMD-SHELL", "/usr/src/dataclay/javaclay/health_check.sh"]
        
   dsjava:
     image: "bscdataclay/dsjava:2.0"
@@ -29,6 +33,10 @@ services:
     volumes:
       - ./prop/global.properties:/usr/src/dataclay/javaclay/cfgfiles/global.properties:ro
       - ./prop/log4j2.xml:/usr/src/dataclay/javaclay/log4j2.xml:ro
+    healthcheck:
+       interval: 5s
+       retries: 10
+       test: ["CMD-SHELL", "/usr/src/dataclay/javaclay/health_check.sh"]
        
   dspython:
     image: "bscdataclay/dspython:2.0"
@@ -43,4 +51,7 @@ services:
       - DEBUG=True
     volumes:
       - ./prop/global.properties:/usr/src/dataclay/pyclay/cfgfiles/global.properties:ro
- 
+    healthcheck:
+       interval: 5s
+       retries: 10
+       test: ["CMD-SHELL", "/usr/src/dataclay/pyclay/health_check.sh"]

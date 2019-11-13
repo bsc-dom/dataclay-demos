@@ -36,7 +36,7 @@ services:
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/usr/src/dataclay/health_check.sh"]
+       test: ["CMD-SHELL", "/usr/src/dataclay/javaclay/health_check.sh"]
        
   dsjava2:
     image: "bscdataclay/dsjava:2.0"
@@ -56,5 +56,5 @@ services:
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/usr/src/dataclay/health_check.sh"]      
+       test: ["CMD-SHELL", "/usr/src/dataclay/javaclay/health_check.sh"]
  

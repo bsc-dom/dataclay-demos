@@ -1,4 +1,5 @@
 from dataclay import DataClayObject, dclayMethod
+from dataclay.contrib.synchronization import SequentialConsistencyMixin
 
 
 class Position(DataClayObject):
@@ -32,10 +33,11 @@ class Position(DataClayObject):
     def __str__(self):
         return "(%s,%s)" % (str(self.x), str(self.y))
 
-class CameraInfo(DataClayObject):
+
+class CameraInfo(DataClayObject, SequentialConsistencyMixin):
     """
     @ClassField name str
-    @dclayReplication(afterUpdate='synchronizeFederated', inMaster='False')
+    @dclayReplication(afterUpdate='synchronize_federated', inMaster='False')
     @ClassField ambulances int
     @ClassField fermata_name str
     """
@@ -62,22 +64,14 @@ class CameraInfo(DataClayObject):
     def when_federated(self):
         # This is executed in a fog node. Since they are independent dataClays,
         # the alias can be fixed.
-        fermata = FermataInfo.get_by_alias(self.fermata_name);
-        fermata.add_camera_info(self);
-        
-    @dclayMethod(attribute="str", value="anything")
-    def synchronizeFederated(self, attribute, value):
-        from dataclay.DataClayObjProperties import DCLAY_SETTER_PREFIX
-        for dataclay_id in self.get_federation_targets():
-            self.synchronize_federated(dataclay_id, DCLAY_SETTER_PREFIX + attribute, [value])
-        dataclay_id = self.get_federation_source()
-        if dataclay_id is not None:
-            self.synchronize_federated(dataclay_id, DCLAY_SETTER_PREFIX + attribute, [value])
-               
-class SemaforoInfo(DataClayObject):
+        fermata = FermataInfo.get_by_alias(self.fermata_name)
+        fermata.add_camera_info(self)
+
+
+class SemaforoInfo(DataClayObject, SequentialConsistencyMixin):
     """
     @ClassField name str
-    @dclayReplication(afterUpdate='synchronizeFederated', inMaster='False')
+    @dclayReplication(afterUpdate='synchronize_federated', inMaster='False')
     @ClassField color str
     @ClassField fermata_name str
     """
@@ -97,21 +91,13 @@ class SemaforoInfo(DataClayObject):
         
     @dclayMethod()  
     def when_federated(self):
-        fermata = FermataInfo.get_by_alias(self.fermata_name);
-        fermata.add_semaforo_info(self);
+        fermata = FermataInfo.get_by_alias(self.fermata_name)
+        fermata.add_semaforo_info(self)
 
     @dclayMethod(return_="str")
     def __str__(self):
         return "{name=%s,color=%s}" % (self.name, self.color)
-    
-    @dclayMethod(attribute="str", value="anything")
-    def synchronizeFederated(self, attribute, value):
-        from dataclay.DataClayObjProperties import DCLAY_SETTER_PREFIX
-        for dataclay_id in self.get_federation_targets():
-            self.synchronize_federated(dataclay_id, DCLAY_SETTER_PREFIX + attribute, [value])
-        dataclay_id = self.get_federation_source()
-        if dataclay_id is not None:
-            self.synchronize_federated(dataclay_id, DCLAY_SETTER_PREFIX + attribute, [value])
+
     
 class TramDynamicInfo(DataClayObject):
     """
@@ -154,13 +140,13 @@ class TramDynamicInfo(DataClayObject):
     def when_federated(self):
         # This is executed in a fog node. Since they are independent dataClays,
         # the alias can be fixed.
-        fermata = FermataInfo.get_by_alias(self.current_fermata);
-        fermata.add_tram_dynamic_info(self);
+        fermata = FermataInfo.get_by_alias(self.current_fermata)
+        fermata.add_tram_dynamic_info(self)
 
     @dclayMethod()  
     def when_unfederated(self):
-        fermata = FermataInfo.get_by_alias(self.current_fermata);
-        fermata.remove_tram_dynamic_info(self.name);
+        fermata = FermataInfo.get_by_alias(self.current_fermata)
+        fermata.remove_tram_dynamic_info(self.name)
 
     @dclayMethod(return_='str')
     def __str__(self):
@@ -224,8 +210,8 @@ class FermataInfo(DataClayObject):
     def when_federated(self):
         # This is executed in a city fog node. Since they are independent dataClays,
         # the alias can be fixed.
-        citty = CittyInfo.get_by_alias("citta");
-        citty.add_fermata_info(self);
+        citty = CittyInfo.get_by_alias("citta")
+        citty.add_fermata_info(self)
 
     @dclayMethod(return_='str')
     def __str__(self):
@@ -241,6 +227,7 @@ class FermataInfo(DataClayObject):
         result.append("}")
         result.append("")
         return "\n".join(result)
+
 
 class TramInfo(DataClayObject):
     """
@@ -269,8 +256,8 @@ class TramInfo(DataClayObject):
     def when_federated(self):
         # This is executed in a fog node. Since they are independent dataClays,
         # the alias can be fixed.
-        tram_system = TramSystem.get_by_alias("tram-system");
-        tram_system.add_tram_info(self);
+        tram_system = TramSystem.get_by_alias("tram-system")
+        tram_system.add_tram_info(self)
 
     @dclayMethod(return_='str')
     def __str__(self):
@@ -301,7 +288,8 @@ class TramSystem(DataClayObject):
         result.append("}")
         result.append("")
         return "\n".join(result)
-    
+
+
 class CittyInfo(DataClayObject):
     """
     @ClassField fermatas list<DemoNS.classes.FermataInfo>

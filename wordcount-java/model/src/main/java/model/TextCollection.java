@@ -6,12 +6,10 @@ import java.util.ArrayList;
 public class TextCollection {
 	String textPrefix;
 	ArrayList<String> textTitles;
-	boolean debug;
 
-	public TextCollection(String prefixForTextsInCollection, boolean doDebug) {
+	public TextCollection(String prefixForTextsInCollection) {
 		this.textTitles = new ArrayList<String>();
 		this.textPrefix = prefixForTextsInCollection;
-		this.debug = doDebug;
 	}
 
 	public String getTextPrefix() {

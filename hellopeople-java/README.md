@@ -20,21 +20,21 @@ Execute the following to fully run the demo (it may take a while the first time)
 $> ./run_demo.sh
 ```
 
-## Workflow
+## Demo workflow
 
 The workflow of the demo is the following:
 
 
 1. Start dataClay using docker-compose (check `run_demo.sh`) 
 2. Build the dataClay application using docker build (check `run_demo.sh`). Dockerfile extends dataClay client tool which contains all necessary dependencies to use dataClay (alternatively you can check dataclay examples repository to see how to do it without extending the docker). Notice that the docker is build in the same docker network than the one used to bootstrap dataClay. Build steps are the following (check `Dockerfile` for more detailed calls) 
-  2.1. Define necessary environment variables 
-  2.2. Wait for dataClay to be alive using dataClay command `WaitForDataClayToBeAlive`
-  2.3. Create a new account using dataClay command `NewAccount`
-  2.4. Create a data contract using dataClay command `NewDataContract`
-  2.5. Register model using dataClay command `NewModel`
-  2.6. Get stubs generated using dataClay command `GetStubs`
-  2.7. Package them and install in local maven repository 
-  2.8. Compile client application 
+   1. Define necessary environment variables 
+   2. Wait for dataClay to be alive using dataClay command `WaitForDataClayToBeAlive`
+   3. Create a new account using dataClay command `NewAccount`
+   4. Create a data contract using dataClay command `NewDataContract`
+   5. Register model using dataClay command `NewModel`
+   6. Get stubs generated using dataClay command `GetStubs`
+   7. Package them and install in local maven repository 
+   8. Compile client application 
 3. Once the demo docker is build, we have a docker image with proper dataClay stubs called `bscdataclay/hellopeople-java-demo` so now we can run it and execute our application with dataClay using `docker run`
 
 ## Model

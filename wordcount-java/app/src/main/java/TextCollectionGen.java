@@ -1,5 +1,7 @@
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,15 +16,15 @@ import java.io.IOException;
 
 public class TextCollectionGen {
 	static int timesPerFile = 3;
+	
 	public static void main(String[] args) throws Exception {
 		if (args.length < 2) {
 			printErrorUsage();
 			return;
 		}
 		final String textColAlias = args[0];
-		final String remoteFilePath = args[1];
+		final String filePath = args[1];
 		DataClay.init();
-
 		// Try to retrieve a previously created text collection
 		TextCollectionIndex textCollectionIndex = null;
 		try {
@@ -36,7 +38,7 @@ public class TextCollectionGen {
 			// Distributed index among N collections, one per Backend.
 			for (BackendID locID : DataClay.getJBackends().keySet()) {
 				String prefixForTexts = textColAlias + id;
-				TextCollection tc = new TextCollection(prefixForTexts, false);
+				TextCollection tc = new TextCollection(prefixForTexts);
 
 				tc.makePersistent(prefixForTexts, locID);
 				System.out.println("[LOG] Collection created at " + tc.getLocation());
@@ -54,16 +56,12 @@ public class TextCollectionGen {
 		System.out.println("[LOG] Collection index id " + textCollectionIndex.getID());
 		System.out.println("[LOG] Collection index located at " + textCollectionIndex.getLocation());
 		System.out.println("[LOG] Collection index current size " + textCollectionIndex.getSize());
-
-		// Add text files to the index.
-		// Internally, text objects are created from text files, and stored in a round
-		// robin fashion among the distributed index.
 		List<String> textTitles = new ArrayList<String>();
 		for (int i = 0; i < timesPerFile; i++) {
 			try {
-				textTitles = addTextsFromPath(textCollectionIndex, remoteFilePath);
+				textTitles = addTextsFromPath(textCollectionIndex, filePath);
 			} catch (Exception ex) {
-				System.err.println("[ERROR] Could not add texts from path " + remoteFilePath
+				System.err.println("[ERROR] Could not add texts from path " + filePath
 						+ ". Is it a valid path in the backend?. Exception msg: " + ex.getMessage());
 				break;
 			}
@@ -75,7 +73,6 @@ public class TextCollectionGen {
 			}
 		}
 		DataClay.finish();
-
 		// Shutdown logger threads
 		System.exit(0);
 	}
@@ -104,9 +101,31 @@ public class TextCollectionGen {
 		tci.setNextCollection(nextCollection++);		
 		String textPrefix = tc.getTextPrefix();
 		String textTitle = textPrefix + ".file" + (textTitles.size() + 1);
-		Text t = new Text(textTitle, false);
-		t.addWords(filePath);
+		Text t = new Text(textTitle);
+		
+		File file = new File(filePath);
+		FileReader fr = new FileReader(file);
+		BufferedReader br = new BufferedReader(fr);
+		String line;
+		int addedWords = 0;
+		long totalSize = file.length();
+		List<String> newWords = new ArrayList<String>();
+		System.out.println("[ Text ] Parsing file " 
+		+ file.getName() + " of size " + totalSize / 1024 / 1024 + " MB ...");
+		long init = System.currentTimeMillis();
+		while ((line = br.readLine()) != null) {
+			String[] wordsLine = line.split(" ");
+			for (String word : wordsLine) {
+				newWords.add(word);
+				addedWords++;
+			}
+		}
+		
+		t.addWords(newWords);
 		t.makePersistent(textTitle);
+		long end = System.currentTimeMillis();
+		System.out.println("[ Text ] Added : " + addedWords + " words in " + (end - init) + " ms");
+
 		tc.addTextTitle(textTitle);
 		return textTitle;
 	}

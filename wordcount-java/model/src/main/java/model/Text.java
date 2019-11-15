@@ -10,9 +10,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Text {
+	
 	String title;
-	List<String> words1;
-	boolean debug;
+	List<String> words;
 
 	// Constructor required for COMPSs
 	public Text() {
@@ -20,51 +20,22 @@ public class Text {
 	}
 
 	// Constructor for TextCollection to build new text objects
-	public Text(String newTitle, boolean doDebug) {
+	public Text(String newTitle) {
 		this.title = newTitle;
-		this.words1 = new ArrayList<String>();
-		this.debug = doDebug;
-		if (debug) {
-			System.out.println(
-					"[ Text ] Call to real constructor to create a text object with " + words1.getClass().getName());
-		}
+		this.words = new ArrayList<String>();
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void addWords(String filePath) throws IOException {
-		File file = new File(filePath);
-		FileReader fr = new FileReader(file);
-		BufferedReader br = new BufferedReader(fr);
-		String line;
-		int addedWords = 0;
-		long totalSize = file.length();
-		System.out
-				.println("[ Text ] Parsing file " + file.getName() + " of size " + totalSize / 1024 / 1024 + " MB ...");
-		long init = System.currentTimeMillis();
-		while ((line = br.readLine()) != null) {
-			String[] wordsLine = line.split(" ");
-			for (String word : wordsLine) {
-				words1.add(word);
-				addedWords++;
-			}
-		}
-		long end = System.currentTimeMillis();
-		System.out.println("[ Text ] Added : " + addedWords + " words in " + (end - init) + " ms");
-
-		br.close();
-		fr.close();
+	public void addWords(List<String> newwords) throws IOException {
+		this.words.addAll(newwords);
 	}
 
-	public TextStats wordCount(final boolean persistStats) {
-		long start = 0, end = 0;
-		if (debug) {
-			start = System.currentTimeMillis();
-		}
+	public TextStats wordCount() {
 		HashMap<String, Integer> result = new HashMap<String, Integer>();
-		Iterator<String> it = words1.iterator();
+		Iterator<String> it = words.iterator();
 		while (it.hasNext()) {
 			String word = it.next();
 			Integer curCount = result.get(word);
@@ -74,21 +45,7 @@ public class Text {
 				result.put(word, curCount + 1);
 			}
 		}
-		if (debug) {
-			end = System.currentTimeMillis();
-			System.out.println("[ Text ] Computed text " + title + " in " + (end - start) + " millis");
-		}
-		TextStats textStats = new TextStats(result, debug);
+		TextStats textStats = new TextStats(result);
 		return textStats;
-	}
-
-	public int wordCountNotComputing() {
-		int i = 0;
-		Iterator<String> it = words1.iterator();
-		while (it.hasNext()) {
-			it.next();
-			i++;
-		}
-		return i;
 	}
 }

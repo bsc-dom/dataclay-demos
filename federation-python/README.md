@@ -2,7 +2,7 @@
 
 Welcome! This demo attempts to show an example of an architecture for 
 data collection and processing based on dataClay (https://www.bsc.es/dataclay) 
-to optimize tram traffic. You can use it to familiarize that with
+to optimize tram traffic. You can use it to familiarize with
 **dataClay's federation** feature, to start developing applications, to explore the different
 components, etc.
 

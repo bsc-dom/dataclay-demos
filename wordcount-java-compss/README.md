@@ -1,106 +1,92 @@
-# WordCount application in Java using COMPSs
+# WordCount demo in Java with COMPSs
 
-This folder contains a full example of how to run a WordCount application,
-and executing it distributed through the use of COMPSs framework.
+This demo attempts to show a WordCount application done in Java that uses both dataClay
+and COMPSs framework. Note that this demo is very similar to the `wordcount-java` counterpart,
+but with the addition of the COMPSs framework for distributed computing.
 
-# Getting started
+Remember that demos are intended to give a demonstration of typical dataClay applications and architectures: to show how dataClay works, is prepared, or is done while examples are used to learn how to use dataClay, to make something similar to the demos and match your requirements. You can find dataClay examples at https://github.com/bsc-dom/dataclay-examples
 
-First of all, you will need to have a recent version of Docker and docker-compose
-installed in your machine. Most dependencies are included in the containers.
+## Preflight check
 
-You will need to clone or fork this repository. All commands are relative to the 
-root folder of this example and it is intended to be a self-contained example.
+You need:
 
-## Preparing the docker network
+  - **docker** Get it through https://www.docker.com/ > Get Docker
+  - **docker-compose** Quickest way to get the latest release https://github.com/docker/compose/releases
+  
+## Running the whole demo
 
-Given that both COMPSs and dataClay should be able to interconnect, the most straightforward
-way to achieve this is to make them share a docker network. We will pre-create them with:
+Execute the following to fully run the demo (it may take a while the first time) 
 
-```bash
-$ docker network create dcwordcount
+``` 
+$> ./run_demo.sh
 ```
 
-The previous command will create a _bridge_ network. The `docker-compose.yml` file assumes
-that this network will be available.
+## Demo workflow
 
-**Remember:** You will need to clean up this network manually once you finish. This can be done
-with the command `docker network rm`.
+The workflow of the demo is the following:
 
-## Starting the dataClay services
+1. Start dataClay using docker-compose (check `run_demo.sh`) 
+2. Build the dataClay application using docker build (check `run_demo.sh`). Dockerfile extends dataClay client tool which contains all necessary dependencies to use dataClay (alternatively you can check dataclay examples repository to see how to do it without extending the docker). Notice that the docker is build in the same docker network than the one used to bootstrap dataClay. Build steps are the following (check `Dockerfile` for more detailed calls) 
+   1. Define necessary environment variables 
+   2. Wait for dataClay to be alive using dataClay command `WaitForDataClayToBeAlive`
+   3. Create a new account using dataClay command `NewAccount`
+   4. Create a data contract using dataClay command `NewDataContract`
+   5. Register model using dataClay command `NewModel`
+   6. Get stubs generated using dataClay command `GetStubs`
+   7. Package them and install in local maven repository 
+   8. Compile client application
+3. Build the COMPSs ready container --which is used in the consumer stage of the application. This container is a multi-stage Dockerfile (see `compss.Dockerfile`) which copies certain structures from the previous built docker image and adds the additional COMPSs files: `pom.xml` (added COMPSs dependency) and `WordcountItf.java` (COMPSs annotations).
+4. Run the producer stage of the Wordcount through the `bscdataclay/wordcount-java-demo` image.
+5. Prepare the COMPSs framework through the `bscdataclay/wordcount-java-compss-demo` image.
+6. Execute the `runcompss` into the COMPSs container. This runs the consumer stage of the Wordcount application.
 
-The basic orchestration is done through docker-compose. You can simply start it by issuing:
 
-```bash
-$ docker-compose up -d
+## Model and Application
+
+The whole Model (also the corresponding stubs) and the main application are the same
+than the `wordcount-java` demo counterpart. Check that folder in order to understand
+the model and application flow.
+
+## Folder tree 
+```
+.
+├── app: here you will find everything needed in the client application using dataClay. 
+│   ├── cfgfiles: configuration files used to connect with dataClay, enable debugging...
+│   │   ├── client.properties: File with host and port of dataClay's LogicModule service
+│   │   ├── global.properties: Extra configurations for the dataClay client application
+│   │   ├── log4j2.xml: dataClay logging configuration for Apache Logger 2.
+│   │   └── session.properties: Session properties for the user.
+│   ├── pom.xml: Application pom.xml including COMPSs engine JAR reference
+│   └── src: Application source in Maven structure. 
+│       └── main
+│           └── java
+│               └── app
+│                   ├── TextCollectionGen.java: Generation of text collection.
+│                   └── Wordcount.java: Application code using dataClay stubs. 
+│   
+├── dataclay: here you will find everything needed to bootstrap and configure dataClay 
+│   ├── docker-compose.yml: docker-compose with all dataClay services
+│   └── prop: Configuration files mounted in docker volumes for dataClay services
+│       ├── global.properties: Extra configurations for the dataClay services
+│       └── log4j2.xml: dataClay logging configuration for Apache Logger 2. 
+├── Dockerfile: Dockerized demo with all the main steps.
+├── compss.Dockerfile: Dockerized demo for the consumer stage.
+├── model: Model to be registered in dataClay
+│   ├── pom.xml: Model pom.xml
+│   └── src: Model source in Maven structure. 
+│       └── main
+│           └── java
+│               └── model
+│                   ├── Text.java
+│                   ├── TextCollection.java
+│                   ├── TextCollectionIndex.java
+│                   └── TextStats.java
+├── pom-compss.xml: Application pom.xml with additional COMPSs dependency.
+├── README.md
+├── run_demo.sh: Script to execute the whole demo
+└── WordcountItf.java: Interface with COMPSs annotations for the consumer stage
 ```
 
-The services will begin in the background. To check the lifecycle of the applications just use
-the usual docker-compose commands --i.e. `ps`, `logs`, etc.
+## Questions? 
 
-## Compiling your model
-
-We need to compile the model, and to do so we will use `javac`:
-
-```bash
-$ mkdir model-bin
-$ javac src/model/*.java -d ./model-bin
-```
-
-## Registering the model
-
-Now that dataClay has been initialized and we have compiled the model, we can use the
-`dataclaycmd` to prepare all the dataClay environment and register the classes.
-
-We will be using a container which contains the `dataclaycmd` and all its dependencies.
-
-```bash
-$ # Brevity mandates us to to this "dataClay Cmd Run" alias:
-$ alias dccrun="docker run --network=dcwordcount --volume cfgfiles/client.properties:cfgfiles/client.properties --volume stubs:stubs --volume model-bin:model-bin bscdataclay/dataclaycmd"
-$ dccrun NewAccount wcuser wcpass
-$ dccrun NewDataContract wcuser wcpass wcdataset wcuser
-$ # The following will work because
-$ dccrun NewModel wcuser wcpass wcnamespace ./model-bin java
-$ dccrun GetStubs wcuser wcpass wcnamespace ./stubs
-```
-
-## Loading the dataset
-
-**ToDo:** Explain how to build the producer. Needs dataClay in CLASSPATH and some extra stuff, maybe a pom?
-
-Then you can run the producer with the following command:
-
-```bash
-$ java ... TextCollectionGen mydatasetalias /text
-```
-
-Note that the folder **`text`** has been mounted in the **`/text`** path inside the 
-Execution Environment container --you can see it by looking into the `docker-compose.yml` file.
-This illustrates a "remote load", which is a typical scenario for environments in which the
-Execution Environment has a parallel filesystem or access to some datasets.
-
-## Building the Word Count application
-
-**ToDo:** Explain how to build the consumer. Needs dataClay in CLASSPATH and some extra stuff, maybe a pom?
-
-## Building the COMPSs-ready application container
-
-Now we are able to build a new container, based in the COMPSs base container, which will contain the
-Wordcount application and all the COMPSs framework.
-
-You can check the contents of the `Dockerfile` file, and build it by doing:
-
-```bash
-$ docker build . -t wccompss
-```
-
-## Run the Wordcount
-
-The Wordcount application can now be run, we only have to specify the alias of the collection:
-
-```bash
-$ docker run --network=dcwordcount wccompss mydatasetalias
-```
-
-Note that this `mydatasetalias` is the alias of the persistent collection, as set in previous steps.
-The alias is the mandatory parameter that the `Wordcount` application expects, but there are more parameters
-available; just omit it and the application will give the usage instructions.
+If you have any questions, please feel free to ask to support-dataclay@bsc.es

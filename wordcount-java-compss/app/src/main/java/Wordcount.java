@@ -1,26 +1,21 @@
-package consumer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import es.bsc.compss.api.COMPSs;
 import model.Text;
 import model.TextCollectionIndex;
 import model.TextStats;
 import storage.StorageItf;
-
+import es.bsc.dataclay.api.DataClay;
 public class Wordcount {
+	
 	/** Default session properties file. */
 	public static String configPropertiesFile = "./cfgfiles/session.properties";
 	/** Default execution times (to see cache effects). */
 	public static int execTimes = 3;
 	/** Default num of times that every text must be counted. */
 	public static int timesPerText = 1;
-	/** Persist partial stats or not. */
-	public static boolean persistStats = false;
-	/** Whether to debug or not. */
-	public static boolean doDebug = false;
 
 	public static void main(String args[]) throws Exception {
 		if (!checkArguments(args)) {
@@ -28,9 +23,8 @@ public class Wordcount {
 		}
 
 		String textColAlias = args[0];
-		if (configPropertiesFile != null) {
-			StorageItf.init(configPropertiesFile);
-		}
+		// Init dataClay session
+		DataClay.init();
 
 		// Init texts to parse
 		TextCollectionIndex tc = (TextCollectionIndex) TextCollectionIndex.getByAlias(textColAlias);
@@ -44,7 +38,6 @@ public class Wordcount {
 				System.out.println("[LOG] Computing result");
 				long startTime = System.currentTimeMillis();
 				TextStats finalResult = runWordcount(textsToCount);
-				COMPSs.barrier();
 				long endTime = System.currentTimeMillis();
 				if (finalResult == null) {
 					System.err.println("[ERROR] Null result");
@@ -59,9 +52,10 @@ public class Wordcount {
 			System.out.println("[ERROR] Obtained TextCollection: " + textColAlias + " with no text to be wordcounted.");
 		}
 
-		if (configPropertiesFile != null) {
-			StorageItf.finish();
-		}
+		DataClay.finish();
+		
+		// Shutdown logger threads
+		System.exit(0);
 	}
 
 	/**
@@ -77,7 +71,7 @@ public class Wordcount {
 		
 		// MAP-WORDCOUNT
 		for (int i = 0; i < texts.length; i++) {
-			partialResult[i] = wordCountNewStats(texts[i], persistStats);
+			partialResult[i] = wordCountNewStats(texts[i]);
 		}
 
 		// REDUCE-MERGE
@@ -104,8 +98,8 @@ public class Wordcount {
 	 *            a reference to persistent text object
 	 * @return resulting stats of wordcount
 	 */
-	public static TextStats wordCountNewStats(Text text, boolean persistStats) {
-		return text.wordCount(persistStats);
+	public static TextStats wordCountNewStats(Text text) {
+		return text.wordCount();
 	}
 
 	/**
@@ -182,10 +176,6 @@ public class Wordcount {
 			} else if (arg.equals("-h")) {
 				System.out.println("[HELP] " + getUsage());
 				return false;
-			} else if (arg.equals("-persiststats")) {
-				persistStats = true;
-			} else if (arg.equals("-debug")) {
-				doDebug = true;
 			} else if (arg.equals("-exectimes")) {
 				execTimes = new Integer(args[argIndex++]);
 			} else {
@@ -203,6 +193,6 @@ public class Wordcount {
 	 */
 	private static String getUsage() {
 		return "Usage \n\n" + Wordcount.class.getName() + " <text_col_alias> [ -c <config_properties> ] "
-				+ "[-t <times_per_text>] [-exectimes <run_n_times>] " + "[-debug (extra info)] [-h (this help)] \n";
+				+ "[-t <times_per_text>] [-exectimes <run_n_times>] " + "[-h (this help)] \n";
 	}
 }

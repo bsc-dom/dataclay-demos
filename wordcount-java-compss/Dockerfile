@@ -22,7 +22,7 @@ ARG CACHEBUST=1
 # Copy files 
 COPY ./model ${DEMO_HOME}/model
 COPY ./app ${DEMO_HOME} 
-RUN cp ${DEMO_HOME}/cfgfiles/log4j2.xml ${LOG4J_CLASSPATH}
+RUN cp ${DEMO_HOME}/cfgfiles/log4j2.xml ${DATACLAY_LOG_CONFIG}
 
 # Wait for dataclay to be alive (max retries 10 and 5 seconds per retry)
 RUN dataclaycmd WaitForDataClayToBeAlive 10 5

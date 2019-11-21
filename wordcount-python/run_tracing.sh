@@ -34,14 +34,14 @@ printMsg "Running demo"
 docker run --rm --network=dataclay_default \
 	-v `pwd`/app/cfgfiles/session.extrae.properties:/demo/cfgfiles/session.properties \
     -v `pwd`/trace:/demo/trace:rw \
-    bscdataclay/wordcount-python-demo src/wordcount.py --debug --tracing
+    bscdataclay/wordcount-python-demo src/wordcount.py --tracing
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
 
 printMsg "Traces created at $(pwd)/trace/"
 
 printMsg "Stopping dataClay"
 pushd $SCRIPTDIR/dataclay
-#docker-compose down -v
+docker-compose down -v
 popd
 
 echo ""

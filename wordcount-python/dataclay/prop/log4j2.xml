@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration monitorInterval="60" status="debug">
+<Configuration monitorInterval="60" status="off">
 	<Appenders>
 		<Console name="ConsoleAppender" target="SYSTEM_OUT">
 			<PatternLayout
@@ -9,10 +9,10 @@
 
 	<Loggers>
 		<!-- Runtime -->
-		<Logger name="ClientRuntime" level="debug" />
-		<Logger name="ClientManagementLib" level="debug" />
-		<Logger name="DataClayRuntime" level="debug" />
-		<Logger name="DataServiceRuntime" level="debug" />
+		<Logger name="ClientRuntime" level="off" />
+		<Logger name="ClientManagementLib" level="off" />
+		<Logger name="DataClayRuntime" level="off" />
+		<Logger name="DataServiceRuntime" level="off" />
 
 		<Logger name="DataClayObjectLoader" level="off" />
 		<Logger name="DataClayObject" level="off" /> <!-- This is very verbose! -->
@@ -35,7 +35,7 @@
 		<Logger name="StorageLocation" level="off" />
 
 		<!-- Logic module -->
-		<Logger name="LogicModule" level="debug" />
+		<Logger name="LogicModule" level="off" />
 		<Logger name="LMDB" level="off" />
 		<Logger name="managers" level="off" />
 		<Logger name="MetaDataService.db" level="off" />
@@ -47,7 +47,7 @@
 		<Logger name="NettyClientHandler" level="off" />
 		<Logger name="grpc.client" level="off" />
 		<Logger name="grpc.client.logicmodule" level="off" />
-		<Logger name="communication.LogicModule.service" level="debug" />
+		<Logger name="communication.LogicModule.service" level="off" />
 		<!-- Databases -->
 		<Logger name="dataclay.dbhandler" level="off" />
 		<Logger name="dbhandler.PostgresConnection" level="off" />
@@ -57,12 +57,12 @@
 
 		<!-- Misc -->
 		<Logger name="util" level="off" />
-		<Logger name="exceptions" level="debug" />
-		<Logger name="Paraver" level="debug" />
+		<Logger name="exceptions" level="off" />
+		<Logger name="Paraver" level="off" />
 		<Logger name="DataClaySerializationLib" level="off" />
 		<Logger name="DataClayDeserializationLib" level="off" />
 		<!-- ROOT LOGGER -->
-		<Root level="debug">
+		<Root level="off">
 			<AppenderRef ref="ConsoleAppender" />
 		</Root>
 	</Loggers>

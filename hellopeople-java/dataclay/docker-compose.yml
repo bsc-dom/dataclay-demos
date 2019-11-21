@@ -2,7 +2,6 @@ version: '3.4'
 services:
   logicmodule:
     image: "bscdataclay/logicmodule:2.0"
-    command: --debug
     ports:
       - "11034:11034"
     environment:

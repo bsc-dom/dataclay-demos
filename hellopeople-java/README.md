@@ -121,3 +121,4 @@ Once the model is registered and we obtain the stubs, we have the following:
 
 If you have any questions, please feel free to ask to support-dataclay@bsc.es
 
+![dataClay logo](https://www.bsc.es/sites/default/files/public/styles/bscw2_-_simple_crop_style/public/bscw2/content/software-app/logo/logo_dataclay_web_bsc.jpg)

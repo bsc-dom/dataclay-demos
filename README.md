@@ -7,3 +7,5 @@ Remember that demos are intended to give a demonstration of typical dataClay app
 To read the usage manual, go to https://www.bsc.es/dataclay 
 
 Per each demo available you have a subfolder with its own structure and documentation.
+
+![dataClay logo](https://www.bsc.es/sites/default/files/public/styles/bscw2_-_simple_crop_style/public/bscw2/content/software-app/logo/logo_dataclay_web_bsc.jpg)

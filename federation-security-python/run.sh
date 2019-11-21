@@ -63,19 +63,19 @@ echo ""
 
 eval $(docker-machine env city)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/usr/src/dataclay/client/cfgfiles/:ro \
-		-v /home/docker/certs/:/usr/src/demo/app/certs/:ro \
-		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5 
+		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
+		-v /home/docker/certs/:/demo/certs/:ro \
+		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5
 
 eval $(docker-machine env car)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/usr/src/dataclay/client/cfgfiles/:ro \
-		-v /home/docker/certs/:/usr/src/demo/app/certs/:ro \
+		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
+		-v /home/docker/certs/:/demo/certs/:ro \
 		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5 
 
 printMsg "1" "City creates City object"
 eval $(docker-machine env city)
-docker run --network=dataclay_default dataclaydemo/city src/create_city.py 
+docker run --network=dataclay_default dataclaydemo/city src/create_city.py
 
 printMsg "2" "Car arrives to the city and federate events"
 eval $(docker-machine env car)

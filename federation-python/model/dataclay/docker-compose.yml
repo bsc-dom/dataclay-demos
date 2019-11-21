@@ -10,12 +10,12 @@ services:
       - DATACLAY_ADMIN_USER=admin
       - DATACLAY_ADMIN_PASSWORD=admin
     volumes:
-      - ./prop/global.properties:/usr/src/dataclay/javaclay/cfgfiles/global.properties:ro
-      - ./prop/log4j2.xml:/usr/src/dataclay/javaclay/log4j2.xml:ro
+      - ./prop/global.properties:/dataclay/cfgfiles/global.properties:ro
+      - ./prop/log4j2.xml:/dataclay/loggging/log4j2.xml:ro
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/usr/src/dataclay/javaclay/health_check.sh"]
+       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]
               
   dsjava:
     image: "bscdataclay/dsjava:2.0"
@@ -29,12 +29,12 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
     volumes:
-      - ./prop/global.properties:/usr/src/dataclay/javaclay/cfgfiles/global.properties:ro
-      - ./prop/log4j2.xml:/usr/src/dataclay/javaclay/log4j2.xml:ro
+      - ./prop/global.properties:/dataclay/cfgfiles/global.properties:ro
+      - ./prop/log4j2.xml:/dataclay/logging/log4j2.xml:ro
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/usr/src/dataclay/javaclay/health_check.sh"]
+       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]
        
   dspython:
     image: "bscdataclay/dspython:2.0"
@@ -47,8 +47,8 @@ services:
       - LOGICMODULE_HOST=logicmodule
       - DEBUG=True
     volumes:
-      - ./prop/global.properties:/usr/src/dataclay/pyclay/cfgfiles/global.properties:ro
+      - ./prop/global.properties:/dataclay/cfgfiles/global.properties:ro
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/usr/src/dataclay/pyclay/health_check.sh"]
+       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]

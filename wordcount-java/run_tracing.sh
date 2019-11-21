@@ -31,16 +31,16 @@ printMsg "Running demo"
 mkdir -p trace
 # Generate
 docker run --network=dataclay_default \
-	-v `pwd`/app/text:/usr/src/demo/app/text:ro \
-    bscdataclay/wordcount-java-demo -Dexec.mainClass="TextCollectionGen" words /usr/src/demo/app/text
+	-v `pwd`/app/text:/demo/text:ro \
+    bscdataclay/wordcount-java-demo -Dexec.mainClass="TextCollectionGen" words /demo/text
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
 
 # Word count
 # Modify session configuration to add flag Tracing=True and mount trace volume to collect traces once done
-docker run --network=dataclay_default \
-	-e DATACLAYSESSIONCONFIG=/usr/src/demo/app/cfgfiles/session.extrae.properties \
-	-v `pwd`/app/text:/usr/src/demo/app/text:ro \
-    -v `pwd`/trace:/usr/src/demo/app/trace:rw \
+docker run --rm --network=dataclay_default \
+	-e DATACLAYSESSIONCONFIG=/demo/cfgfiles/session.extrae.properties \
+	-v `pwd`/app/text:/demo/text:ro \
+    -v `pwd`/trace:/demo/trace:rw \
     bscdataclay/wordcount-java-demo --tracing -Dexec.mainClass="Wordcount" words
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
 

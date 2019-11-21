@@ -25,7 +25,7 @@ docker build --network=dataclay_default \
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
 
 printMsg "Running demo"
-docker run --network=dataclay_default \
+docker run --rm --network=dataclay_default \
     bscdataclay/wordcount-python-demo src/wordcount.py
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
     

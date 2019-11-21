@@ -2,34 +2,37 @@ FROM bscdataclay/client:2.0
 LABEL maintainer dataClay team <support-dataclay@bsc.es>
 
 # Prepare environment
-ENV DATACLAYCLIENTCONFIG=/usr/src/demo/model/cfgfiles/client.properties
-ENV DATACLAYGLOBALCONFIG=/usr/src/demo/model/cfgfiles/global.properties
-ENV DATACLAYSESSIONCONFIG=/usr/src/demo/model/cfgfiles/session.properties
+ENV DEMO_HOME=/demo
+WORKDIR ${DEMO_HOME} 
+
+ENV DATACLAYCLIENTCONFIG=${DEMO_HOME}/model/cfgfiles/client.properties
+ENV DATACLAYGLOBALCONFIG=${DEMO_HOME}/model/cfgfiles/global.properties
+ENV DATACLAYSESSIONCONFIG=${DEMO_HOME}/model/cfgfiles/session.properties
 ENV NAMESPACE=DemoNS
 ENV USER=DemoUser
 ENV PASS=DemoPass
 ENV DATASET=DemoDS
-ENV MODELBINPATH=/usr/src/demo/model/src
+ENV MODELBINPATH=${DEMO_HOME}/model/src
 
 # If we want to run demo again, argument must be modified 
 ARG CACHEBUST=1 
 
 # Copy files 
-COPY ./src /usr/src/demo/model/src
-COPY ./cfgfiles /usr/src/demo/model/cfgfiles
-RUN cp /usr/src/demo/model/cfgfiles/log4j2.xml ${LOG4J_CLASSPATH}
+COPY ./src ${DEMO_HOME}/model/src
+COPY ./cfgfiles ${DEMO_HOME}/model/cfgfiles
+RUN cp ${DEMO_HOME}/model/cfgfiles/log4j2.xml ${DATACLAY_LOG_CONFIG}
 
 # Wait for dataclay to be alive (max retries 10 and 5 seconds per retry)
-RUN ${DATACLAYCMD} WaitForDataClayToBeAlive 10 5
+RUN dataclaycmd WaitForDataClayToBeAlive 10 5
 
 # Register account
-RUN ${DATACLAYCMD} NewAccount ${USER} ${PASS}
+RUN dataclaycmd NewAccount ${USER} ${PASS}
 
 # Register datacontract
-RUN ${DATACLAYCMD} NewDataContract ${USER} ${PASS} ${DATASET} ${USER}
+RUN dataclaycmd NewDataContract ${USER} ${PASS} ${DATASET} ${USER}
 
 # Register model
-RUN ${DATACLAYCMD} NewModel ${USER} ${PASS} ${NAMESPACE} ${MODELBINPATH} python
+RUN dataclaycmd NewModel ${USER} ${PASS} ${NAMESPACE} ${MODELBINPATH} python
 
 # Run 
 ENTRYPOINT ["Nothing to do here"] 

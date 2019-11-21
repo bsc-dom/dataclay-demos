@@ -7,6 +7,7 @@
   </Appenders>
 
  <Loggers>
+ 		<Logger name="DataClay.api" level="off" />
         <!--  Runtime -->
         <Logger name="ClientRuntime" level="off" />
         <Logger name="ClientManagementLib" level="off"/>
@@ -17,7 +18,7 @@
         <Logger name="DataClayObject" level="off" /> <!--  This is very verbose! -->
         
         <!--  Data service -->
-        <Logger name="DataService" level="info"/>
+        <Logger name="DataService" level="off"/>
         <Logger name="ExecutionEnvironmentSrv" level="off"/>
         
         <!--  Lockers -->
@@ -33,7 +34,7 @@
         <Logger name="StorageLocation" level="off"/>
         
         <!--  Logic module -->
-        <Logger name="LogicModule" level="info"/>
+        <Logger name="LogicModule" level="off"/>
         <Logger name="LMDB" level="off"/>
         <Logger name="managers" level="off" />
         <Logger name="MetaDataService.db" level="off" />
@@ -58,7 +59,7 @@
         <!--  Misc -->
         <Logger name="util" level="off" />
         <Logger name="exceptions" level="off"/>
-        <Logger name="Paraver" level="info"/>        
+        <Logger name="Paraver" level="off"/>        
 	<Logger name="DataClaySerializationLib" level="off"/>
 	<Logger name="DataClayDeserializationLib" level="off"/>	
         <!--  ROOT LOGGER -->

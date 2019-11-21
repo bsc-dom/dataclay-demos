@@ -1,7 +1,7 @@
 FROM bscdataclay/dspython:2.0
 
-COPY ./deploy /usr/src/dataclay/pyclay/deploy
+COPY ./deploy ${DATACLAY_HOME}/deploy
 
 # Execute
 # Don't use CMD in order to keep compatibility with singularity container's generator
-ENTRYPOINT ["python", "-m", "dataclay.executionenv.server"]
+ENTRYPOINT ["dataclay-python-entry-point", "-m", "dataclay.executionenv.server"]

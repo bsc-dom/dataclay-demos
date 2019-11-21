@@ -41,8 +41,8 @@ printMsg "... consumer image built successfully"
 # Generate
 printMsg "Running Demo --producer stage"
 docker run --rm --network=dataclay_default \
-	-v `pwd`/app/text:/usr/src/demo/app/text:ro \
-    bscdataclay/wordcount-java-demo -Dexec.mainClass="TextCollectionGen" words /usr/src/demo/app/text
+	-v `pwd`/app/text:/demo/text:ro \
+    bscdataclay/wordcount-java-demo -Dexec.mainClass="TextCollectionGen" words /demo/text
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
 
 # Word count
@@ -53,8 +53,8 @@ docker run -d --rm --name wordcount-compss --network=dataclay_default bscdatacla
 
 printMsg " - Running the application onto COMPSs container"
 docker exec wordcount-compss /opt/COMPSs/Runtime/scripts/user/runcompss \
-	--storage_conf=/usr/src/demo/app/cfgfiles/session.properties \
-  --classpath=/root/.m2/repository/es/bsc/dataclay/dataclay/2.0/dataclay-2.0.jar:/usr/src/demo/app/target/dependency/*:/usr/src/demo/app/target/wordcount-demo-2.0.jar \
+	--storage_conf=/demo/cfgfiles/session.properties \
+  --classpath=/root/.m2/repository/es/bsc/dataclay/dataclay/2.0/dataclay-2.0.jar:/demo/target/dependency/*:/demo/target/wordcount-demo-2.0.jar \
   --debug Wordcount words
 
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi

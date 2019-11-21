@@ -29,13 +29,13 @@ if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
 printMsg "Running demo"
 # Generate
 docker run --network=dataclay_default \
-	-v `pwd`/app/text:/usr/src/demo/app/text:ro \
-    bscdataclay/wordcount-java-demo -Dexec.mainClass="TextCollectionGen" words /usr/src/demo/app/text
+	-v `pwd`/app/text:/demo/text:ro \
+    bscdataclay/wordcount-java-demo -Dexec.mainClass="TextCollectionGen" words /demo/text
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
 
 # Word count
-docker run --network=dataclay_default \
-	-v `pwd`/app/text:/usr/src/demo/app/text:ro \
+docker run --rm --network=dataclay_default \
+	-v `pwd`/app/text:/demo/text:ro \
     bscdataclay/wordcount-java-demo -Dexec.mainClass="Wordcount" words
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
 

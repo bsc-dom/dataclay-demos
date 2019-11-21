@@ -68,27 +68,27 @@ echo ""
 
 eval $(docker-machine env citta)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/usr/src/dataclay/client/cfgfiles/:ro \
+		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
 		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5 
 
 eval $(docker-machine env camera)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/usr/src/dataclay/client/cfgfiles/:ro \
+		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
 		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5 
 		
 eval $(docker-machine env fermata)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/usr/src/dataclay/client/cfgfiles/:ro \
+		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
 		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5 
 
 eval $(docker-machine env semaforo)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/usr/src/dataclay/client/cfgfiles/:ro \
+		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
 		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5 
 		
 eval $(docker-machine env tram)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/usr/src/dataclay/client/cfgfiles/:ro \
+		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
 		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5 
 
 	

@@ -1,6 +1,6 @@
 FROM bscdataclay/wordcount-java-demo
 
-FROM compss/compss:2.5
+FROM compss/compss:2.6
 # Prepare environment
 ENV DEMO_HOME=/demo
 WORKDIR ${DEMO_HOME} 

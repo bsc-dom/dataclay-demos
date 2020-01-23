@@ -1,9 +1,13 @@
-FROM bscdataclay/client:2.0
+FROM bscdataclay/client:2.1
 LABEL maintainer dataClay team <support-dataclay@bsc.es>
 
 # Prepare environment
 ENV DEMO_HOME=/demo
 WORKDIR ${DEMO_HOME} 
+
+# Install dataclay jar in local repository	
+RUN mvn install:install-file -Dfile=${DATACLAY_JAR} -DgroupId=es.bsc.dataclay \
+	-DartifactId=dataclay -Dversion=2.1 -Dpackaging=jar -DcreateChecksum=true
 
 ENV DATACLAYCLIENTCONFIG=${DEMO_HOME}/cfgfiles/client.properties
 ENV DATACLAYGLOBALCONFIG=${DEMO_HOME}/cfgfiles/global.properties
@@ -46,7 +50,7 @@ RUN jar cvf ${STUBS_JAR} -C ${STUBSPATH} .
 
 # Install stubs in local repository to use it as a pom dependency
 RUN mvn install:install-file -Dfile=${STUBS_JAR} -DgroupId=es.bsc.dataclay \
-	-DartifactId=wordcount-demo-stubs -Dversion=2.0 -Dpackaging=jar -DcreateChecksum=true
+	-DartifactId=wordcount-demo-stubs -Dversion=2.1 -Dpackaging=jar -DcreateChecksum=true
 
 # Compile app
 RUN mvn compile

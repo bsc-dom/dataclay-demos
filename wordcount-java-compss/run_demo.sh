@@ -54,7 +54,7 @@ docker run -d --rm --name wordcount-compss --network=dataclay_default bscdatacla
 printMsg " - Running the application onto COMPSs container"
 docker exec wordcount-compss /opt/COMPSs/Runtime/scripts/user/runcompss \
 	--storage_conf=/demo/cfgfiles/session.properties \
-  --classpath=/root/.m2/repository/es/bsc/dataclay/dataclay/2.0/dataclay-2.0.jar:/demo/target/dependency/*:/demo/target/wordcount-demo-2.0.jar \
+  --classpath=/demo/dataclay.jar:/demo/target/dependency/*:/demo/target/wordcount-demo-2.1.jar \
   Wordcount words
 
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi

@@ -31,14 +31,17 @@ if __name__ == "__main__":
     attributes = Attributes()
     init_attributes(attributes)
 
-    # Create people object
-    print("[LOG] Creating people's object with alias %s" \
+    # Create people object if it does not exist
+    try:
+        # Trying to retrieve it using alias
+        people = People.get_by_alias(attributes.collection)
+    except Exception:
+        print("[LOG] Creating people's object with alias %s" \
             % attributes.collection)
-    people = People()
-    people.make_persistent(alias=attributes.collection)
+        people = People()
+        people.make_persistent(alias=attributes.collection)
 
     # Add new person to people
-    print("[LOG] Creating new person")
     person = Person(attributes.p_name, attributes.p_age)
     person.make_persistent()
     people.add(person)

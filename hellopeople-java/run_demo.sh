@@ -34,7 +34,8 @@ popd
 
 printMsg "Stopping dataClay"
 pushd $SCRIPTDIR/dataclay
-docker-compose down -v
+docker-compose stop -t 60 dsjava
+docker-compose stop -t 60 logicmodule
 popd
 
 echo ""

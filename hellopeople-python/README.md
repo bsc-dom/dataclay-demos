@@ -1,6 +1,6 @@
-# Hello People demo in Java
+# Hello People demo in Python
 
-This demo attempts to show a simple application done in Java that uses dataClay.
+This demo attempts to show a simple application done in Python that uses dataClay.
 The HelloPeople is a simple application that is used for demonstration of dataClay objects.
 
 Remember that demos are intended to give a demonstration of typical dataClay applications and architectures: to show how dataClay works, is prepared, or is done while examples are used to learn how to use dataClay, to make something similar to the demos and match your requirements. You can find dataClay examples at https://github.com/bsc-dom/dataclay-examples
@@ -42,8 +42,6 @@ Next step is to build our containerized demo:
    4. Create a data contract using dataClay command `NewDataContract`
    5. Register model using dataClay command `NewModel`
    6. Get stubs generated using dataClay command `GetStubs`
-   7. Package them and install in local maven repository 
-   8. Compile client application 
 3. Stop dataClay (check `stop.sh`)
 
 Once the demo docker is build, we have a docker image with proper dataClay stubs.
@@ -74,8 +72,8 @@ Registered model has the following representation:
 |                 |           +----------------+
 +-----------------+
 |                 |
-| getName()       |
-| getAge()        |
+| get_name()      |
+| get_age()       |
 |                 |
 +-----------------+
 ```
@@ -90,15 +88,15 @@ Once the model is registered and we obtain the stubs, we have the following:
 +--------------------------+   +----------------------------+
 |                          |   |                            |
 |  name: string            +---+  add(Person)               |
-|  age: int                |   |  makePersistent()          |
-|                          |   |  makePersistent(alias)     |
-+--------------------------+   |  getByAlias(alias)         |
+|  age: int                |   |  make_persistent()         |
+|                          |   |  make_persistent(alias)    |
++--------------------------+   |  get_by_alias(alias)       |
 |                          |   |                            |
-|  getAge()                |   |                            |
-|  getName()               |   |                            |
-|  makePersistent()        |   +----------------------------+
-|  makePersistent(alias)   |
-|  getByAlias(alias)       |
+|  get_age()               |   |                            |
+|  get_name()              |   |                            |
+|  make_persistent()       |   +----------------------------+
+|  make_persistent(alias)  |
+|  get_by_alias(alias)     |
 |                          |
 |                          |
 +--------------------------+
@@ -116,11 +114,8 @@ Once the model is registered and we obtain the stubs, we have the following:
 │   │   ├── log4j2.xml: dataClay logging configuration for Apache Logger 2. 
 │   │   └── session.properties: Sess
 │   ├── pom.xml: Application pom.xml
-│   └── src: Application source in Maven structure. 
-│       └── main
-│           └── java
-│               └── app
-│                   └── HelloPeople.java: Application code using dataClay stubs. 
+│   └── src: Application source
+│       └── hellopeople.py
 │   
 ├── dataclay: here you will find everything needed to bootstrap and configure dataClay 
 │   ├── docker-compose.yml: docker-compose with all dataClay services
@@ -129,13 +124,9 @@ Once the model is registered and we obtain the stubs, we have the following:
 │       └── log4j2.xml: dataClay logging configuration for Apache Logger 2. 
 ├── Dockerfile: Dockerized demo with all steps done by the demo
 ├── model: Model to be registered in dataClay
-│   ├── pom.xml: Model pom.xml 
-│   └── src: Model source in Maven structure. 
-│       └── main
-│           └── java
-│               └── model
-│                   ├── People.java
-│                   └── Person.java
+│   └── src: Model source
+│       └── classes.py
+│       └── __init__.py
 ├── README.md
 ├── build.sh: Script to build demo docker image
 ├── clean.sh: Script to clean dataClay dockers

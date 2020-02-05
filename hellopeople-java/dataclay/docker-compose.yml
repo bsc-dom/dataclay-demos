@@ -2,6 +2,7 @@ version: '3.4'
 services:
   logicmodule:
     image: "bscdataclay/logicmodule:2.1"
+    command: "${COMMAND_OPTS}"
     ports:
       - "11034:11034"
     environment:
@@ -19,6 +20,7 @@ services:
        
   dsjava:
     image: "bscdataclay/dsjava:2.1"
+    command: "${COMMAND_OPTS}"
     ports:
       - "2127:2127"
     depends_on:

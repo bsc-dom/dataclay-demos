@@ -24,9 +24,8 @@ if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
 printMsg "Running wordcount in $DEMO_IMG_NAME"
 docker run --network=dataclay_default \
 	-v `pwd`/app/text:/demo/text:ro \
-	-v `pwd`/app/cfgfiles/session.extrae.properties:/demo/cfgfiles/session.properties \
-    -v `pwd`/trace:/demo/trace:rw \
-    $DEMO_IMG_NAME --debug --tracing -Dexec.mainClass="Wordcount" words
+    $DEMO_IMG_NAME -Dexec.mainClass="Wordcount" words
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
+    
 popd 
     

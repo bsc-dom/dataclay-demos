@@ -1,7 +1,6 @@
-# Hello People demo in Java
+# WordCount demo in Python
 
-This demo attempts to show a simple application done in Java that uses dataClay.
-The HelloPeople is a simple application that is used for demonstration of dataClay objects.
+This demo attempts to show a WordCount application done in Python that uses dataClay.
 
 Remember that demos are intended to give a demonstration of typical dataClay applications and architectures: to show how dataClay works, is prepared, or is done while examples are used to learn how to use dataClay, to make something similar to the demos and match your requirements. You can find dataClay examples at https://github.com/bsc-dom/dataclay-examples
 
@@ -42,8 +41,6 @@ Next step is to build our containerized demo:
    4. Create a data contract using dataClay command `NewDataContract`
    5. Register model using dataClay command `NewModel`
    6. Get stubs generated using dataClay command `GetStubs`
-   7. Package them and install in local maven repository 
-   8. Compile client application 
 3. Stop dataClay (check `stop.sh`)
 
 Once the demo docker is build, we have a docker image with proper dataClay stubs.
@@ -60,52 +57,6 @@ Execute our application with dataClay using `docker run`.
 
 Do a graceful stop of dataClay. 
 
-## Model
-
-Registered model has the following representation:
-
-```
-+-----------------+           +----------------+
-| Person          |           | People         |
-+-----------------+           +----------------+
-|                 | *       * |                |
-| name: string    +<----------+ add(Person)    |
-| age: int        |           |                |
-|                 |           +----------------+
-+-----------------+
-|                 |
-| getName()       |
-| getAge()        |
-|                 |
-+-----------------+
-```
-
-## Stubs 
-
-Once the model is registered and we obtain the stubs, we have the following: 
-
-```
-+--------------------------+   +----------------------------+
-|  Person                  |   | People                     |
-+--------------------------+   +----------------------------+
-|                          |   |                            |
-|  name: string            +---+  add(Person)               |
-|  age: int                |   |  makePersistent()          |
-|                          |   |  makePersistent(alias)     |
-+--------------------------+   |  getByAlias(alias)         |
-|                          |   |                            |
-|  getAge()                |   |                            |
-|  getName()               |   |                            |
-|  makePersistent()        |   +----------------------------+
-|  makePersistent(alias)   |
-|  getByAlias(alias)       |
-|                          |
-|                          |
-+--------------------------+
-
-```
-
-
 ## Folder tree 
 ```
 .
@@ -115,12 +66,9 @@ Once the model is registered and we obtain the stubs, we have the following:
 │   │   ├── global.properties: Extra configurations for the dataClay client application
 │   │   ├── log4j2.xml: dataClay logging configuration for Apache Logger 2. 
 │   │   └── session.properties: Sess
-│   ├── pom.xml: Application pom.xml
-│   └── src: Application source in Maven structure. 
-│       └── main
-│           └── java
-│               └── app
-│                   └── HelloPeople.java: Application code using dataClay stubs. 
+│   └── src: Application source
+│       ├── wordcount.py: wordcount app
+│       └── textcollectiongen.py: generator of words
 │   
 ├── dataclay: here you will find everything needed to bootstrap and configure dataClay 
 │   ├── docker-compose.yml: docker-compose with all dataClay services
@@ -129,20 +77,18 @@ Once the model is registered and we obtain the stubs, we have the following:
 │       └── log4j2.xml: dataClay logging configuration for Apache Logger 2. 
 ├── Dockerfile: Dockerized demo with all steps done by the demo
 ├── model: Model to be registered in dataClay
-│   ├── pom.xml: Model pom.xml 
-│   └── src: Model source in Maven structure. 
-│       └── main
-│           └── java
-│               └── model
-│                   ├── People.java
-│                   └── Person.java
+│   └── src: Model source
+│       └── classes.py
+│       └── __init__.py
 ├── README.md
 ├── build.sh: Script to build demo docker image
 ├── clean.sh: Script to clean dataClay dockers
 ├── run.sh: Script to run demo
 ├── start.sh: Script to start dataClay
 ├── stop.sh: Script to stop dataClay
-└── full_demo.sh: Script to execute the whole demo
+├── full_demo.sh: Script to execute the whole demo
+└── full_demo_tracing.sh: Script to execute the whole demo with tracing option enabled
+
 ```
 
 ## Questions? 

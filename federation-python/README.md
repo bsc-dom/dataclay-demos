@@ -17,14 +17,13 @@ You need:
   - **docker-compose** Quickest way to get the latest release https://github.com/docker/compose/releases
   - **docker-machine** Check https://docs.docker.com/machine/install-machine/#install-machine-directly
   - **virtualbox** Driver to simulate hosts `sudo apt install virtualbox`
-  - **java 8+**
   
 ## Running the whole demo
 
 Execute the following to fully run the demo (it may take a while the first time) 
 
 ``` 
-$> ./run_demo.sh
+$> ./full_demo.sh
 ```
 
 ## Deployment

@@ -10,16 +10,14 @@ function printError {
 function printMsg { 
   echo "${grn}======== $1 ========${end}"
 }
+
 pushd $SCRIPTDIR
 DEMO_IMG_NAME=bscdataclay/${PWD##*/}-demo
 
-printMsg "Running demo"
-# Word count
-# Modify session configuration to add flag Tracing=True and mount trace volume to collect traces once done
+printMsg "Running demo $DEMO_IMG_NAME"
 docker run --network=dataclay_default \
-	-v `pwd`/app/cfgfiles/session.extrae.properties:/demo/cfgfiles/session.properties \
-    -v `pwd`/trace:/demo/trace:rw \
-    $DEMO_IMG_NAME src/wordcount.py --tracing
+    $DEMO_IMG_NAME -Dexec.mainClass="app.HelloPeople" forthepeople martin 33
 if [ $? -ne 0 ]; then printError "DEMO FAILED"; exit 1; fi
-popd
-
+    
+popd 
+    

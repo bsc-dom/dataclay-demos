@@ -23,14 +23,9 @@ $> ./full_demo.sh
 
 Each step of the demo has been defined in a script for better understanding and usage.
 
+##### 1 - BUILD DEMO (`build.sh`)
 
-##### 1 - SANITY CHECK (`clean.sh`)
-
-First, make sure no dataClay docker services are running and clean volumes and everything that can affect the execution.
-
-##### 2 - BUILD DEMO (`build.sh`)
-
-Next step is to build our containerized demo:
+First step is to build our containerized demo:
 
 0. Clean previous dataClay services (sanity check) (check `clean.sh`)
 1. Start dataClay using docker-compose (check `start.sh`)
@@ -47,17 +42,21 @@ Next step is to build our containerized demo:
 
 Once the demo docker is build, we have a docker image with proper dataClay stubs.
    
-##### 3 - START DATACLAY (`start.sh`)
+##### 2 - START DATACLAY (`start.sh`)
 
 Start dataClay before running our demo docker application. 
 
-##### 4 - RUN DEMO (`run.sh`)
+##### 3 - RUN DEMO (`run.sh`)
 
 Execute our application with dataClay using `docker run`. 
 
-##### 5 - STOP DATACLAY (`stop.sh`)
+##### 4 - STOP DATACLAY (`stop.sh`)
 
 Do a graceful stop of dataClay. 
+
+##### 5 - OPTIONAL: CLEAN UP (`clean.sh`)
+
+Make sure no dataClay docker services are running and clean volumes.
 
 ## Model
 

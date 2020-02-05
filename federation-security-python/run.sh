@@ -42,6 +42,7 @@ for MACHINE in ${MACHINES[@]}; do
 	MACHINE_IP=${MACHINES_IPS[$MACHINE]}
 	export LOGICMODULE_HOST=$MACHINE_IP
 	export EXPOSED_IP_FOR_CLIENT=$MACHINE_IP
+	docker-machine scp -r $SCRIPTDIR/hosts/common $MACHINE:~/
 	eval $(docker-machine env $MACHINE)	
 	docker-compose down
 	docker-compose up -d
@@ -63,15 +64,15 @@ echo ""
 
 eval $(docker-machine env city)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
+		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles//:ro \
 		-v /home/docker/certs/:/demo/certs/:ro \
-		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5
+		bscdataclay/client:2.1 WaitForDataClayToBeAlive 10 5
 
 eval $(docker-machine env car)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
+		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
 		-v /home/docker/certs/:/demo/certs/:ro \
-		bscdataclay/client:2.0 WaitForDataClayToBeAlive 10 5 
+		bscdataclay/client:2.1 WaitForDataClayToBeAlive 10 5 
 
 printMsg "1" "City creates City object"
 eval $(docker-machine env city)
@@ -101,6 +102,6 @@ for MACHINE in ${MACHINES[@]}; do
 	export LOGICMODULE_HOST=$MACHINE_IP
 	export EXPOSED_IP_FOR_CLIENT=$MACHINE_IP
 	eval $(docker-machine env $MACHINE)
-	docker-compose down
+	#docker-compose down
 	popd
 done 

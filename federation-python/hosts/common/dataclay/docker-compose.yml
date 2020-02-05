@@ -15,12 +15,13 @@ services:
       - LOGICMODULE_HOST=${LOGICMODULE_HOST}
       - EXPOSED_IP_FOR_CLIENT=${EXPOSED_IP_FOR_CLIENT}
     volumes:
-      - /home/docker/common/dataclay/prop/global.properties:/dataclay/cfgfiles/global.properties:ro
-      - /home/docker/common/dataclay/prop/log4j2.xml:/dataclay/logging/log4j2.xml:ro
+      - /home/docker/common/dataclay/prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - /home/docker/common/dataclay/prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   ####################################
   #  JAVA DATA SERVICES              #
@@ -37,12 +38,13 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
     volumes:
-      - /home/docker/common/dataclay/prop/global.properties:/dataclay/cfgfiles/global.properties:ro
-      - /home/docker/common/dataclay/prop/log4j2.xml:/dataclay/logging/log4j2.xml:ro
+      - /home/docker/common/dataclay/prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - /home/docker/common/dataclay/prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   ####################################
   #  PYTHON DATA SERVICES            #
@@ -60,8 +62,9 @@ services:
       - LOGICMODULE_HOST=logicmodule
       - DEBUG=true
     volumes:
-      - /home/docker/common/dataclay/prop/global.properties:/dataclay/cfgfiles/global.properties:ro
+      - /home/docker/common/dataclay/prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]

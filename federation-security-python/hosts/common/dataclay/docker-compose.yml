@@ -16,6 +16,7 @@ services:
            
   logicmodule:
     image: "dataclaydemo/dataclay-logicmodule"
+    command: "--debug"
     depends_on:
       - proxy
     environment:
@@ -24,8 +25,8 @@ services:
       - DATACLAY_ADMIN_USER=admin
       - DATACLAY_ADMIN_PASSWORD=admin
     volumes:
-      - /home/docker/common/dataclay/prop/global.secure.properties:/dataclay/cfgfiles/global.properties:ro
-      - /home/docker/common/dataclay/prop/log4j2.xml:/dataclay/logging/log4j2.xml:ro
+      - /home/docker/common/dataclay/prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - /home/docker/common/dataclay/prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
       - /home/docker/certs:/ssl/:ro
     labels:
       - "traefik.enable=true"
@@ -33,13 +34,15 @@ services:
       - "traefik.frontend.rule=Headers: service-alias,logicmodule"
       - "traefik.port=11034"
       - "traefik.protocol=h2c"
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
            
   dsjava:
     image: "dataclaydemo/dataclay-dsjava"
+    command: "--debug"
     depends_on:
       - logicmodule
       - proxy
@@ -49,15 +52,17 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
     volumes:
-      - /home/docker/common/dataclay/prop/global.properties:/dataclay/cfgfiles/global.properties:ro
-      - /home/docker/common/dataclay/prop/log4j2.xml:/dataclay/logging/log4j2.xml:ro
+      - /home/docker/common/dataclay/prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - /home/docker/common/dataclay/prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   dspython:
     image: "dataclaydemo/dataclay-dspython"
+    command: "--debug"
     depends_on:
       - logicmodule
       - dsjava
@@ -65,10 +70,13 @@ services:
       - DATASERVICE_NAME=DS1
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
+      - DEBUG=True
     volumes:
-      - /home/docker/common/dataclay/prop/global.properties:/dataclay/cfgfiles/global.properties:ro
+      - /home/docker/common/dataclay/prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - /home/docker/common/dataclay/prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
            

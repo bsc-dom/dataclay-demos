@@ -20,7 +20,7 @@ echo " ===== Retrieving execution classes into $MODELDIR/deploy  ====="
 # Copy execClasses from dsjava docker
 rm -rf $MODELDIR/deploy
 mkdir -p $MODELDIR/deploy
-docker cp dataclay_dspython_1:/dataclay/deploy/ $MODELDIR
+docker cp dataclay_dspython_1:/home/dataclayusr/dataclay/deploy/ $MODELDIR
 
 echo " ===== Retrieving SQLITE LM into $MODELDIR/LM.sqlite  ====="
 rm -f $MODELDIR/LM.sqlite

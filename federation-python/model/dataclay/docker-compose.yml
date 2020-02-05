@@ -12,6 +12,7 @@ services:
     volumes:
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
       - ./prop/log4j2.xml:/home/dataclayusr/dataclay/loggging/log4j2.xml:ro
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10
@@ -31,6 +32,7 @@ services:
     volumes:
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
       - ./prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10
@@ -48,6 +50,7 @@ services:
       - DEBUG=True
     volumes:
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10

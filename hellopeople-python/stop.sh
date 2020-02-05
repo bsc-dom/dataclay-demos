@@ -17,7 +17,7 @@ export COMMAND_OPTS=$COMMAND_OPTS
 pushd $SCRIPTDIR/dataclay
 # first stop all dataclay services that are not logicmodule
 
-# IMPORTANT: docker-compose stop will send a SIGTERM to ask dataClay to gracefully stop first, and then wait 2 minutes to 
+# IMPORTANT: docker-compose stop will send a SIGTERM to ask dataClay to gracefully stop first, and then wait 5 minutes to 
 # send a SIGKILL to kill dataClay. It is very importat to do a graceful stop of dataClay to make sure that all 
 # objects created are flushed!!! 
 
@@ -25,7 +25,7 @@ pushd $SCRIPTDIR/dataclay
 for SERVICE in $(docker-compose ps --all --services | grep python)
 do
 	STARTTIME=$(date +%s)
-	docker-compose stop -t 120 $SERVICE
+	docker-compose stop $SERVICE
 	ENDTIME=$(date +%s)
 	echo "$SERVICE stopped in $(($ENDTIME - $STARTTIME)) seconds"
 done
@@ -33,14 +33,14 @@ done
 for SERVICE in $(docker-compose ps --all --services | grep java)
 do
 	STARTTIME=$(date +%s)
-	docker-compose stop -t 120 $SERVICE
+	docker-compose stop $SERVICE
 	ENDTIME=$(date +%s)
 	echo "$SERVICE stopped in $(($ENDTIME - $STARTTIME)) seconds"
 done
 
 # IMPORTANT: finally Logic module
 STARTTIME=$(date +%s)
-docker-compose stop -t 120 logicmodule
+docker-compose stop logicmodule
 ENDTIME=$(date +%s)
 echo "logicmodule stopped in $(($ENDTIME - $STARTTIME)) seconds"
 popd

@@ -11,5 +11,5 @@ COPY --from=0 /dataclay/storage/LM /dataclay/storage/LM
 
 # The command can contain additional options for the Java Virtual Machine and
 # must contain a class to be executed.
-ENTRYPOINT ["dataclay-mvn-entry-point", "-Dexec.mainClass=es.bsc.dataclay.logic.server.LogicModuleSrv"] 
+ENTRYPOINT ["dataclay-java-entry-point", "es.bsc.dataclay.logic.server.LogicModuleSrv"] 
 # Don't use CMD in order to keep compatibility with singularity container's generator

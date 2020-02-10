@@ -6,10 +6,10 @@ COPY ./LM.sqlite /tmp/dataclay/dump.sql
 RUN mkdir -p "/dataclay/storage"
 RUN sqlite3 "/dataclay/storage/LM" ".read /tmp/dataclay/dump.sql"
 
-FROM bscdataclay/logicmodule:2.0
+FROM bscdataclay/logicmodule:2.1
 COPY --from=0 /dataclay/storage/LM /dataclay/storage/LM
 
 # The command can contain additional options for the Java Virtual Machine and
 # must contain a class to be executed.
-ENTRYPOINT ["dataclay-mvn-entry-point", "-Dexec.mainClass=es.bsc.dataclay.logic.server.LogicModuleSrv"] 
+ENTRYPOINT ["dataclay-java-entry-point", "es.bsc.dataclay.logic.server.LogicModuleSrv"] 
 # Don't use CMD in order to keep compatibility with singularity container's generator

@@ -18,15 +18,21 @@ You need:
 Execute the following to fully run the demo (it may take a while the first time) 
 
 ``` 
-$> ./run_demo.sh
+$> ./full_demo.sh
 ```
+
 
 ## Demo workflow
 
-The workflow of the demo is the following:
+Each step of the demo has been defined in a script for better understanding and usage.
 
-1. Start dataClay using docker-compose (check `run_demo.sh`) 
-2. Build the dataClay application using docker build (check `run_demo.sh`). Dockerfile extends dataClay client tool which contains all necessary dependencies to use dataClay (alternatively you can check dataclay examples repository to see how to do it without extending the docker). Notice that the docker is build in the same docker network than the one used to bootstrap dataClay. Build steps are the following (check `Dockerfile` for more detailed calls) 
+##### 1 - BUILD DEMO (`build.sh`)
+
+First step is to build our containerized demo:
+
+0. Clean previous dataClay services (sanity check) (check `clean.sh`)
+1. Start dataClay using docker-compose (check `start.sh`)
+2. Build the dataClay demo image using docker build. Dockerfile extends dataClay client tool which contains all necessary dependencies to use dataClay (alternatively you can check dataclay examples repository to see how to do it without extending the docker). Notice that the docker is build in the same docker network than the one used to bootstrap dataClay. Build steps are the following (check `Dockerfile` for more detailed calls):
    1. Define necessary environment variables 
    2. Wait for dataClay to be alive using dataClay command `WaitForDataClayToBeAlive`
    3. Create a new account using dataClay command `NewAccount`
@@ -34,11 +40,30 @@ The workflow of the demo is the following:
    5. Register model using dataClay command `NewModel`
    6. Get stubs generated using dataClay command `GetStubs`
    7. Package them and install in local maven repository 
-   8. Compile client application
+   8. Compile client application 
 3. Build the COMPSs ready container --which is used in the consumer stage of the application. This container is a multi-stage Dockerfile (see `compss.Dockerfile`) which copies certain structures from the previous built docker image and adds the additional COMPSs files: `pom.xml` (added COMPSs dependency) and `WordcountItf.java` (COMPSs annotations).
-4. Run the producer stage of the Wordcount through the `bscdataclay/wordcount-java-demo` image.
-5. Prepare the COMPSs framework through the `bscdataclay/wordcount-java-compss-demo` image.
-6. Execute the `runcompss` into the COMPSs container. This runs the consumer stage of the Wordcount application.
+4. Stop dataClay (check `stop.sh`)
+
+Once the demo docker is build, we have a docker image with proper dataClay stubs.
+   
+##### 2 - START DATACLAY (`start.sh`)
+
+Start dataClay before running our demo docker application. 
+
+##### 3 - RUN DEMO (`run.sh`)
+
+Run demo steps:
+1. Run the producer stage of the Wordcount through the `bscdataclay/wordcount-java-demo` image.
+2. Prepare the COMPSs framework through the `bscdataclay/wordcount-java-compss-demo` image.
+3. Execute the `runcompss` into the COMPSs container. This runs the consumer stage of the Wordcount application.
+
+##### 4 - STOP DATACLAY (`stop.sh`)
+
+Do a graceful stop of dataClay. 
+
+##### 5 - OPTIONAL: CLEAN UP (`clean.sh`)
+
+Make sure no dataClay docker services are running and clean volumes.
 
 
 ## Model and Application
@@ -83,7 +108,12 @@ the model and application flow.
 │                   └── TextStats.java
 ├── pom-compss.xml: Application pom.xml with additional COMPSs dependency.
 ├── README.md
-├── run_demo.sh: Script to execute the whole demo
+├── build.sh: Script to build demo docker image
+├── clean.sh: Script to clean dataClay dockers
+├── run.sh: Script to run demo
+├── start.sh: Script to start dataClay
+├── stop.sh: Script to stop dataClay
+├── full_demo.sh: Script to execute the whole demo
 └── WordcountItf.java: Interface with COMPSs annotations for the consumer stage
 ```
 

@@ -17,7 +17,7 @@
         <Logger name="DataClayObject" level="off" /> <!--  This is very verbose! -->
         
         <!--  Data service -->
-        <Logger name="DataService" level="info"/>
+        <Logger name="DataService" level="off"/>
         <Logger name="ExecutionEnvironmentSrv" level="off"/>
         
         <!--  Lockers -->
@@ -33,7 +33,7 @@
         <Logger name="StorageLocation" level="off"/>
         
         <!--  Logic module -->
-        <Logger name="LogicModule" level="info"/>
+        <Logger name="LogicModule" level="off"/>
         <Logger name="LMDB" level="off"/>
         <Logger name="managers" level="off" />
         <Logger name="MetaDataService.db" level="off" />

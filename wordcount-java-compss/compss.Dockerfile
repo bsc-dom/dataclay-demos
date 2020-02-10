@@ -15,6 +15,7 @@ ENV PASS=DemoPass
 ENV DATASET=DemoDS
 
 # Reuse all the Maven stuff
+COPY --from=0 /home/dataclayusr/dataclay/dataclay.jar ${DEMO_HOME}/dataclay.jar
 COPY --from=0 /root/.m2 /root/.m2
 # Reuse all the demo folder
 COPY --from=0 ${DEMO_HOME} ${DEMO_HOME}

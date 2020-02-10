@@ -16,15 +16,20 @@ You need:
 Execute the following to fully run the demo (it may take a while the first time) 
 
 ``` 
-$> ./run_demo.sh
+$> ./full_demo.sh
 ```
 
 ## Demo workflow
 
-The workflow of the demo is the following:
+Each step of the demo has been defined in a script for better understanding and usage.
 
-1. Start dataClay using docker-compose (check `run_demo.sh`) 
-2. Build the dataClay application using docker build (check `run_demo.sh`). Dockerfile extends dataClay client tool which contains all necessary dependencies to use dataClay (alternatively you can check dataclay examples repository to see how to do it without extending the docker). Notice that the docker is build in the same docker network than the one used to bootstrap dataClay. Build steps are the following (check `Dockerfile` for more detailed calls) 
+##### 1 - BUILD DEMO (`build.sh`)
+
+First step is to build our containerized demo:
+
+0. Clean previous dataClay services (sanity check) (check `clean.sh`)
+1. Start dataClay using docker-compose (check `start.sh`)
+2. Build the dataClay demo image using docker build. Dockerfile extends dataClay client tool which contains all necessary dependencies to use dataClay (alternatively you can check dataclay examples repository to see how to do it without extending the docker). Notice that the docker is build in the same docker network than the one used to bootstrap dataClay. Build steps are the following (check `Dockerfile` for more detailed calls):
    1. Define necessary environment variables 
    2. Wait for dataClay to be alive using dataClay command `WaitForDataClayToBeAlive`
    3. Create a new account using dataClay command `NewAccount`
@@ -33,7 +38,25 @@ The workflow of the demo is the following:
    6. Get stubs generated using dataClay command `GetStubs`
    7. Package them and install in local maven repository 
    8. Compile client application 
-3. Once the demo docker is build, we have a docker image with proper dataClay stubs called `bscdataclay/wordcount-java-demo` so now we can run it and execute our application with dataClay using `docker run`
+3. Stop dataClay (check `stop.sh`)
+
+Once the demo docker is build, we have a docker image with proper dataClay stubs.
+   
+##### 2 - START DATACLAY (`start.sh`)
+
+Start dataClay before running our demo docker application. 
+
+##### 3 - RUN DEMO (`run.sh`)
+
+Execute our application with dataClay using `docker run`. 
+
+##### 4 - STOP DATACLAY (`stop.sh`)
+
+Do a graceful stop of dataClay. 
+
+##### 5 - OPTIONAL: CLEAN UP (`clean.sh`)
+
+Make sure no dataClay docker services are running and clean volumes.
 
 ## Model
 
@@ -177,8 +200,13 @@ Wordcount application counts all the words in all the files a certain number of 
 │                   ├── TextCollectionIndex.java
 │                   └── TextStats.java
 ├── README.md
-├── run_demo.sh: Script to execute the whole demo
-└── run_tracing.sh: Script to execute the whole demo with tracing option enabled
+├── build.sh: Script to build demo docker image
+├── clean.sh: Script to clean dataClay dockers
+├── run.sh: Script to run demo
+├── start.sh: Script to start dataClay
+├── stop.sh: Script to stop dataClay
+├── full_demo.sh: Script to execute the whole demo
+└── full_demo_tracing.sh: Script to execute the whole demo with tracing option enabled
 
 ```
 

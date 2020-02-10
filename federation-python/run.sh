@@ -69,17 +69,17 @@ echo ""
 
 eval $(docker-machine env citta)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
+		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
 		bscdataclay/client:2.1 WaitForDataClayToBeAlive 10 5 
 
 eval $(docker-machine env camera)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
+		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
 		bscdataclay/client:2.1 WaitForDataClayToBeAlive 10 5 
 		
 eval $(docker-machine env fermata)
 docker run --network=dataclay_default \
-		-v /home/docker/common/cfgfiles/:/dataclay/cfgfiles/:ro \
+		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
 		bscdataclay/client:2.1 WaitForDataClayToBeAlive 10 5 
 
 eval $(docker-machine env semaforo)

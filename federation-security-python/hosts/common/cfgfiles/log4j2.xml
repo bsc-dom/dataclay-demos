@@ -17,7 +17,7 @@
         <Logger name="DataClayObject" level="off" /> <!--  This is very verbose! -->
         
         <!--  Data service -->
-        <Logger name="DataService" level="debug"/>
+        <Logger name="DataService" level="off"/>
         <Logger name="ExecutionEnvironmentSrv" level="off"/>
         
         <!--  Lockers -->
@@ -33,7 +33,7 @@
         <Logger name="StorageLocation" level="off"/>
         
         <!--  Logic module -->
-        <Logger name="LogicModule" level="debug"/>
+        <Logger name="LogicModule" level="off"/>
         <Logger name="LMDB" level="off"/>
         <Logger name="managers" level="off" />
         <Logger name="MetaDataService.db" level="off" />
@@ -57,12 +57,12 @@
 
         <!--  Misc -->
         <Logger name="util" level="off" />
-        <Logger name="exceptions" level="debug"/>
+        <Logger name="exceptions" level="off"/>
         <Logger name="Paraver" level="info"/>        
 	<Logger name="DataClaySerializationLib" level="off"/>
 	<Logger name="DataClayDeserializationLib" level="off"/>	
         <!--  ROOT LOGGER -->
-    <Root level="debug">
+    <Root level="off">
       <AppenderRef ref="ConsoleAppender" />
     </Root>
   </Loggers>

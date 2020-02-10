@@ -102,6 +102,6 @@ for MACHINE in ${MACHINES[@]}; do
 	export LOGICMODULE_HOST=$MACHINE_IP
 	export EXPOSED_IP_FOR_CLIENT=$MACHINE_IP
 	eval $(docker-machine env $MACHINE)
-	#docker-compose down
+	docker-compose down
 	popd
 done 

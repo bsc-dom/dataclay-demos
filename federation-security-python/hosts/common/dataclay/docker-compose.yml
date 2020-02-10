@@ -16,7 +16,6 @@ services:
            
   logicmodule:
     image: "dataclaydemo/dataclay-logicmodule"
-    command: "--debug"
     depends_on:
       - proxy
     environment:
@@ -25,7 +24,7 @@ services:
       - DATACLAY_ADMIN_USER=admin
       - DATACLAY_ADMIN_PASSWORD=admin
     volumes:
-      - /home/docker/common/dataclay/prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - /home/docker/common/dataclay/prop/global.secure.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
       - /home/docker/common/dataclay/prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
       - /home/docker/certs:/ssl/:ro
     labels:
@@ -42,7 +41,6 @@ services:
            
   dsjava:
     image: "dataclaydemo/dataclay-dsjava"
-    command: "--debug"
     depends_on:
       - logicmodule
       - proxy
@@ -62,7 +60,6 @@ services:
        
   dspython:
     image: "dataclaydemo/dataclay-dspython"
-    command: "--debug"
     depends_on:
       - logicmodule
       - dsjava

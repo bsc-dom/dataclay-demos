@@ -8,10 +8,10 @@
 
  <Loggers>
         <!--  Runtime -->
-        <Logger name="ClientRuntime" level="off" />
-        <Logger name="ClientManagementLib" level="off"/>
-        <Logger name="DataClayRuntime" level="off"/>
-        <Logger name="DataServiceRuntime" level="off"/>
+        <Logger name="ClientRuntime" level="debug" />
+        <Logger name="ClientManagementLib" level="debug"/>
+        <Logger name="DataClayRuntime" level="debug"/>
+        <Logger name="DataServiceRuntime" level="debug"/>
         
         <Logger name="DataClayObjectLoader" level="off"/>
         <Logger name="DataClayObject" level="off" /> <!--  This is very verbose! -->
@@ -56,13 +56,13 @@
         <Logger name="SQLHandler" level="off"/>
 
         <!--  Misc -->
-        <Logger name="util" level="off" />
+        <Logger name="util" level="debug" />
         <Logger name="exceptions" level="off"/>
-        <Logger name="Paraver" level="off"/>        
+        <Logger name="Paraver" level="debug"/>        
 	<Logger name="DataClaySerializationLib" level="off"/>
 	<Logger name="DataClayDeserializationLib" level="off"/>	
         <!--  ROOT LOGGER -->
-    <Root level="off">
+    <Root level="debug">
       <AppenderRef ref="ConsoleAppender" />
     </Root>
   </Loggers>

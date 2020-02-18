@@ -1,4 +1,4 @@
-FROM bscdataclay/dspython:2.0
+FROM bscdataclay/dspython:2.1
 
 COPY ./deploy ${DATACLAY_HOME}/deploy
 

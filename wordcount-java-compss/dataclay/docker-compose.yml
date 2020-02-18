@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   logicmodule:
-    image: "bscdataclay/logicmodule:2.0"
+    image: "bscdataclay/logicmodule:2.1"
     command: "${COMMAND_OPTS}"
     ports:
       - "11034:11034"
@@ -11,15 +11,16 @@ services:
       - DATACLAY_ADMIN_USER=admin
       - DATACLAY_ADMIN_PASSWORD=admin
     volumes:
-      - ./prop/global.properties:/dataclay/cfgfiles/global.properties:ro
-      - ./prop/log4j2.xml:/dataclay/logging/log4j2.xml:ro
+      - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - ./prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
            
   dsjava1:
-    image: "bscdataclay/dsjava:2.0"
+    image: "bscdataclay/dsjava:2.1"
     command: "${COMMAND_OPTS}"
     ports:
       - "2127:2127"
@@ -31,15 +32,16 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
     volumes:
-      - ./prop/global.properties:/dataclay/cfgfiles/global.properties:ro
-      - ./prop/log4j2.xml:/dataclay/logging/log4j2.xml:ro
+      - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - ./prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   dsjava2:
-    image: "bscdataclay/dsjava:2.0"
+    image: "bscdataclay/dsjava:2.1"
     command: "${COMMAND_OPTS}"
     ports:
       - "2128:2128"
@@ -51,10 +53,11 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
     volumes:
-      - ./prop/global.properties:/dataclay/cfgfiles/global.properties:ro
-      - ./prop/log4j2.xml:/dataclay/logging/log4j2.xml:ro
+      - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - ./prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+    stop_grace_period: 5m
     healthcheck:
        interval: 5s
        retries: 10
-       test: ["CMD-SHELL", "/dataclay/health/health_check.sh"]
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
  

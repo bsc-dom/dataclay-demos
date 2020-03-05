@@ -6,5 +6,6 @@ JOBID=`echo $output | awk '{print $4}'`
 echo "********* RUNNING JOB $JOBID ********** "
 sh -c 'tail -f job.out | { sed "/Demo finished!/ q" && kill $$ ;}'
 
-echo "********* dataClay job finished ********** "
+echo "********* JOB FINISHED ********** "
+
 

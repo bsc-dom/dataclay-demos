@@ -1,7 +1,7 @@
 #!/bin/bash
-#SBATCH --job-name=singularityCompose
+#SBATCH --job-name=hellopeople-demo
 #SBATCH --output=job.out
-#SBATCH --error=job.out
+#SBATCH --error=job.err
 #SBATCH --nodes=3
 #SBATCH --time=00:15:00
 #SBATCH --qos=debug
@@ -19,39 +19,36 @@ NAMESPACE=DemoNS
 USER=DemoUser
 PASS=DemoPass
 DATASET=DemoDS
-STUBSPATH=./stubs
+STUBSPATH=./app/stubs
 MODELBINPATH=./model/src
-export DEBUG=True
-
-python --version 
-echo $PYTHONPATH
-which python
+export DEBUG=False
 
 # Get hosts
 JOBHOSTS=`scontrol show hostname $SBATCH_JOB_NODELIST`
 
 # Deploy dataClay
-$DATACLAY_HOME/start_dataclay.sh $JOBHOSTS
+dataclaysrv start $JOBHOSTS
 
 # Register account  
-$DATACLAYCMD_SINGULARITY NewAccount $USER $PASS
+dataclay NewAccount $USER $PASS
 
 # Register datacontract
-$DATACLAYCMD_SINGULARITY NewDataContract ${USER} ${PASS} ${DATASET} ${USER}
+dataclay NewDataContract ${USER} ${PASS} ${DATASET} ${USER}
 
 # Register model
-$DATACLAYCMD_SINGULARITY NewModel ${USER} ${PASS} ${NAMESPACE} ${MODELBINPATH} python
+dataclay NewModel ${USER} ${PASS} ${NAMESPACE} ${MODELBINPATH} python
 
 # Get stubs 
 mkdir -p ${STUBSPATH}
-$DATACLAYCMD_SINGULARITY GetStubs ${USER} ${PASS} ${NAMESPACE} ${STUBSPATH}
+dataclay GetStubs ${USER} ${PASS} ${NAMESPACE} ${STUBSPATH}
 
-# Run app 
-python src/hellopeople.py forthepeople martin 33 
+# Run app
+pushd app 
+pyclay src/hellopeople.py forthepeople martin 33 
+popd 
 
 # Stop dataClay 
 
-# Clean dataClay 
+# Clean dataClay
 
-
-echo "Demo finished!"
+echo $'\e[1;32m' "DEMO SUCCESSFULLY FINISHED!" $'\e[0m'

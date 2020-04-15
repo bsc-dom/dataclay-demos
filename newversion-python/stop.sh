@@ -27,7 +27,6 @@ do
 	STARTTIME=$(date +%s)
 	docker-compose stop $SERVICE
 	ENDTIME=$(date +%s)
-	docker-compose logs $SERVICE
 	echo "$SERVICE stopped in $(($ENDTIME - $STARTTIME)) seconds"
 done
 # IMPORTANT: Now all java services

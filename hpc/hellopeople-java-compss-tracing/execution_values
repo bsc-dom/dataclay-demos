@@ -1,0 +1,11 @@
+# storage_init script (done by dataClay people)
+# will source this file and use its information for 
+# startup-of-services configuration
+
+# Arguments provided to dataclaysrv start.
+DATACLAYSRV_START_CMD="--tracing --python-ee-per-node 0" 
+#ARGS="--python-ee-per-node 4 --tracing --debug"
+
+# Arguments provided to dataclaysrv stop 
+DATACLAYSRV_STOP_CMD=""  
+# --shutdown-timeout 150

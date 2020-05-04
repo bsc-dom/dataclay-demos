@@ -1,14 +1,15 @@
 #!/bin/bash
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 IFS=$'\r\n' GLOBIGNORE='*' command eval  "MACHINES=($(cat $SCRIPTDIR/machines.txt))"
-grn=$'\e[1;32m'
-blu=$'\e[1;34m'
-end=$'\e[0m'
+#-----------------------------------------------------------------------
+# Helper functions (miscellaneous)
+#-----------------------------------------------------------------------
+cyan=$'\e[1;36m'; end=$'\e[0m'; blu=$'\e[1;34m';
+function printMsg { echo "\n  ${cyan}[Demo step $1]${end} \n  ${blu}$2${end} \n"; }
 
-function printMsg { 
-  printf " \n\n  ${grn}[Demo step $1]${end} \n  ${blu}$2${end} \n\n\n"
-}
-
+#-----------------------------------------------------------------------
+# MAIN
+#-----------------------------------------------------------------------
 # ==================================== REQUIREMENTS CHECK ==================================== #
 
 declare -A MACHINES_IPS
@@ -66,13 +67,13 @@ eval $(docker-machine env city)
 docker run --network=dataclay_default \
 		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles//:ro \
 		-v /home/docker/certs/:/demo/certs/:ro \
-		bscdataclay/client:2.1 WaitForDataClayToBeAlive 10 5
+		bscdataclay/client WaitForDataClayToBeAlive 10 5
 
 eval $(docker-machine env car)
 docker run --network=dataclay_default \
 		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
 		-v /home/docker/certs/:/demo/certs/:ro \
-		bscdataclay/client:2.1 WaitForDataClayToBeAlive 10 5 
+		bscdataclay/client WaitForDataClayToBeAlive 10 5 
 
 printMsg "1" "City creates City object"
 eval $(docker-machine env city)

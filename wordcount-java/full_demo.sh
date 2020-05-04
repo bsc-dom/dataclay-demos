@@ -1,28 +1,21 @@
-#!/bin/bash
+#!/bin/bash -e
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-grn=$'\e[1;32m'
-blu=$'\e[1;34m'
-red=$'\e[1;91m'
-end=$'\e[0m'
-function printError { 
-  echo "${red}======== $1 ========${end}"
-}
-function printMsg { 
-  echo "${grn}======== $1 ========${end}"
-}
+#-----------------------------------------------------------------------
+# Helper functions (miscellaneous)
+#-----------------------------------------------------------------------
+cyan=$'\e[1;36m'; end=$'\e[0m'
+function printMsg { echo "${cyan}======== $1 ========${end}"; }
 
-# ============= BUILD DEMO ================== #
-bash $SCRIPTDIR/build.sh
+#-----------------------------------------------------------------------
+# MAIN
+#-----------------------------------------------------------------------
 
-# ============= START DATACLAY ================== #
+bash $SCRIPTDIR/clean.sh
 bash $SCRIPTDIR/start.sh
-
-# ============= RUN DEMO ================== #
+bash $SCRIPTDIR/build.sh
 bash $SCRIPTDIR/run.sh
-
-# ============= STOP DATACLAY ================== #
 bash $SCRIPTDIR/stop.sh
+bash $SCRIPTDIR/clean.sh
 
-echo ""
 printMsg " DEMO SUCCESSFULLY FINISHED :) "
     

@@ -1,4 +1,4 @@
-FROM bscdataclay/client:2.1
+FROM bscdataclay/client
 LABEL maintainer dataClay team <support-dataclay@bsc.es>
 
 # Prepare environment
@@ -8,7 +8,7 @@ WORKDIR ${DEMO_HOME}
 # Since client app is maven we install the dependencies
 # Install dataclay jar in local repository	
 RUN mvn install:install-file -Dfile=${DATACLAY_JAR} -DgroupId=es.bsc.dataclay \
-	-DartifactId=dataclay -Dversion=2.1 -Dpackaging=jar -DcreateChecksum=true
+	-DartifactId=dataclay -Dversion=latest -Dpackaging=jar -DcreateChecksum=true
 
 ENV DATACLAYCLIENTCONFIG=${DEMO_HOME}/cfgfiles/client.properties
 ENV DATACLAYGLOBALCONFIG=${DEMO_HOME}/cfgfiles/global.properties
@@ -51,7 +51,7 @@ RUN jar cvf ${STUBS_JAR} -C ${STUBSPATH} .
 
 # Install stubs in local repository to use it as a pom dependency
 RUN mvn install:install-file -Dfile=${STUBS_JAR} -DgroupId=es.bsc.dataclay \
-	-DartifactId=hellopeople-demo-stubs -Dversion=2.1 -Dpackaging=jar -DcreateChecksum=true
+	-DartifactId=hellopeople-demo-stubs -Dversion=latest -Dpackaging=jar -DcreateChecksum=true
 	
 # Compile app
 RUN mvn compile

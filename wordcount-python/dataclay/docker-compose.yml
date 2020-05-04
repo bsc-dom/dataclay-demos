@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   logicmodule:
-    image: "bscdataclay/logicmodule:2.1"
+    image: "bscdataclay/logicmodule"
     command: "${COMMAND_OPTS}"
     ports:
       - "11034:11034"
@@ -11,6 +11,7 @@ services:
       - DATACLAY_ADMIN_USER=admin
       - DATACLAY_ADMIN_PASSWORD=admin
     volumes:
+      - /etc/localtime:/etc/localtime
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
       - ./prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
     stop_grace_period: 5m
@@ -20,7 +21,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   dsjava:
-    image: "bscdataclay/dsjava:2.1"
+    image: "bscdataclay/dsjava"
     command: "${COMMAND_OPTS}"
     ports:
       - "2127:2127"
@@ -32,6 +33,7 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
     volumes:
+      - /etc/localtime:/etc/localtime
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
       - ./prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
     stop_grace_period: 5m
@@ -39,9 +41,9 @@ services:
        interval: 5s
        retries: 10
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
-       
+      
   dspython:
-    image: "bscdataclay/dspython:2.1"
+    image: "bscdataclay/dspython"
     command: "${COMMAND_OPTS}"
     depends_on:
       - logicmodule
@@ -50,7 +52,9 @@ services:
       - DATASERVICE_NAME=DS1
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
+      - DEBUG=True
     volumes:
+      - /etc/localtime:/etc/localtime
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
     stop_grace_period: 5m
     healthcheck:

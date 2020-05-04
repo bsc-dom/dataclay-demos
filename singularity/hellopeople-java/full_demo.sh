@@ -7,14 +7,14 @@ fi
 export PATH=$DATACLAY_HOME/bin:$PATH 
 
 # Deploy dataClay
-dataclaysrv start
+dataclaysrv start # --java-version 8
 
 # Register accounts, model and store stubs in client node
-dataclayprepare $(pwd)/model/src model java
+dataclayprepare $(pwd)/model/src $(pwd)/app/src model java
 
 # Run app 
-# javaclay <app src> <main> <args>
-javaclay $(pwd)/app/src app.HelloPeople forthepeople martin 33
+# javaclay <main> <args>
+javaclay app.HelloPeople forthepeople martin 33
 
 # Stop dataClay 
 dataclaysrv stop

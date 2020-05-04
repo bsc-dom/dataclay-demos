@@ -189,6 +189,7 @@ Wordcount application counts all the words in all the files a certain number of 
 │       ├── global.properties: Extra configurations for the dataClay services
 │       └── log4j2.xml: dataClay logging configuration for Apache Logger 2. 
 ├── Dockerfile: Dockerized demo with all steps done by the demo
+├── paraver: Configuration files for paraver visualization of traces
 ├── model: Model to be registered in dataClay
 │   ├── pom.xml: Model pom.xml 
 │   └── src: Model source in Maven structure. 

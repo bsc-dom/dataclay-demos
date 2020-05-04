@@ -1,4 +1,4 @@
-FROM bscdataclay/client:2.1
+FROM bscdataclay/client
 LABEL maintainer dataClay team <support-dataclay@bsc.es>
 
 # Prepare environment

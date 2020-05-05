@@ -7,15 +7,18 @@ if [ -z $DATACLAY_HOME ]; then
 fi
 export PATH=$DATACLAY_HOME/bin:$PATH 
 
+# sanity check
+rm -rf trace
+
 # Deploy dataClay
-dataclaysrv start --tracing --debug
+dataclaysrv start --tracing
 
 # Register accounts, model and store stubs in client node
-dataclayprepare $(pwd)/model/src DemoNS python
+dataclayprepare $(pwd)/model/src $(pwd)/app/src DemoNS python
 
 # Run app 
-# pyclay <app src> <main> <args>
-pyclay $(pwd)/app/src src/hellopeople.py --tracing forthepeople martin 33
+# pyclay <main> <args>
+pyclay src/hellopeople.py --tracing forthepeople martin 33
 
 # Stop dataClay 
 dataclaysrv stop

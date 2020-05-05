@@ -41,7 +41,7 @@ echo " ===== Building docker dataclaydemo/logicmodule  ====="
 docker build -f demo.LM.Dockerfile -t dataclaydemo/dataclay-logicmodule .
 
 echo " ===== Building docker dataclaydemo/dsjava  ====="
-docker tag bscdataclay/dsjava:2.1 dataclaydemo/dataclay-dsjava
+docker tag bscdataclay/dsjava:2.4.dev dataclaydemo/dataclay-dsjava
 
 echo " ===== Building docker dataclaydemo/dspython ====="
 docker build -f demo.EE.Dockerfile -t dataclaydemo/dataclay-dspython .

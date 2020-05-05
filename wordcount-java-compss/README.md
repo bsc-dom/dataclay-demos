@@ -96,6 +96,7 @@ the model and application flow.
 │       └── log4j2.xml: dataClay logging configuration for Apache Logger 2. 
 ├── Dockerfile: Dockerized demo with all the main steps.
 ├── compss.Dockerfile: Dockerized demo for the consumer stage.
+├── paraver: Configuration files for paraver visualization of traces
 ├── model: Model to be registered in dataClay
 │   ├── pom.xml: Model pom.xml
 │   └── src: Model source in Maven structure. 

@@ -8,14 +8,14 @@ fi
 export PATH=$DATACLAY_HOME/bin:$PATH 
 
 # Deploy dataClay
-dataclaysrv start
+dataclaysrv start #--python_ee_per_node 4
 
 # Register accounts, model and store stubs in client node
-dataclayprepare $(pwd)/model/src DemoNS python
+dataclayprepare $(pwd)/model/src $(pwd)/app/src DemoNS python
 
 # Run app 
-# pyclay <app src> <main> <args>
-pyclay $(pwd)/app/src src/hellopeople.py forthepeople martin 33
+# pyclay <main> <args>
+pyclay src/hellopeople.py forthepeople martin 33
 
 # Stop dataClay 
 dataclaysrv stop

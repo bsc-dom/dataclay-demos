@@ -17,6 +17,7 @@ printMsg "Running demo"
 # Modify session configuration to add flag Tracing=True and mount trace volume to collect traces once done
 docker run --rm --network=dataclay_default \
 	-v `pwd`/app/cfgfiles/session.extrae.properties:/demo/cfgfiles/session.properties \
+	-v `pwd`/dataclay/extrae/extrae_config.xml:/home/dataclayusr/dataclay/extrae/extrae_basic.xml \
     -v `pwd`/trace:/demo/trace:rw \
     $DEMO_IMG_NAME src/wordcount.py --tracing
 popd

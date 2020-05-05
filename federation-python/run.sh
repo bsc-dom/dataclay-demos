@@ -71,27 +71,27 @@ echo ""
 eval $(docker-machine env citta)
 docker run --network=dataclay_default \
 		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-		bscdataclay/client WaitForDataClayToBeAlive 10 5 
+		bscdataclay/client:2.4.dev WaitForDataClayToBeAlive 10 5 
 
 eval $(docker-machine env camera)
 docker run --network=dataclay_default \
 		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-		bscdataclay/client WaitForDataClayToBeAlive 10 5 
+		bscdataclay/client:2.4.dev WaitForDataClayToBeAlive 10 5 
 		
 eval $(docker-machine env fermata)
 docker run --network=dataclay_default \
 		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-		bscdataclay/client WaitForDataClayToBeAlive 10 5 
+		bscdataclay/client:2.4.dev WaitForDataClayToBeAlive 10 5 
 
 eval $(docker-machine env semaforo)
 docker run --network=dataclay_default \
 		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-		bscdataclay/client WaitForDataClayToBeAlive 10 5 
+		bscdataclay/client:2.4.dev WaitForDataClayToBeAlive 10 5 
 		
 eval $(docker-machine env tram)
 docker run --network=dataclay_default \
 		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-		bscdataclay/client WaitForDataClayToBeAlive 10 5 
+		bscdataclay/client:2.4.dev WaitForDataClayToBeAlive 10 5 
 
 	
 printMsg "1" "Citta creates and stores CittyInfo object named citta in its dataClay instance"

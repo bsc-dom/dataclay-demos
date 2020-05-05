@@ -10,7 +10,6 @@ STORAGE_PROPS=`mktemp -p ~`
 cp $PWD/execution_values $STORAGE_PROPS
 enqueue_compss \
     --job_name=hellopeople \
-	--qos=debug \
 	--tracing=$TRACING \
 	--exec_time=30 \
     --classpath=$DATACLAY_JAR \

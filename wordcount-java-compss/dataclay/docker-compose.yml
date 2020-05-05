@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   logicmodule:
-    image: "bscdataclay/logicmodule"
+    image: "bscdataclay/logicmodule:2.4.dev"
     command: "${COMMAND_OPTS}"
     ports:
       - "11034:11034"
@@ -13,6 +13,7 @@ services:
     volumes:
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
       - ./prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+      - ./extrae/extrae_config.xml:/home/dataclayusr/dataclay/extrae/extrae_basic.xml
     stop_grace_period: 5m
     healthcheck:
        interval: 5s
@@ -20,7 +21,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
            
   dsjava1:
-    image: "bscdataclay/dsjava"
+    image: "bscdataclay/dsjava:2.4.dev"
     command: "${COMMAND_OPTS}"
     ports:
       - "2127:2127"
@@ -34,6 +35,7 @@ services:
     volumes:
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
       - ./prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+      - ./extrae/extrae_config.xml:/home/dataclayusr/dataclay/extrae/extrae_basic.xml
     stop_grace_period: 5m
     healthcheck:
        interval: 5s
@@ -41,7 +43,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   dsjava2:
-    image: "bscdataclay/dsjava"
+    image: "bscdataclay/dsjava:2.4.dev"
     command: "${COMMAND_OPTS}"
     ports:
       - "2128:2128"
@@ -55,6 +57,7 @@ services:
     volumes:
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
       - ./prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+      - ./extrae/extrae_config.xml:/home/dataclayusr/dataclay/extrae/extrae_basic.xml
     stop_grace_period: 5m
     healthcheck:
        interval: 5s

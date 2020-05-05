@@ -12,7 +12,6 @@ STORAGE_PROPS=`mktemp -p ./storagetmp/`
 cp $PWD/execution_values $STORAGE_PROPS
 enqueue_compss \
     --job_name=hellopeople \
-        --qos=debug \
         --tracing=$TRACING \
         --exec_time=30 \
     --classpath=$DATACLAY_JAR:$HOME/.dataClay/\$SLURM_JOBID/client/app/bin:$HOME/.dataClay/\$SLURM_JOBID/client/app/stubs \

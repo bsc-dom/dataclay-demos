@@ -4,7 +4,6 @@
 #SBATCH --error=job.out
 #SBATCH --nodes=3
 #SBATCH --time=00:10:00
-#SBATCH --qos=debug
 #SBATCH --exclusive 
 ##########################################
 # Configurations

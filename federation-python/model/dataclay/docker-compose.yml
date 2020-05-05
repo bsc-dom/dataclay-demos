@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   logicmodule:
-    image: "bscdataclay/logicmodule"
+    image: "bscdataclay/logicmodule:2.4.dev"
     ports:
       - "11034:11034"
     environment:
@@ -19,7 +19,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
               
   dsjava:
-    image: "bscdataclay/dsjava"
+    image: "bscdataclay/dsjava:2.4.dev"
     ports:
       - "2127:2127"
     depends_on:
@@ -39,7 +39,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   dspython:
-    image: "bscdataclay/dspython"
+    image: "bscdataclay/dspython:2.4.dev"
     depends_on:
       - logicmodule
       - dsjava

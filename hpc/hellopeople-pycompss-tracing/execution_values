@@ -6,5 +6,8 @@
 DATACLAYSRV_START_CMD="--tracing" 
 #ARGS="--python-ee-per-node 4 --tracing --debug"
 
+# to modify extrae configuration in dataClay services add:
+# --extrae-config-file $HOME/hpc/hellopeople-pycompss-tracing/extrae/extrae_config.xml
+
 # Arguments provided to dataclaysrv stop 
 DATACLAYSRV_STOP_CMD=""  

@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   logicmodule:
-    image: "bscdataclay/logicmodule"
+    image: "bscdataclay/logicmodule:2.4.dev"
     command: "${COMMAND_OPTS}"
     ports:
       - "11034:11034"
@@ -11,9 +11,9 @@ services:
       - DATACLAY_ADMIN_USER=admin
       - DATACLAY_ADMIN_PASSWORD=admin
     volumes:
-      - /etc/localtime:/etc/localtime
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
       - ./prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+      - ./extrae/extrae_config.xml:/home/dataclayusr/dataclay/extrae/extrae_basic.xml
     stop_grace_period: 5m
     healthcheck:
        interval: 5s
@@ -21,7 +21,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   dsjava:
-    image: "bscdataclay/dsjava"
+    image: "bscdataclay/dsjava:2.4.dev"
     command: "${COMMAND_OPTS}"
     ports:
       - "2127:2127"
@@ -33,9 +33,9 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
     volumes:
-      - /etc/localtime:/etc/localtime
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
       - ./prop/log4j2.xml:/home/dataclayusr/dataclay/logging/log4j2.xml:ro
+      - ./extrae/extrae_config.xml:/home/dataclayusr/dataclay/extrae/extrae_basic.xml
     stop_grace_period: 5m
     healthcheck:
        interval: 5s
@@ -43,7 +43,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
       
   dspython:
-    image: "bscdataclay/dspython"
+    image: "bscdataclay/dspython:2.4.dev"
     command: "${COMMAND_OPTS}"
     depends_on:
       - logicmodule
@@ -54,8 +54,8 @@ services:
       - LOGICMODULE_HOST=logicmodule
       - DEBUG=True
     volumes:
-      - /etc/localtime:/etc/localtime
       - ./prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - ./extrae/extrae_config.xml:/home/dataclayusr/dataclay/extrae/extrae_python.xml
     stop_grace_period: 5m
     healthcheck:
        interval: 5s

@@ -1,4 +1,4 @@
-FROM bscdataclay/client
+FROM bscdataclay/client:2.4.dev
 LABEL maintainer dataClay team <support-dataclay@bsc.es>
 
 # Prepare environment
@@ -56,6 +56,6 @@ RUN mvn install:install-file -Dfile=${STUBS_JAR} -DgroupId=es.bsc.dataclay \
 RUN mvn compile
 
 # Run 
-ENTRYPOINT ["./dataclay-mvn-entry-point"] 
+ENTRYPOINT ["dataclay-mvn-entry-point"] 
 
 

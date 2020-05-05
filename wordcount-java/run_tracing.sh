@@ -25,6 +25,7 @@ printMsg "Running wordcount in $DEMO_IMG_NAME"
 docker run --rm --network=dataclay_default \
 	-v `pwd`/app/text:/demo/text:ro \
 	-v `pwd`/app/cfgfiles/session.extrae.properties:/demo/cfgfiles/session.properties \
+	-v `pwd`/dataclay/extrae/extrae_config.xml:/home/dataclayusr/dataclay/extrae/extrae_basic.xml \
     -v `pwd`/trace:/demo/trace:rw \
     $DEMO_IMG_NAME --tracing -Dexec.mainClass="Wordcount" words
 popd 

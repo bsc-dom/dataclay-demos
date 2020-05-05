@@ -23,7 +23,6 @@ if __name__ == "__main__":
     for i in range(10):
         addperson(people, i)
 
-    print("==================================================================== COMPSS WAIT")
     compss_barrier()
     print(people)
 

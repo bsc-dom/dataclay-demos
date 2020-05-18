@@ -42,7 +42,7 @@ ENV CLASSPATH=${DEMO_HOME}/dataclay.jar:${CLASSPATH}
 
 # Install dislib
 COPY ./binding.py /opt/COMPSs/Bindings/python/3/pycompss/runtime/binding.py
-RUN python3 -m pip install dislib scipy matplotlib scikit-learn
+RUN python3 -m pip install dislib scipy==1.3.1 matplotlib scikit-learn
 RUN mkdir -p ${DEMO_HOME}/dislib 
 RUN curl -SL https://github.com/bsc-wdc/dislib/archive/v0.5.0.tar.gz | tar -xzC ${DEMO_HOME}/dislib --strip-components=1
 

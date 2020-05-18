@@ -10,10 +10,11 @@ function printMsg { echo "${cyan}======== $1 ========${end}"; }
 # MAIN
 #-----------------------------------------------------------------------
 
+export COMMAND_OPTS=""
 bash $SCRIPTDIR/clean.sh
 bash $SCRIPTDIR/start.sh
 bash $SCRIPTDIR/build.sh
-bash $SCRIPTDIR/run.sh
+bash $SCRIPTDIR/run.sh randomized_search_cv
 bash $SCRIPTDIR/stop.sh
 bash $SCRIPTDIR/clean.sh
 

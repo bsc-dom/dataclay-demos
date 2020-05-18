@@ -1,45 +1,5 @@
 from dataclay import DataClayObject, dclayMethod
 
-class dClayDisBlocks(DataClayObject):
-    """
-    @ClassField blocks list<DemoNS.classes.dClayBlock>
-    """
-    
-    @dclayMethod(blocks="list<DemoNS.classes.dClayBlock>")
-    def __init__(self, blocks):
-        self.blocks = blocks
-
-    @dclayMethod(return_="anything")
-    def __array__(self):
-        np_blocks = []
-        for dataclay_block in self.blocks:
-            blocks.append(dataclay_block)
-        return np_blocks
-    
-    @dclayMethod(return_="anything")
-    def __iter__(self):
-        for dataclay_block in self.blocks:
-            yield dataclay_block.block
-
-    @dclayMethod(key=int,return_="anything")
-    def __getitem__(self, key):
-        return self.blocks[key].block
-    
-    @dclayMethod(index=int,value="anything")
-    def __setitem__(self,index, value):
-        self.blocks[index] = dClayBlock(value)
-        # make persistent?
-    
-    @dclayMethod(index=int)
-    def __delitem__(self, index):
-        """Delete an item"""
-        del self.blocks[index]
-    
-    @dclayMethod(return_=int)
-    def __len__(self):
-        return len(self.blocks)
-
-
 class dClayBlock(DataClayObject):
     """
     @ClassField block anything
@@ -50,9 +10,10 @@ class dClayBlock(DataClayObject):
 
     @dclayMethod(return_="anything")
     def __array__(self):
-        return self.bock
+        print(self.block)
+        return self.block[0]
     
-    @dclayMethod(return_="anything")
+    @dclayMethod(return_="anything",_local=True)
     def __iter__(self):
         for elem in self.block:
             yield elem
@@ -73,4 +34,12 @@ class dClayBlock(DataClayObject):
     @dclayMethod(return_=int)
     def __len__(self):
         return len(self.block)
+    
+    @dclayMethod(return_='str')
+    def __repr__(self):
+        return str(self.block)
+    
+    @dclayMethod(return_='str')
+    def __str__(self):
+        return str(self.block)
     

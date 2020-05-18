@@ -10,6 +10,13 @@ function printMsg { echo "${cyan}======== $1 ========${end}"; }
 # MAIN
 #-----------------------------------------------------------------------
 pushd $SCRIPTDIR
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: run.sh <app>"
+    exit 1
+fi
+APP=$1
+
 DEMO_IMG_NAME=bscdataclay/${PWD##*/}-demo
 
 # Word count
@@ -27,11 +34,11 @@ docker exec dislib-pycompss /opt/COMPSs/Runtime/scripts/user/runcompss \
     --pythonpath=/demo/ \
 	--storage_conf=/demo/cfgfiles/session.properties \
   --classpath=/demo/dataclay.jar \
-  src/kmeans.py 
+  src/${APP}.py 
 
 printMsg "Stopping the COMPSs container"
-docker kill dislib-pycompss
-docker rm -f -v dislib-pycompss
+#docker kill dislib-pycompss
+#docker rm -f -v dislib-pycompss
 
 popd 
 

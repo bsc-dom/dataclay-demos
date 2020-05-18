@@ -41,6 +41,9 @@ RUN cd ${DEMO_HOME}/pyextrae && gcc -L${EXTRAE_HOME}/lib -I${EXTRAE_HOME}/includ
 ENV CLASSPATH=${DEMO_HOME}/dataclay.jar:${CLASSPATH}
 
 # Install dislib
-RUN python3 -m pip install dislib scipy matplotlib
+COPY ./binding.py /opt/COMPSs/Bindings/python/3/pycompss/runtime/binding.py
+RUN python3 -m pip install dislib scipy matplotlib scikit-learn
 RUN mkdir -p ${DEMO_HOME}/dislib 
 RUN curl -SL https://github.com/bsc-wdc/dislib/archive/v0.5.0.tar.gz | tar -xzC ${DEMO_HOME}/dislib --strip-components=1
+
+RUN python3 -m pip freeze

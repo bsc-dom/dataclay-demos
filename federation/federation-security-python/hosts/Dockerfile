@@ -1,4 +1,4 @@
-FROM bscdataclay/client:2.4.dev
+FROM bscdataclay/client:develop
 LABEL maintainer dataClay team <support-dataclay@bsc.es>
 
 # Same dockerfile for all apps

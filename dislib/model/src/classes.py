@@ -10,8 +10,24 @@ class dClayBlock(DataClayObject):
 
     @dclayMethod(return_="anything")
     def __array__(self):
-        print(self.block)
-        return self.block[0]
+        return self.block
+    
+    @dclayMethod(func="anything",local_args="list<anything>",local_kw_args="dict<str,anything>",return_="anything")
+    def dataclay_block_apply(self, func, local_args, local_kw_args):
+        print("Calling block apply with args:")
+        print(str(local_args))
+        print(str(local_kw_args))
+        import traceback
+        try:
+            result = func(self.block, *local_args, **local_kw_args)
+        except:
+            traceback.print_exc()
+        print("Applied function %s to dataClay block" % func.__name__)
+        print("Result = ")
+        print(str(result))
+        return result
+
+    
     
     @dclayMethod(return_="anything",_local=True)
     def __iter__(self):

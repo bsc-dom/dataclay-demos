@@ -8,7 +8,7 @@
 ##########################################
 # Configurations
 NETWORK_SUFFIX="-ib0"
-module load DATACLAY/develop
+module load DATACLAY
 
 # --- SLURM ---- 
 JOB_HOSTS=$(scontrol show hostname $SBATCH_JOB_NODELIST)

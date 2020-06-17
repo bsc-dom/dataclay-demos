@@ -67,13 +67,13 @@ eval $(docker-machine env city)
 docker run --rm --network=dataclay_default \
 		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles//:ro \
 		-v /home/docker/certs/:/demo/certs/:ro \
-		bscdataclay/client:develop WaitForDataClayToBeAlive 10 5
+		bscdataclay/client WaitForDataClayToBeAlive 10 5
 
 eval $(docker-machine env car)
 docker run --rm --network=dataclay_default \
 		-v /home/docker/common/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
 		-v /home/docker/certs/:/demo/certs/:ro \
-		bscdataclay/client:develop WaitForDataClayToBeAlive 10 5 
+		bscdataclay/client WaitForDataClayToBeAlive 10 5 
 
 printMsg "City creates DKB"
 eval $(docker-machine env city)

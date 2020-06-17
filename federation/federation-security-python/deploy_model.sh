@@ -9,7 +9,7 @@ docker save -o /tmp/demo-dataclay-dsjava.tar dataclaydemo/dataclay-dsjava
 echo " ===== Saving image  dataclaydemo/dataclay-dspython  ====="
 docker save -o /tmp/demo-dataclay-dspython.tar dataclaydemo/dataclay-dspython 
 echo " ===== Saving image  bscdataclay/client (used in machine's docker file build) ====="
-docker save -o /tmp/dataclay-client.tar bscdataclay/client:develop
+docker save -o /tmp/dataclay-client.tar bscdataclay/client
 
 for MACHINE in ${MACHINES[@]}; do
 	echo " ===== Loading images into $MACHINE ====="

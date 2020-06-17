@@ -3,8 +3,8 @@ APP_PATH=$(pwd)/app
 
 export COMPSS_PYTHON_VERSION=3 #require python version >=3
 export TRACING=false
-module load COMPSs/Trunk
-module load DATACLAY/develop
+module load COMPSs
+module load DATACLAY
 
 # Copying it to temporal path to protect it (e.g. multiple executions)
 mkdir -p ./storagetmp

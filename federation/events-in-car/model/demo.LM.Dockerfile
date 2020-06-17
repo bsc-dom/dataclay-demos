@@ -6,7 +6,7 @@ COPY ./LM.sqlite /tmp/dataclay/dump.sql
 RUN mkdir -p "/dataclay/storage"
 RUN sqlite3 "/dataclay/storage/LM" ".read /tmp/dataclay/dump.sql"
 
-FROM bscdataclay/logicmodule:develop
+FROM bscdataclay/logicmodule
 COPY --from=0 /dataclay/storage/LM /dataclay/storage/LM
 
 # The command can contain additional options for the Java Virtual Machine and

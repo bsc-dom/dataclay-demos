@@ -3,7 +3,7 @@ version: '3.4'
 services:
 
   logicmodule:
-    image: "bscdataclay/logicmodule:develop"
+    image: "bscdataclay/logicmodule"
     command: "${COMMAND_OPTS}"
     ports:
       - "11034:11034"
@@ -22,7 +22,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   dsjava:
-    image: "bscdataclay/dsjava:develop"
+    image: "bscdataclay/dsjava"
     command: "${COMMAND_OPTS}"
     ports:
       - "2127:2127"
@@ -43,7 +43,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
 
   dspython:
-    image: "bscdataclay/dspython:develop"
+    image: "bscdataclay/dspython"
     command: "${COMMAND_OPTS}"
     ports:
       - "6867:6867"

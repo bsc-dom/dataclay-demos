@@ -22,7 +22,7 @@ popd
 
 # wait for dataClay to be alive
 docker run --rm --network=dataclay_default -v $PWD/app/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-	 bscdataclay/client:develop WaitForDataClayToBeAlive 10 5
+	 bscdataclay/client WaitForDataClayToBeAlive 10 5
 	 
 printMsg "dataClay successfully started!"
 

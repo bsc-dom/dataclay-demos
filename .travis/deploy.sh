@@ -9,7 +9,7 @@ if [ "$TRAVIS_BRANCH" == "master" ]; then
 	 find . -type f -exec sed -i 's/module load DATACLAY\/develop/module load DATACLAY/g' {} \;
 	 find . -type f -exec sed -i 's/module load COMPSs\/Trunk/module load COMPSs/g' {} \;
      git add -A
-	 git commit -m "New release"
+	 git commit -m "Modified docker images"
 	 git push origin HEAD:$TRAVIS_BRANCH
 else
      echo "Skipping prepare version tag because current branch is not master";

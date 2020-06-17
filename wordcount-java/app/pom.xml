@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>es.bsc.dataclay</groupId>
 	<artifactId>wordcount-demo</artifactId>
-	<version>2.1</version>
+	<version>latest</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,12 +16,12 @@
 		<dependency>
 			<groupId>es.bsc.dataclay</groupId>
 			<artifactId>wordcount-demo-stubs</artifactId>
-			<version>2.1</version>
+			<version>latest</version>
 		</dependency>
 		<dependency>
 			<groupId>es.bsc.dataclay</groupId>
 			<artifactId>dataclay</artifactId>
-			<version>2.1</version>
+			<version>latest</version>
 		</dependency>
 	</dependencies>
 </project>

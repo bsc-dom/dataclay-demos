@@ -8,12 +8,13 @@ import model.TextCollectionIndex;
 import model.TextStats;
 import storage.StorageItf;
 import es.bsc.dataclay.api.DataClay;
+import es.bsc.compss.api.COMPSs;
 public class Wordcount {
 	
 	/** Default session properties file. */
 	public static String configPropertiesFile = "./cfgfiles/session.properties";
 	/** Default execution times (to see cache effects). */
-	public static int execTimes = 3;
+	public static int execTimes = 2;
 	/** Default num of times that every text must be counted. */
 	public static int timesPerText = 1;
 
@@ -24,7 +25,7 @@ public class Wordcount {
 
 		String textColAlias = args[0];
 		// Init dataClay session
-		DataClay.init();
+		// StorageItf.init();
 
 		// Init texts to parse
 		TextCollectionIndex tc = (TextCollectionIndex) TextCollectionIndex.getByAlias(textColAlias);
@@ -51,11 +52,11 @@ public class Wordcount {
 		} else {
 			System.out.println("[ERROR] Obtained TextCollection: " + textColAlias + " with no text to be wordcounted.");
 		}
+		COMPSs.barrier();
 
-		DataClay.finish();
+		//DataClay.finish();
 		
-		// Shutdown logger threads
-		System.exit(0);
+		//StorageItf.finish();
 	}
 
 	/**

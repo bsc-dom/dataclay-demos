@@ -15,10 +15,10 @@ DEMO_IMG_NAME=bscdataclay/${PWD##*/}-demo
 
 # Generate
 printMsg "Running Demo --producer stage"
-docker run --network=dataclay_default \
+docker run --entrypoint /demo/entrypoints/dataclay-mvn-entry-point --rm --network=dataclay_default \
 	-v `pwd`/app/text:/demo/text:ro \
 	--name ${PWD##*/}-demo-word-gen \
-    bscdataclay/wordcount-java-demo -Dexec.mainClass="TextCollectionGen" words /demo/text
+    $DEMO_IMG_NAME -Dexec.mainClass="TextCollectionGen" words /demo/text
 
 # Word count
 printMsg "Running Demo --consumer stage"

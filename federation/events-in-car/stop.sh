@@ -47,7 +47,8 @@ done
 
 # IMPORTANT: finally Logic module
 STARTTIME=$(date +%s)
-docker-compose stop logicmodule
+LOGIC_SERVICE=$(docker-compose ps --all --services | grep logicmodule)
+docker-compose stop $LOGIC_SERVICE
 ENDTIME=$(date +%s)
 echo "logicmodule stopped in $(($ENDTIME - $STARTTIME)) seconds"
 popd

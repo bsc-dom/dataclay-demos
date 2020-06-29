@@ -1,0 +1,20 @@
+language: generic
+before_install:
+- .travis/check_branch.sh
+env:
+  global:
+    - secure: "Iar5sL+EI14feANkAbamgLJSHmtZWFzgkHzGVZObjmxXyHuwKlAViJHj1Iyy89LNXJpiVX9RzrbDQ9LFmrDJsnGgdF27/R4gUmfxAaUV+FEnX91EK7xrotmYR2Btj05rHJZm4L8h+fg4z2Plekgo0yo9QctCsIcI6n85SUhREAUvZ0R8PaDGuYsOIzBVpddacC7d9dIp1tbr7MgaFU6LU4SkIoKSKwY8+BrJkZq34wCBJ90MvbOeH9fejwCgbU6W1L7mPWxaEt3wkPhKfzTjzHiL2BhPafnauCHOu2N6Ngv8/ni5/lN8N4IIPLF9QSC7lWoKgSK4mDi8FbOTr8V82md/NjUggNWzdOi4P8Vs4H2iPahHTC5iyOifQRhoaWFJSjc//ZisTSxgDiRowHCkDY00LDGuiY7jLYeVMtOhOgs3C8i4kNA2wcuNXZVSspm2rG5/V+VZqHKMLaRAqie6DTwrp/fObE6JW7F/kNAv90HdKquaqM8CDCjv+w4E2hw8aH4B6J+wcVoAG61j3Y0QaFBl9ukBAlDyfAA49EDBrp5maNPgaM43Hnkz59rmQx+YatakSKIfjUGSXB0bGuxUKR029n1hQW9HvVDshriwEePdRMt7blIEYRLiUlZGob5HviRm3PrDF91X01xoYH2T0MD735R3L/CvyXA12NnJHxM="
+jobs:
+  include:
+    - stage: deploy_release
+      if: branch = master AND type = api
+      before_install:
+        - .travis/set_ssh.sh
+        - git remote set-url origin git@github.com:bsc-dom/dataclay-demos.git
+      script:
+        - .travis/deploy.sh
+notifications:
+  email:
+    - commiter:
+      on_success: change
+      on_failure: always

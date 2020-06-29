@@ -10,7 +10,7 @@ function printMsg { echo "${cyan}======== $1 ========${end}"; }
 # MAIN
 #-----------------------------------------------------------------------
 
-export COMMAND_OPTS="--debug"
+export COMMAND_OPTS=""
 
 printMsg "Checking requirements"
 $SCRIPTDIR/check_requirements.sh
@@ -34,6 +34,6 @@ printMsg "Running demo"
 $SCRIPTDIR/run.sh
 
 printMsg "Cleaning"
-#$SCRIPTDIR/clean.sh
+$SCRIPTDIR/clean.sh
 
 printMsg " DEMO SUCCESSFULLY FINISHED :) "

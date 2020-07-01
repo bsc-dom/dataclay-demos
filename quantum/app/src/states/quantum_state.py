@@ -21,14 +21,9 @@ class quantum_state(object):
 
 	def empty_state(self):
 		bs = self._hilbert_size//max_par
-		
-		self._state = ds.getarray(alias="myarr")
-		
 		self._state = ds.zeros(shape=(1,self._hilbert_size), block_size=(1,bs), dtype=np.complex64)
-		
 		return
-
-
+	
 	def zero_state(self):
 		self.empty_state()
 		self._state[0,0]=1  # set item 

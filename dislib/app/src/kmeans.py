@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from dataclay import api, getRuntime
 import dataclay_dislib as ds
 
 def kmeans():
@@ -21,6 +20,6 @@ if __name__ == "__main__":
     print("-- Executing Kmeans using normal blocks --")
     kmeans()
     print("-- Executing Kmeans using dClay blocks --")
-    ds.USE_DATACLAY = True
+    ds.use_dataclay = True
     kmeans()
     

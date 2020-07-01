@@ -12,6 +12,11 @@ from sklearn.utils import check_random_state
 
 from math import ceil
 
+""" >>>>>>>>>>>>>>>>>>>> dataClay code modification """
+from DemoNS.classes import dClayBlock
+from dataclay import DataClayObject
+""" <<<<<<<<<<<<<<<<<<<< End of dataClay code modification """
+
 
 class Array(object):
     """ A distributed 2-dimensional array divided in blocks.
@@ -205,7 +210,15 @@ class Array(object):
         a single ndarray / sparse matrix.
         """
         sparse = None
+        
+        """ >>>>>>>>>>>>>>>>>>>> dataClay code modification """
+        #b0 = blocks[0][0]
         b0 = blocks[0][0]
+        if isinstance(b0, DataClayObject):
+            b0 = b0.get_block()
+        """ <<<<<<<<<<<<<<<<<<<< End of dataClay code modification """
+        
+        
         if sparse is None:
             sparse = issparse(b0)
 
@@ -919,7 +932,7 @@ class Array(object):
             res = np.squeeze(res)
         return res
 
-def array(x, block_size, use_dataclay=False):
+def array(x, block_size, use_dataclay=False): #DATACLAY MODIFICATION
     """
     Loads data into a Distributed Array.
 
@@ -962,9 +975,8 @@ def array(x, block_size, use_dataclay=False):
     blocks = []
     for i in range(0, x.shape[0], bn):
         row = [x[i: i + bn, j: j + bm] for j in range(0, x.shape[1], bm)]
-        """ =================== dataClay code =================== """
         if use_dataclay: 
-            # DATACLAY #
+            """ >>>>>>>>>>>>>>>>>>>> dataClay code modification """
             dc_blocks_row = []
             from DemoNS.classes import dClayBlock
             for block in row:
@@ -972,7 +984,7 @@ def array(x, block_size, use_dataclay=False):
                 dc_block.make_persistent()
                 dc_blocks_row.append(dc_block)
             blocks.append(dc_blocks_row)
-            """ =================== End of dataClay code =================== """
+            """ <<<<<<<<<<<<<<<<<<<< End of dataClay code modification """
         else:
             blocks.append(row)
 
@@ -983,7 +995,7 @@ def array(x, block_size, use_dataclay=False):
     return arr
 
 
-def random_array(shape, block_size, random_state=None, use_dataclay=False):
+def random_array(shape, block_size, random_state=None, use_dataclay=False):  #DATACLAY MODIFICATION
     """
     Returns a distributed array of random floats in the open interval [0.0,
     1.0). Values are from the "continuous uniform" distribution over the
@@ -1009,7 +1021,7 @@ def random_array(shape, block_size, random_state=None, use_dataclay=False):
 
 
 
-def zeros(shape, block_size, dtype=float, use_dataclay=False):
+def zeros(shape, block_size, dtype=float, use_dataclay=False):  #DATACLAY MODIFICATION
     """ Returns a ds-array of given shape and block size, filled with zeros.
 
     Parameters
@@ -1026,8 +1038,13 @@ def zeros(shape, block_size, dtype=float, use_dataclay=False):
     x : ds-array
         Distributed array filled with zeros.
     """
-    return _full(shape, block_size, False, _full_block, 0, dtype, use_dataclay)
-
+    
+    """ >>>>>>>>>>>>>>>>>>>> dataClay code modification """
+    if use_dataclay: 
+        return _full(shape, block_size, False, _full_block_dataclay, 0, dtype)
+    else:
+        return _full(shape, block_size, False, _full_block, 0, dtype)
+    """ <<<<<<<<<<<<<<<<<<<< End of dataClay code modification """
 
 def full(shape, block_size, fill_value, dtype=float, use_dataclay=False):
     """ Returns a ds-array of 'shape' filled with 'fill_value'.
@@ -1048,7 +1065,12 @@ def full(shape, block_size, fill_value, dtype=float, use_dataclay=False):
     x : ds-array
         Distributed array filled with the fill value.
     """
-    return _full(shape, block_size, False, _full_block, fill_value, dtype, use_dataclay)
+    """ >>>>>>>>>>>>>>>>>>>> dataClay code modification """
+    if use_dataclay: 
+        return _full(shape, block_size, False, _full_block_dataclay, fill_value, dtype)
+    else:
+        return _full(shape, block_size, False, _full_block, fill_value, dtype)
+    """ <<<<<<<<<<<<<<<<<<<< End of dataClay code modification """
 
 
 def apply_along_axis(func, axis, x, *args, **kwargs):
@@ -1200,7 +1222,12 @@ def _apply_elementwise(func, x, *args, **kwargs):
 
 def _random_block_wrapper(block_size, r_state, use_dataclay):
     seed = r_state.randint(np.iinfo(np.int32).max)
-    return _random_block(block_size, seed, use_dataclay)
+    """ >>>>>>>>>>>>>>>>>>>> dataClay code modification """
+    if use_dataclay: 
+        return _random_block_dataclay(block_size, seed)
+    else:
+        return _random_block(block_size, seed)
+    """ <<<<<<<<<<<<<<<<<<<< End of dataClay code modification """
 
 
 @task(returns=1)
@@ -1208,7 +1235,12 @@ def _get_item(i, j, block):
     """
     Returns a single item from the block. Coords must be in block space.
     """
-    return block[i, j]
+    if isinstance(block, DataClayObject):
+        """ >>>>>>>>>>>>>>>>>>>> dataClay code modification """
+        return block.get_item(i, j)
+        """ <<<<<<<<<<<<<<<<<<<< End of dataClay code modification """
+    else:
+        return block[i, j]
 
 
 @task(blocks={Type: COLLECTION_IN, Depth: 2}, returns=1)
@@ -1279,28 +1311,28 @@ def _transpose(blocks, out_blocks):
             out_blocks[i][j] = blocks[i][j].transpose()
 
 @task(returns=np.array)
-def _random_block(shape, seed, use_dataclay):
-    ###### DATACLAY #############
-    np.random.seed(seed)
-    if use_dataclay: 
-        from DemoNS.classes import dClayBlock
-        dc_block = dClayBlock(np.random.random(shape))
-        dc_block.make_persistent()
-        return dc_block
-    else: 
-        return np.random.random(shape)
-
+def _random_block(shape, seed):
+    return np.random.random(shape)
 
 @task(returns=np.array)
-def _full_block(shape, value, dtype, use_dataclay):
-    if use_dataclay: 
-        from DemoNS.classes import dClayBlock
-        dc_block = dClayBlock(np.full(shape, value, dtype))
-        dc_block.make_persistent()
-        return dc_block
-    else: 
-        return np.full(shape, value, dtype)
+def _full_block(shape, value, dtype):
+    return np.full(shape, value, dtype)
 
+
+""" >>>>>>>>>>>>>>>>>>>> dataClay code modification """
+@task(returns=dClayBlock)
+def _random_block_dataclay(shape, seed):
+    dc_block = dClayBlock(np.random.random(shape))
+    dc_block.make_persistent()
+    return dc_block
+
+@task(returns=dClayBlock)
+def _full_block_dataclay(shape, value, dtype):
+    dc_block = dClayBlock(np.full(shape, value, dtype))
+    dc_block.make_persistent()
+    return dc_block
+
+""" <<<<<<<<<<<<<<<<<<<< End of dataClay code modification """
 
 @task(blocks={Type: COLLECTION_IN, Depth: 2}, returns=np.array)
 def _block_apply_axis(func, axis, blocks, *args, **kwargs):
@@ -1321,17 +1353,24 @@ def _block_apply_axis(func, axis, blocks, *args, **kwargs):
 
 @task(returns=1)
 def _block_apply(func, block, *args, **kwargs):
-    from dataclay import DataClayObject
     if isinstance(block, DataClayObject):
+        """ >>>>>>>>>>>>>>>>>>>> dataClay code modification """
         local_args = locals()
         return block.dataclay_block_apply(func, local_args["args"], local_args["kwargs"])
+        """ <<<<<<<<<<<<<<<<<<<< End of dataClay code modification """
+
     else:
         return func(block, *args, **kwargs)
 
 
 @task(block=INOUT)
 def _set_value(block, i, j, value):
-    block[i][j] = value
+    if isinstance(block, DataClayObject):
+        """ >>>>>>>>>>>>>>>>>>>> dataClay code modification """
+        block.set_value(i, j, value)
+        """ <<<<<<<<<<<<<<<<<<<< End of dataClay code modification """
+    else:
+        block[i][j] = value
 
 @task(blocks={Type: COLLECTION_IN, Depth: 1}, returns=1)
 def _assemble_blocks(blocks, bshape):

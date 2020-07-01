@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from dataclay import api, getRuntime
 import dataclay_dislib as ds
 
 def matmul():
@@ -32,7 +31,7 @@ if __name__ == "__main__":
     matmul()
         
     print("-- Executing matmul using dClay blocks --")
-    ds.USE_DATACLAY = True
+    ds.use_dataclay = True
     matmul()
 
     

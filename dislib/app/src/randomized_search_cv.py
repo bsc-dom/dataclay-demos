@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from dataclay import api, getRuntime
 import dataclay_dislib as ds
 
 def randomized_search_cv():
@@ -25,7 +24,7 @@ if __name__ == "__main__":
     randomized_search_cv()
         
     print("-- Executing randomized_search_cv using dClay blocks --")
-    ds.USE_DATACLAY = True
+    ds.use_dataclay = True
     randomized_search_cv()
 
     

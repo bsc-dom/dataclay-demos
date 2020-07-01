@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from dataclay import api, getRuntime
 import dataclay_dislib as ds
 
 def decomposition():
@@ -21,6 +20,6 @@ if __name__ == "__main__":
     decomposition()
         
     print("-- Executing decomposition using dClay blocks --")
-    ds.USE_DATACLAY = True
+    ds.use_dataclay = True
     decomposition()
     

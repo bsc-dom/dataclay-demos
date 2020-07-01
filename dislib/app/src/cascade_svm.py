@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from dataclay import api, getRuntime
 import dataclay_dislib as ds
 
 def cascade_svm():
@@ -23,7 +22,7 @@ if __name__ == "__main__":
     cascade_svm()
         
     print("-- Executing cascade_svm using dClay blocks --")
-    ds.USE_DATACLAY = True
+    ds.use_dataclay = True
     cascade_svm()
 
     

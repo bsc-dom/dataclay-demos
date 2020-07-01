@@ -109,8 +109,9 @@ def hybrid_optimization():
 
 if __name__ == '__main__':
 	
-	ds.USE_DATACLAY = False
-	
+	""" >>>>>>>>>>>>>>>>>>>> dataClay code modification """
+	ds.use_dataclay = True
+	""" <<<<<<<<<<<<<<<<<<<< End of dataClay code modification """
 	cProfile.run('hybrid_optimization()')
 
 

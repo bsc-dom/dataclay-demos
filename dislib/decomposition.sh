@@ -14,8 +14,8 @@ bash $SCRIPTDIR/clean.sh
 bash $SCRIPTDIR/start.sh
 bash $SCRIPTDIR/build.sh
 bash $SCRIPTDIR/run.sh decomposition
-#bash $SCRIPTDIR/stop.sh
-#bash $SCRIPTDIR/clean.sh
+bash $SCRIPTDIR/stop.sh
+bash $SCRIPTDIR/clean.sh
 
 printMsg " DEMO SUCCESSFULLY FINISHED :) "
     

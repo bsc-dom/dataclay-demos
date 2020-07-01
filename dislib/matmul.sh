@@ -10,13 +10,13 @@ function printMsg { echo "${cyan}======== $1 ========${end}"; }
 # MAIN
 #-----------------------------------------------------------------------
 
-export COMMAND_OPTS="--debug"
+export COMMAND_OPTS=""
 bash $SCRIPTDIR/clean.sh
 bash $SCRIPTDIR/start.sh
 bash $SCRIPTDIR/build.sh
 bash $SCRIPTDIR/run.sh matmul
-#bash $SCRIPTDIR/stop.sh
-#bash $SCRIPTDIR/clean.sh
+bash $SCRIPTDIR/stop.sh
+bash $SCRIPTDIR/clean.sh
 
 printMsg " DEMO SUCCESSFULLY FINISHED :) "
     

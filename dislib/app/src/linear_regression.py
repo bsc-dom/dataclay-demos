@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from dataclay import api, getRuntime
 import dataclay_dislib as ds
 
 def linear_regression():
@@ -31,7 +30,7 @@ if __name__ == "__main__":
     linear_regression()
         
     print("-- Executing linear_regression using dClay blocks --")
-    ds.USE_DATACLAY = True
+    ds.use_dataclay = True
     linear_regression()
 
     

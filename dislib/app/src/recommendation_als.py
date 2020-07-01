@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from dataclay import api, getRuntime
 import dataclay_dislib as ds
 
 
@@ -20,7 +19,7 @@ if __name__ == "__main__":
     recommendation_als()
         
     print("-- Executing recommendation_als using dClay blocks --")
-    ds.USE_DATACLAY = True
+    ds.use_dataclay = True
     recommendation_als()
 
     

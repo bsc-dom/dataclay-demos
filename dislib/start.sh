@@ -9,6 +9,11 @@ function printMsg { echo "${cyan}======== $1 ========${end}"; }
 #-----------------------------------------------------------------------
 # MAIN
 #-----------------------------------------------------------------------
+printMsg "Building dspython for dislib"
+pushd $SCRIPTDIR/dataclay
+docker build -f dislib.dspython.Dockerfile \
+	-t bscdataclay/dislib-dspython .			
+popd
 
 printMsg "Starting dataClay"
 echo "Optional commands=$COMMAND_OPTS"
@@ -22,7 +27,7 @@ popd
 
 # wait for dataClay to be alive
 docker run --rm --network=dataclay_default -v $PWD/app/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-	 bscdataclay/client:2.4.dev WaitForDataClayToBeAlive 10 5
+	 bscdataclay/client WaitForDataClayToBeAlive 10 5
 	 
 printMsg "dataClay successfully started!"
 

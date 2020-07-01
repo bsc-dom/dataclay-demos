@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from dataclay import api, getRuntime
 import dataclay_dislib as ds
 
 def gaussian_mixture():
@@ -20,7 +19,7 @@ if __name__ == "__main__":
     gaussian_mixture()
         
     print("-- Executing gaussian_mixture using dClay blocks --")
-    ds.USE_DATACLAY = True
+    ds.use_dataclay = True
     gaussian_mixture()
 
     

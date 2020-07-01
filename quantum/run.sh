@@ -31,7 +31,7 @@ docker exec quantum-pycompss /opt/COMPSs/Runtime/scripts/user/runcompss \
 	--task_execution=compss --graph=false \
     --lang=python \
     --python_interpreter=python3 \
-    --pythonpath=/demo/ \
+    --pythonpath=/demo/:/demo/src:/demo/stubs \
 	--storage_conf=/demo/cfgfiles/session.properties \
   --classpath=/demo/dataclay.jar \
   src/${APP}.py 

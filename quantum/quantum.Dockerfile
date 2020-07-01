@@ -1,5 +1,5 @@
 FROM bscdataclay/quantum-demo
-FROM compss/compss:2.6
+FROM compss/compss:2.7
 
 # Prepare environment
 ENV DEMO_HOME=/demo
@@ -10,42 +10,27 @@ ENV DATACLAYCLIENTCONFIG=${DEMO_HOME}/cfgfiles/client.properties
 ENV DATACLAYGLOBALCONFIG=${DEMO_HOME}/cfgfiles/global.properties
 ENV DATACLAYSESSIONCONFIG=${DEMO_HOME}/cfgfiles/session.properties
 
-# Get aspectj
-RUN mkdir -p ${DEMO_HOME}/aspectj/
-COPY --from=0 /usr/share/java/aspectjrt.jar ${DEMO_HOME}/aspectj/aspectjrt.jar
-COPY --from=0 /usr/share/java/aspectjtools.jar ${DEMO_HOME}/aspectj/aspectjtools.jar
-COPY --from=0 /usr/share/java/aspectjweaver.jar ${DEMO_HOME}/aspectj/aspectjweaver.jar
+# Reuse all the demo folder
+COPY --from=0 ${DEMO_HOME} ${DEMO_HOME}
 
 # Get dataClay JAR
 COPY --from=0 /home/dataclayusr/dataclay/dataclay.jar ${DEMO_HOME}/dataclay.jar
 
-# Reuse all the demo folder
-COPY --from=0 ${DEMO_HOME} ${DEMO_HOME}
-
 # Get pyclay 
 COPY --from=0 /home/dataclayusr/dataclay/pyclay/ ${DEMO_HOME}/pyclay
-
-# Get pyclay dependencies
-RUN python3 --version 
 RUN python3 -m pip install -r ${DEMO_HOME}/pyclay/requirements.txt
 
 # Add pyclay source to pythonpath 
 ENV PYTHONPATH=${DEMO_HOME}/pyclay/src:${PYTHONPATH}
-
-# Compile Extrae wrapper for current extrae in use 
-ENV EXTRAE_HOME=/opt/COMPSs/Dependencies/extrae
-COPY --from=0 /home/dataclayusr/dataclay/pyextrae/ ${DEMO_HOME}/pyextrae/
-ENV PYCLAY_EXTRAE_WRAPPER_LIB=${DEMO_HOME}/pyextrae/pyclay_extrae_wrapper.so
-RUN cd ${DEMO_HOME}/pyextrae && gcc -L${EXTRAE_HOME}/lib -I${EXTRAE_HOME}/include extrae_wrapper.c -lpttrace --shared -fPIC -o ${PYCLAY_EXTRAE_WRAPPER_LIB}
-
 ENV CLASSPATH=${DEMO_HOME}/dataclay.jar:${CLASSPATH}
 
 # Install dislib
 RUN python3 -m pip install scipy==1.3.1 matplotlib scikit-learn
 RUN mkdir -p ${DEMO_HOME}/dislib 
-#RUN curl -SL https://github.com/bsc-wdc/dislib/archive/master.tar.gz | tar -xzC ${DEMO_HOME}/dislib --strip-components=1
 RUN git clone https://github.com/bsc-wdc/dislib.git ${DEMO_HOME}/dislib
+# Checkout to specific working commit for current dataclay modifications in array.py
+RUN cd ${DEMO_HOME}/dislib && git checkout f5959149b2849ed2514467027bd9c2a31ddaea74
 ENV PYTHONPATH=${DEMO_HOME}/dislib:${PYTHONPATH}
 
-COPY ./binding.py /opt/COMPSs/Bindings/python/3/pycompss/runtime/binding.py
+# Get modified Dislib array code 
 COPY ./array.py ${DEMO_HOME}/dislib/dislib/data/array.py

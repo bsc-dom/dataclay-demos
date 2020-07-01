@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from dataclay import api, getRuntime
 import dataclay_dislib as ds
 
 def gridsearch_cv():
@@ -22,7 +21,7 @@ if __name__ == "__main__":
     gridsearch_cv()
         
     print("-- Executing gridsearch_cv using dClay blocks --")
-    ds.USE_DATACLAY = True
+    ds.use_dataclay = True
     gridsearch_cv()
 
     

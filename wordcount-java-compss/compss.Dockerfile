@@ -1,6 +1,5 @@
-FROM bscdataclay/wordcount-java-demo
-
-FROM compss/compss:2.6
+FROM dataclaydemos/wordcount-java
+FROM compss/compss:2.7
 # Prepare environment
 ENV DEMO_HOME=/demo
 WORKDIR ${DEMO_HOME} 
@@ -9,10 +8,6 @@ WORKDIR ${DEMO_HOME}
 ENV DATACLAYCLIENTCONFIG=${DEMO_HOME}/cfgfiles/client.properties
 ENV DATACLAYGLOBALCONFIG=${DEMO_HOME}/cfgfiles/global.properties
 ENV DATACLAYSESSIONCONFIG=${DEMO_HOME}/cfgfiles/session.properties
-
-# Install compss jar in maven local repository 
-RUN mvn install:install-file -Dfile=/opt/COMPSs/Runtime/compss-engine.jar -DgroupId=es.bsc \
-	-DartifactId=compss -Dversion=latest -Dpackaging=jar -DcreateChecksum=true
 
 # Get aspectj
 RUN mkdir -p ${DEMO_HOME}/aspectj/
@@ -23,6 +18,10 @@ COPY --from=0 /usr/share/java/aspectjweaver.jar ${DEMO_HOME}/aspectj/aspectjweav
 # Reuse all the Maven stuff
 COPY --from=0 /home/dataclayusr/dataclay/dataclay.jar ${DEMO_HOME}/dataclay.jar
 COPY --from=0 /root/.m2 /root/.m2
+
+# Install compss jar in maven local repository
+RUN mvn install:install-file -Dfile=/opt/COMPSs/Runtime/compss-engine.jar -DgroupId=es.bsc \
+	-DartifactId=compss -Dversion=latest -Dpackaging=jar -DcreateChecksum=true
 
 # Get entrypoints 
 COPY --from=0 /home/dataclayusr/dataclay/entrypoints ${DEMO_HOME}/entrypoints

@@ -1,6 +1,5 @@
-FROM bscdataclay/hellopeople-java-demo
-
-FROM compss/compss:2.6
+FROM dataclaydemos/hello-people-java
+FROM compss/compss:2.7
 # Prepare environment
 ENV DEMO_HOME=/demo
 WORKDIR ${DEMO_HOME} 

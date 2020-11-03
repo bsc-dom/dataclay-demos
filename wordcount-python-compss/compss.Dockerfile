@@ -1,5 +1,5 @@
-FROM bscdataclay/wordcount-python-demo
-FROM compss/compss:2.6
+FROM dataclaydemos/wordcount-python
+FROM compss/compss:2.7
 
 # Prepare environment
 ENV DEMO_HOME=/demo

@@ -1,5 +1,5 @@
-FROM bscdataclay/wordcount-python-demo
-FROM compss/compss:2.6
+FROM dataclaydemos/hello-people-python
+FROM compss/compss:2.7
 
 # Prepare environment
 ENV DEMO_HOME=/demo
@@ -22,17 +22,17 @@ COPY --from=0 /home/dataclayusr/dataclay/dataclay.jar ${DEMO_HOME}/dataclay.jar
 # Reuse all the demo folder
 COPY --from=0 ${DEMO_HOME} ${DEMO_HOME}
 
-# Get pyclay 
+# Get pyclay
 COPY --from=0 /home/dataclayusr/dataclay/pyclay/ ${DEMO_HOME}/pyclay
 
 # Get pyclay dependencies
-RUN python3 --version 
+RUN python3 --version
 RUN python3 -m pip install -r ${DEMO_HOME}/pyclay/requirements.txt
 
-# Add pyclay source to pythonpath 
+# Add pyclay source to pythonpath
 ENV PYTHONPATH=${DEMO_HOME}/pyclay/src:${PYTHONPATH}
 
-# Compile Extrae wrapper for current extrae in use 
+# Compile Extrae wrapper for current extrae in use
 ENV EXTRAE_HOME=/opt/COMPSs/Dependencies/extrae
 COPY --from=0 /home/dataclayusr/dataclay/pyextrae/ ${DEMO_HOME}/pyextrae/
 ENV PYCLAY_EXTRAE_WRAPPER_LIB=${DEMO_HOME}/pyextrae/pyclay_extrae_wrapper.so

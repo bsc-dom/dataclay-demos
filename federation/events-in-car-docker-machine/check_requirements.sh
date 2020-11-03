@@ -1,5 +1,5 @@
-#!/bin/bash
-
+#!/bin/sh
+set -e
 # Check dockers is installed 
 if ! [ -x "$(command -v docker)" ]; then
   echo "Error: Docker command not found or not supported. Please check it is installed" >&2

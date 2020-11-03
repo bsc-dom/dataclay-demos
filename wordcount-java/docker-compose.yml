@@ -1,0 +1,69 @@
+version: '3.5'
+services:
+  logicmodule:
+    image: "bscdataclay/logicmodule:develop"
+    command: "${COMMAND_OPTS}"
+    ports:
+      - "11034:11034"
+    environment:
+      - LOGICMODULE_PORT_TCP=11034
+      - LOGICMODULE_HOST=logicmodule
+      - DATACLAY_ADMIN_USER=admin
+      - DATACLAY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./extrae/extrae_config.xml:/home/dataclayusr/dataclay/extrae/extrae_basic.xml
+    stop_grace_period: 5m
+    healthcheck:
+       interval: 5s
+       retries: 10
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
+    networks:
+      - dataclaynet
+
+  dsjava1:
+    image: "bscdataclay/dsjava:develop"
+    command: "${COMMAND_OPTS}"
+    ports:
+      - "2127:2127"
+    depends_on:
+      - logicmodule
+    environment:
+      - DATASERVICE_NAME=DS1
+      - DATASERVICE_JAVA_PORT_TCP=2127
+      - LOGICMODULE_PORT_TCP=11034
+      - LOGICMODULE_HOST=logicmodule
+    volumes:
+      - ./extrae/extrae_config.xml:/home/dataclayusr/dataclay/extrae/extrae_basic.xml
+    stop_grace_period: 5m
+    healthcheck:
+       interval: 5s
+       retries: 10
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
+    networks:
+      - dataclaynet
+
+  dsjava2:
+    image: "bscdataclay/dsjava:develop"
+    command: "${COMMAND_OPTS}"
+    ports:
+      - "2128:2128"
+    depends_on:
+      - logicmodule
+    environment:
+      - DATASERVICE_NAME=DS2
+      - DATASERVICE_JAVA_PORT_TCP=2127
+      - LOGICMODULE_PORT_TCP=11034
+      - LOGICMODULE_HOST=logicmodule
+    volumes:
+      - ./extrae/extrae_config.xml:/home/dataclayusr/dataclay/extrae/extrae_basic.xml
+    stop_grace_period: 5m
+    healthcheck:
+       interval: 5s
+       retries: 10
+       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
+    networks:
+      - dataclaynet
+
+networks:
+  dataclaynet:
+    name: dataclaynet

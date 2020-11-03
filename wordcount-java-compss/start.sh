@@ -1,26 +1,21 @@
-#!/bin/bash
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+#!/bin/sh
+set -e
 #-----------------------------------------------------------------------
 # Helper functions (miscellaneous)
 #-----------------------------------------------------------------------
-cyan=$'\e[1;36m'; end=$'\e[0m'
-function printMsg { echo "${cyan}======== $1 ========${end}"; }
-
+CONSOLE_CYAN="\033[1m\033[36m"; CONSOLE_NORMAL="\033[0m"
+printMsg() {
+  printf "${CONSOLE_CYAN}### ${1}${CONSOLE_NORMAL}\n"
+}
 #-----------------------------------------------------------------------
 # MAIN
 #-----------------------------------------------------------------------
-
 printMsg "Starting dataClay"
-echo "Optional commands=$COMMAND_OPTS"
-export COMMAND_OPTS=$COMMAND_OPTS
-pushd $SCRIPTDIR/dataclay
 docker-compose up -d
-popd
 
 # wait for dataClay to be alive
-docker run --rm --network=dataclay_default -v $PWD/app/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
+docker run --rm --network=dataclaynet -v $PWD/app/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
 	 bscdataclay/client:develop WaitForDataClayToBeAlive 10 5
-	 
 printMsg "dataClay successfully started!"
 
     

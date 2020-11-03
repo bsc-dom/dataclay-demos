@@ -1,0 +1,98 @@
+version: '3.4'
+
+volumes:
+  dataclay-certs:
+    driver: local
+
+services:
+
+  certificates_initializer:
+    image: "dataclaydemos/certificate-initializer"
+    build:
+      context: .
+      dockerfile: cert.Dockerfile
+    environment:
+      - CERTIFICATE_AUTHORITY_HOST=${CERTIFICATE_AUTHORITY_HOST}
+    volumes:
+      - dataclay-certs:/ssl/:rw
+    healthcheck:
+      test: bash -c "[ -f /ssl/dataclay-agent.crt ]"
+      timeout: 1s
+      retries: 20
+
+  proxy:
+    image: traefik:v1.7.17
+    depends_on:
+      - certificates_initializer
+    restart: unless-stopped
+    command: --docker --docker.exposedByDefault=false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/docker/dataclay/traefik.toml:/traefik.toml
+      - dataclay-certs:/ssl:ro
+    ports:
+      - "80:80"
+      - "443:443"
+
+  logicmodule:
+    image: "bscdataclay/logicmodule:develop.jdk11-alpine"
+    command: "--debug"
+    depends_on:
+      - proxy
+      - certificates_initializer
+    environment:
+      - LOGICMODULE_HOST=logicmodule
+      - LOGICMODULE_PORT_TCP=11034
+      - DATACLAY_ADMIN_USER=admin
+      - DATACLAY_ADMIN_PASSWORD=admin
+      - LM_SERVICE_ALIAS_HEADERMSG=logicmodule
+      - SSL_CLIENT_TRUSTED_CERTIFICATES=/ssl/dataclay-ca.crt
+      - SSL_CLIENT_CERTIFICATE=/ssl/dataclay-agent.crt
+      - SSL_CLIENT_KEY=/ssl/dataclay-agent.pem
+    volumes:
+      - dataclay-certs:/ssl/:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=logicmodule"
+      - "traefik.frontend.rule=Headers: service-alias,logicmodule"
+      - "traefik.port=11034"
+      - "traefik.protocol=h2c"
+    stop_grace_period: 5m
+    healthcheck:
+      interval: 5s
+      retries: 10
+      test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
+
+  dsjava:
+    image: "bscdataclay/dsjava:develop.jdk11-alpine"
+    depends_on:
+      - logicmodule
+      - proxy
+    environment:
+      - DATASERVICE_NAME=DS1
+      - DATASERVICE_JAVA_PORT_TCP=2127
+      - LOGICMODULE_PORT_TCP=11034
+      - LOGICMODULE_HOST=logicmodule
+    stop_grace_period: 5m
+    healthcheck:
+      interval: 5s
+      retries: 10
+      test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
+
+  dspython:
+    image: "bscdataclay/dspython:develop-alpine"
+    command: "--debug"
+    depends_on:
+      - logicmodule
+      - dsjava
+    environment:
+      - DATASERVICE_NAME=DS1
+      - LOGICMODULE_PORT_TCP=11034
+      - LOGICMODULE_HOST=logicmodule
+      - DEBUG=False
+    stop_grace_period: 5m
+    healthcheck:
+      interval: 5s
+      retries: 10
+      test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
+           

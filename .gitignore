@@ -5,3 +5,8 @@
 *.class
 .settings
 __pycache__
+/federation/federation-security-python/car/certs/
+/federation/federation-security-python/city/certs/
+/dataclay-demos.iml
+/venv/
+/.idea/

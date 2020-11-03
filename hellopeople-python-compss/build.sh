@@ -1,29 +1,25 @@
-#!/bin/bash -e
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+#!/bin/sh
+set -e
 #-----------------------------------------------------------------------
 # Helper functions (miscellaneous)
 #-----------------------------------------------------------------------
-cyan=$'\e[1;36m'; end=$'\e[0m'
-function printMsg { echo "${cyan}======== $1 ========${end}"; }
-
+CONSOLE_CYAN="\033[1m\033[36m"; CONSOLE_NORMAL="\033[0m"
+printMsg() {
+  printf "${CONSOLE_CYAN}### ${1}${CONSOLE_NORMAL}\n"
+}
 #-----------------------------------------------------------------------
 # MAIN
 #-----------------------------------------------------------------------
-
 # Build
-pushd $SCRIPTDIR
-printMsg "Building demo $DEMO_IMG_NAME"
-docker build --network=dataclay_default \
+printMsg "Building demo dataclaydemos/hello-people-python"
+docker build --network=dataclaynet \
 	--build-arg CACHEBUST=$(date +%s) \
-	-t bscdataclay/wordcount-python-demo .			
+	-t dataclaydemos/hello-people-python .
 printMsg "... producer image built successfully"
 
-DEMO_IMG_NAME=bscdataclay/${PWD##*/}-demo
-printMsg "Building demo $DEMO_IMG_NAME"
-docker build --network=dataclay_default \
+printMsg "Building demo dataclaydemos/hello-people-python-compss"
+docker build --network=dataclaynet \
 	--build-arg CACHEBUST=$(date +%s) \
 	-f compss.Dockerfile \
-	-t $DEMO_IMG_NAME .			
+	-t dataclaydemos/hello-people-python-compss .
 printMsg "... consumer image built successfully"
-
-printMsg "$DEMO_IMG_NAME docker demo build!"

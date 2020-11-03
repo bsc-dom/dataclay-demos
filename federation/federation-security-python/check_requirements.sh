@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh
+set -e
 
 # Check dockers is installed 
 if ! [ -x "$(command -v docker)" ]; then

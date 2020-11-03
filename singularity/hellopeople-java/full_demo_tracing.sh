@@ -10,7 +10,7 @@ export PATH=$DATACLAY_HOME/bin:$PATH
 rm -rf trace
 
 # Deploy dataClay
-dataclaysrv start --tracing --python-ee-per-node 0
+dataclaysrv start --tracing --python-ee-per-sl 0
 
 # Register accounts, model and store stubs in client node
 dataclayprepare $(pwd)/model/src  $(pwd)/app/src model java

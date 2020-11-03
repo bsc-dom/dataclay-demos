@@ -1,8 +1,6 @@
-#!/bin/bash
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-IFS=$'\r\n' GLOBIGNORE='*' command eval  "MACHINES=($(cat $SCRIPTDIR/machines.txt))"
-for MACHINE in ${MACHINES[@]}; do
-		echo "Removing machine $MACHINE..."
-		yes | docker-machine rm $MACHINE	
-done
+#!/bin/sh
+echo "Removing machine dataclay-demo-city..."
+yes | docker-machine rm dataclay-demo-city
+echo "Removing machine dataclay-demo-car	..."
+yes | docker-machine rm dataclay-demo-car
 echo "Done!"

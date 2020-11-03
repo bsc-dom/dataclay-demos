@@ -1,36 +1,54 @@
-#!/bin/bash
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-IFS=$'\r\n' GLOBIGNORE='*' command eval  "MACHINES=($(cat $SCRIPTDIR/machines.txt))"
-for MACHINE in ${MACHINES[@]}; do
-	echo " == Building $MACHINE application =="
+#!/bin/sh
+set -e
+SCRIPTDIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+echo " == Starting dataClay in City =="
+cd $SCRIPTDIR/city/dataclay
+eval $(docker-machine env dataclay-demo-city)
+CITY_IP=`docker-machine ip dataclay-demo-city`
+export LOGICMODULE_HOST=$CITY_IP
+export EXPOSED_IP_FOR_CLIENT=$CITY_IP
+docker-compose kill
+docker-compose down -v #sanity check
+docker-compose up -d #Starting dockers to get stubs
 
-	eval $(docker-machine env $MACHINE)
-	# copy dataclay configurations
-	docker-machine ssh $MACHINE -f 'sudo rm -rf *' #sanity check
-	docker-machine scp -r $SCRIPTDIR/hosts/common $MACHINE:~/
-	
-	pushd $SCRIPTDIR/hosts/common/dataclay
-	MACHINE_IP=`docker-machine ip $MACHINE`
-	export LOGICMODULE_HOST=$MACHINE_IP
-	export EXPOSED_IP_FOR_CLIENT=$MACHINE_IP
-	docker-compose kill
-	docker-compose down -v #sanity check
-	docker-compose up -d #Starting dockers to get stubs
-	popd 
+# Build
+cd $SCRIPTDIR/city/
+docker build --network=dataclay_default --no-cache \
+		-t dataclaydemo/city .
 
-	# Build
-	pushd $SCRIPTDIR/hosts/
-	docker build --network=dataclay_default \
-		--build-arg APP_NAME=${MACHINE} \
-		--build-arg CACHEBUST=$(date +%s) \
-		-t dataclaydemo/$MACHINE .
-	popd 
-	
-	pushd $SCRIPTDIR/hosts/common/dataclay
-	docker-compose down
-	popd
-	
-done
+echo " == Starting dataClay in Car =="
+
+cd $SCRIPTDIR/car/dataclay
+eval $(docker-machine env dataclay-demo-car)
+CAR_IP=`docker-machine ip dataclay-demo-car`
+export LOGICMODULE_HOST=$CAR_IP
+export EXPOSED_IP_FOR_CLIENT=$CAR_IP
+docker-compose kill
+docker-compose down -v #sanity check
+docker-compose up -d #Starting dockers to get stubs
+
+
+# Build
+cd $SCRIPTDIR/car/
+docker build --network=dataclay_default --no-cache \
+    --build-arg EXTERNAL_DATACLAY_HOST=$CITY_IP \
+		-t dataclaydemo/car .
+
+
+echo " == Stopping dataClay in city  =="
+eval $(docker-machine env dataclay-demo-city)
+cd $SCRIPTDIR/city/dataclay
+docker-compose stop
+docker images
+
+
+echo " == Stopping dataClay in car  =="
+eval $(docker-machine env dataclay-demo-car)
+cd $SCRIPTDIR/car/dataclay
+docker-compose stop
+docker images
+
+cd $SCRIPTDIR
 
 echo "Done!"
 

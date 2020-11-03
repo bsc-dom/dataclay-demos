@@ -122,11 +122,7 @@ Once the model is registered and we obtain the stubs, we have the following:
 │               └── app
 │                   └── HelloPeople.java: Application code using dataClay stubs. 
 │   
-├── dataclay: here you will find everything needed to bootstrap and configure dataClay 
-│   ├── docker-compose.yml: docker-compose with all dataClay services
-│   └── prop: Configuration files mounted in docker volumes for dataClay services
-│       ├── global.properties: Extra configurations for the dataClay services
-│       └── log4j2.xml: dataClay logging configuration for Apache Logger 2. 
+├── docker-compose.yml: docker-compose with all dataClay services dataClay 
 ├── Dockerfile: Dockerized demo with all steps done by the demo
 ├── model: Model to be registered in dataClay
 │   ├── pom.xml: Model pom.xml 

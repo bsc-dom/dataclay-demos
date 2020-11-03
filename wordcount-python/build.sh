@@ -1,23 +1,18 @@
-#!/bin/bash -e
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+#!/bin/sh
+set -e
 #-----------------------------------------------------------------------
 # Helper functions (miscellaneous)
 #-----------------------------------------------------------------------
-cyan=$'\e[1;36m'; end=$'\e[0m'
-function printMsg { echo "${cyan}======== $1 ========${end}"; }
-
+CONSOLE_CYAN="\033[1m\033[36m"; CONSOLE_NORMAL="\033[0m"
+printMsg() {
+  printf "${CONSOLE_CYAN}### ${1}${CONSOLE_NORMAL}\n"
+}
 #-----------------------------------------------------------------------
 # MAIN
 #-----------------------------------------------------------------------
-
-
-printMsg "Building demo $DEMO_IMG_NAME"
-
+printMsg "Building demo dataclaydemos/wordcount-python"
 # Build #
-pushd $SCRIPTDIR
-DEMO_IMG_NAME=bscdataclay/${PWD##*/}-demo
-docker build --network=dataclay_default \
+docker build --network=dataclaynet \
 	--build-arg CACHEBUST=$(date +%s) \
-	-t $DEMO_IMG_NAME .			
-
-printMsg "$DEMO_IMG_NAME docker demo build!"
+	-t dataclaydemos/wordcount-python .
+printMsg "dataclaydemos/wordcount-python docker demo build!"

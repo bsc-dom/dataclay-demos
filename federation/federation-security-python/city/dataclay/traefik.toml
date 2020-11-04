@@ -1,0 +1,26 @@
+debug = false
+logLevel = "DEBUG"
+
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+    [entryPoints.http]
+    address = ":80"
+        [entryPoints.http.redirect]
+        entryPoint = "https"
+
+   [entryPoints.https]
+     address = ":443"
+   [entryPoints.https.tls]
+     [entryPoints.https.tls.clientCA]
+     files = ["/ssl/dataclay-ca.crt"]
+     optional = false
+
+	 [entryPoints.https.tls.defaultCertificate]
+     certFile = "/ssl/dataclay-agent.crt"
+     keyFile  = "/ssl/dataclay-agent.pem"
+     
+     # For secure connection on frontend.local
+     [[entryPoints.https.tls.certificates]]
+     certFile = "/ssl/dataclay-agent.crt"
+     keyFile  = "/ssl/dataclay-agent.pem"

@@ -1,33 +1,29 @@
-#!/bin/bash
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+#!/bin/sh
+SCRIPTDIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 #-----------------------------------------------------------------------
 # Helper functions (miscellaneous)
 #-----------------------------------------------------------------------
-cyan=$'\e[1;36m'; end=$'\e[0m'
-function printMsg { echo "${cyan}======== $1 ========${end}"; }
-
+CONSOLE_CYAN="\033[1m\033[36m"; CONSOLE_NORMAL="\033[0m"
+printMsg() {
+  printf "${CONSOLE_CYAN}### ${1}${CONSOLE_NORMAL}\n"
+}
 #-----------------------------------------------------------------------
 # MAIN
 #-----------------------------------------------------------------------
 printMsg "Removing and cleaning dataClay dockers"
-pushd $SCRIPTDIR/dataclay_city
+cd $SCRIPTDIR/city/dataclay_city
 docker-compose kill
 docker-compose down -v #sanity check
-popd
 
-pushd $SCRIPTDIR/dataclay_car
+cd $SCRIPTDIR/car/dataclay_car
 docker-compose kill
 docker-compose down -v #sanity check
-popd
+
+cd $SCRIPTDIR
 
 # Clean build dockers
-docker rmi -f dataclaydemo/client
 docker rmi -f dataclaydemo/city
 docker rmi -f dataclaydemo/car
-docker rmi -f dataclaydemo/dataclay-logicmodule
-docker rmi -f dataclaydemo/dataclay-dsjava
-docker rmi -f dataclaydemo/dataclay-dspython
-
 docker network rm dataclaynetwork
 
 printMsg "Cleaned!"

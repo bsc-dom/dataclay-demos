@@ -1,39 +1,32 @@
-#!/bin/bash -e
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+#!/bin/sh
+set -e
 #-----------------------------------------------------------------------
 # Helper functions (miscellaneous)
 #-----------------------------------------------------------------------
-cyan=$'\e[1;36m'; end=$'\e[0m'
-function printMsg { echo "${cyan}======== $1 ========${end}"; }
-
+CONSOLE_CYAN="\033[1m\033[36m"; CONSOLE_NORMAL="\033[0m"
+printMsg() {
+  printf "${CONSOLE_CYAN}### ${1}${CONSOLE_NORMAL}\n"
+}
 #-----------------------------------------------------------------------
 # MAIN
 #-----------------------------------------------------------------------
-
 export COMMAND_OPTS=""
-
 printMsg "Checking requirements"
-$SCRIPTDIR/check_requirements.sh
+./check_requirements.sh
 
 printMsg "Cleaning"
-$SCRIPTDIR/clean.sh
+./clean.sh
 
 printMsg "Creating virtual machines"
-$SCRIPTDIR/create_machines.sh
-
-printMsg "Building model"
-$SCRIPTDIR/build.sh
-
-printMsg "Deploying model to machines"
-$SCRIPTDIR/deploy_model.sh
+./create_machines.sh
 
 printMsg "Building and deploying applications"
-$SCRIPTDIR/deploy_apps.sh
+./deploy_apps.sh
 
 printMsg "Running demo"
-$SCRIPTDIR/run.sh
+./run.sh
 
 printMsg "Cleaning"
-$SCRIPTDIR/clean.sh
+./clean.sh
 
 printMsg " DEMO SUCCESSFULLY FINISHED :) "

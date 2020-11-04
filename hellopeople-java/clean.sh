@@ -1,22 +1,18 @@
-#!/bin/bash
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+#!/bin/sh
+set -e
 #-----------------------------------------------------------------------
 # Helper functions (miscellaneous)
 #-----------------------------------------------------------------------
-cyan=$'\e[1;36m'; end=$'\e[0m'
-function printMsg { echo "${cyan}======== $1 ========${end}"; }
-
+CONSOLE_CYAN="\033[1m\033[36m"; CONSOLE_NORMAL="\033[0m"
+printMsg() {
+  printf "${CONSOLE_CYAN}### ${1}${CONSOLE_NORMAL}\n"
+}
 #-----------------------------------------------------------------------
 # MAIN
 #-----------------------------------------------------------------------
 printMsg "Removing and cleaning dataClay dockers"
-pushd $SCRIPTDIR/dataclay
 docker-compose kill
 docker-compose down -v #sanity check
-popd
-
 # Clean build dockers
-DEMO_IMG_NAME=bscdataclay/${PWD##*/}-demo
-docker rmi -f $DEMO_IMG_NAME
-
+docker rmi -f dataclaydemos/hello-people-java
 printMsg "Cleaned!"

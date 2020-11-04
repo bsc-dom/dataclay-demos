@@ -1,22 +1,22 @@
-#!/bin/bash -e
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+#!/bin/sh
+set -e
 #-----------------------------------------------------------------------
 # Helper functions (miscellaneous)
 #-----------------------------------------------------------------------
-cyan=$'\e[1;36m'; end=$'\e[0m'
-function printMsg { echo "${cyan}======== $1 ========${end}"; }
-
+CONSOLE_CYAN="\033[1m\033[36m"; CONSOLE_NORMAL="\033[0m"
+printMsg() {
+  printf "${CONSOLE_CYAN}### ${1}${CONSOLE_NORMAL}\n"
+}
 #-----------------------------------------------------------------------
 # MAIN
 #-----------------------------------------------------------------------
-
-pushd $SCRIPTDIR
-DEMO_IMG_NAME=bscdataclay/${PWD##*/}-demo
-printMsg "Running demo $DEMO_IMG_NAME"
-docker run --rm --network=dataclay_default \
+printMsg "Running demo"
+docker run --rm --network=dataclaynet \
 	-v `pwd`/app/text:/demo/text:ro \
+	-v `pwd`/app/cfgfiles/global.properties:/demo/cfgfiles/global.properties \
+	-v `pwd`/app/cfgfiles/log4j2.xml:/demo/cfgfiles/log4j2.xml \
 	-v `pwd`/app/cfgfiles/session.extrae.properties:/demo/cfgfiles/session.properties \
-    -v `pwd`/trace:/demo/trace:rw \
-    $DEMO_IMG_NAME -Dexec.mainClass="app.HelloPeople" --tracing forthepeople martin 33    
-popd 
+  -v `pwd`/trace:/demo/trace:rw \
+  dataclaydemos/hello-people-java -Dexec.mainClass="app.HelloPeople" --tracing forthepeople martin 33
+
     

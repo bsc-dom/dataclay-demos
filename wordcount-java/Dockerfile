@@ -1,5 +1,4 @@
-FROM bscdataclay/client
-LABEL maintainer dataClay team <support-dataclay@bsc.es>
+FROM bscdataclay/client:develop
 
 # Prepare environment
 ENV DEMO_HOME=/demo

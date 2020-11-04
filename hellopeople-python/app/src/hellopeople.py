@@ -11,12 +11,8 @@ from DemoNS.classes import Person, People
 
 class Attributes(object):
     pass
-
-
 def usage():
     print("Usage: hellopeople.py <colname> <personName> <personAge>")
-
-
 def init_attributes(attributes):
     if len(sys.argv) != 4:
         print("ERROR: Missing parameters")

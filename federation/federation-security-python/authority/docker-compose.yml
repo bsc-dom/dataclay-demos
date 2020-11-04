@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+
+  certificate_authority:
+    image: "dataclaydemos/certificate-authority"
+    build: .
+    ports:
+      - "5000:5000"

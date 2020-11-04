@@ -1,15 +1,17 @@
-#!/bin/bash
-SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+#!/bin/sh
+SCRIPTDIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 #-----------------------------------------------------------------------
 # Helper functions (miscellaneous)
 #-----------------------------------------------------------------------
-cyan=$'\e[1;36m'; end=$'\e[0m'
-function printMsg { echo "${cyan}======== $1 ========${end}"; }
+CONSOLE_CYAN="\033[1m\033[36m"; CONSOLE_NORMAL="\033[0m"
+printMsg() {
+  printf "${CONSOLE_CYAN}### ${1}${CONSOLE_NORMAL}\n"
+}
 #-----------------------------------------------------------------------
 # MAIN
 #-----------------------------------------------------------------------
 if [ "$#" -ne 1 ] ; then
-	echo "ERROR: usage: $0 <fermata|tram> "
+	echo "ERROR: usage: $0 <machine> "
 	exit 1
 fi
 
@@ -18,12 +20,10 @@ docker network create dataclaynetwork
 
 HOSTNAME=$1
 printMsg "Starting dataClay in $HOSTNAME"
-echo "Optional commands=$COMMAND_OPTS"
-export COMMAND_OPTS=$COMMAND_OPTS
-pushd $SCRIPTDIR/dataclay_$HOSTNAME
+cd $SCRIPTDIR/$HOSTNAME/dataclay_$HOSTNAME
 docker-compose up -d
-popd
+cd $SCRIPTDIR
 
 # wait for dataClay to be alive
-docker run --rm --network dataclaynetwork -v $PWD/app/$HOSTNAME/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-	 bscdataclay/client WaitForDataClayToBeAlive 10 5
+docker run --rm --network dataclaynetwork -v $PWD/$HOSTNAME/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
+	 bscdataclay/client:develop WaitForDataClayToBeAlive 10 5

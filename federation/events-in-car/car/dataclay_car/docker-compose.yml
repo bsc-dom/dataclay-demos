@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.5'
 services:
   logicmodulecar:
     image: "bscdataclay/logicmodule:develop-slim:develop-alpine:develop"

@@ -1,11 +1,7 @@
 version: '3.5'
 services:
   logicmodule:
-<<<<<<< HEAD
-    image: "bscdataclay/logicmodule:develop:develop-slim:develop-alpine:develop-alpine"
-=======
     image: "bscdataclay/logicmodule:develop-alpine"
->>>>>>> master
     ports:
       - "11034:11034"
     environment:
@@ -22,11 +18,7 @@ services:
       - dataclaynet
 
   dsjava:
-<<<<<<< HEAD
-    image: "bscdataclay/dsjava:develop:develop-slim:develop-alpine:develop-alpine"
-=======
     image: "bscdataclay/dsjava:develop-alpine"
->>>>>>> master
     ports:
       - "2127:2127"
     depends_on:
@@ -45,11 +37,7 @@ services:
       - dataclaynet
 
   dspython:
-<<<<<<< HEAD
-    image: "bscdataclay/dspython:develop:develop-slim:develop-alpine:develop-alpine"
-=======
     image: "bscdataclay/dspython:develop-alpine"
->>>>>>> master
     depends_on:
       - logicmodule
       - dsjava

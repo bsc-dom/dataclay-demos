@@ -61,20 +61,12 @@ echo ""
 eval $(docker-machine env dataclay-demo-city)
 docker run --rm --network=dataclay_default \
     -v /home/docker/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-<<<<<<< HEAD
-		bscdataclay/client:develop:develop-slim:develop-alpine:develop-alpine WaitForDataClayToBeAlive 10 5
-=======
 		bscdataclay/client:develop-alpine WaitForDataClayToBeAlive 10 5
->>>>>>> master
 
 eval $(docker-machine env dataclay-demo-car)
 docker run --rm --network=dataclay_default \
     -v /home/docker/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-<<<<<<< HEAD
-		bscdataclay/client:develop:develop-slim:develop-alpine:develop-alpine WaitForDataClayToBeAlive 10 5
-=======
 		bscdataclay/client:develop-alpine WaitForDataClayToBeAlive 10 5
->>>>>>> master
 
 printMsg "City creates DKB"
 eval $(docker-machine env dataclay-demo-city)

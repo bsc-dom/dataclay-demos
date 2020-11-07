@@ -51,8 +51,8 @@ find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dsjava/bscdataclay\/dsjava\:d
 find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dspython/bscdataclay\/dspython\:develop/g' {} \;
 find $BASEDIR -type f -exec sed -i 's/bscdataclay\/client/bscdataclay\/client\:develop/g' {} \;
 
-find $BASEDIR -type f -exec sed -i 's/module load DATACLAY/develop/module load DATACLAY/develop\/develop/g' {} \;
-find $BASEDIR -type f -exec sed -i 's/module load COMPSs/Trunk/module load COMPSs/Trunk\/Trunk/g' {} \;
+find $BASEDIR -type f -exec sed -i 's/module load DATACLAY/module load DATACLAY\/develop/g' {} \;
+find $BASEDIR -type f -exec sed -i 's/module load COMPSs/module load COMPSs\/Trunk/g' {} \;
 
 git add -A
 git commit -m "New development version"

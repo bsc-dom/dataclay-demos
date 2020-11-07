@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   logicmodule:
-    image: "bscdataclay/logicmodule:develop:develop-slim:develop-alpine:develop"
+    image: "bscdataclay/logicmodule:develop"
     command: "${COMMAND_OPTS}"
     ports:
       - "11034:11034"
@@ -19,7 +19,7 @@ services:
       - dataclaynet
 
   dsjava:
-    image: "bscdataclay/dsjava:develop:develop-slim:develop-alpine:develop"
+    image: "bscdataclay/dsjava:develop"
     command: "${COMMAND_OPTS}"
     ports:
       - "2127:2127"

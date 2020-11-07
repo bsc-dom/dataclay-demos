@@ -26,4 +26,4 @@ cd $SCRIPTDIR
 
 # wait for dataClay to be alive
 docker run --rm --network dataclaynetwork -v $PWD/$HOSTNAME/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-	 bscdataclay/client:develop:develop-slim:develop-alpine:develop WaitForDataClayToBeAlive 10 5
+	 bscdataclay/client:develop WaitForDataClayToBeAlive 10 5

@@ -41,9 +41,9 @@ find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dspython/bscdataclay\/dspytho
 find $BASEDIR -type f -exec sed -i 's/bscdataclay\/client/bscdataclay\/client\:develop/g' {} \;
 
 find $BASEDIR -type f -exec sed -i 's/bscdataclay\/logicmodule\/bscdataclay\/logicmodule\:develop-alpine/g' {} \;
-find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dsjava/bscdataclay\/dsjava:develop-alpine/g' {} \;
-find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dspython/bscdataclay\/dspython:develop-alpine/g' {} \;
-find $BASEDIR -type f -exec sed -i 's/bscdataclay\/client/bscdataclay\/client:develop-alpine/g' {} \;
+find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dsjava/bscdataclay\/dsjava\:develop-alpine/g' {} \;
+find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dspython/bscdataclay\/dspython\:develop-alpine/g' {} \;
+find $BASEDIR -type f -exec sed -i 's/bscdataclay\/client/bscdataclay\/client\:develop-alpine/g' {} \;
 
 find $BASEDIR -type f -exec sed -i 's/bscdataclay\/logicmodule/bscdataclay\/logicmodule\:develop-slim/g' {} \;
 find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dsjava\/bscdataclay\/dsjava\:develop-slim/g' {} \;

@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   logicmodulefermata:
-    image: "bscdataclay/logicmodule:alpine"
+    image: "bscdataclay/logicmodule:develop-alpine"
     command: "${COMMAND_OPTS}"
     container_name: fermata-logicmodule
     ports:
@@ -18,7 +18,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
               
   dsjavafermata:
-    image: "bscdataclay/dsjava:alpine"
+    image: "bscdataclay/dsjava:develop-alpine"
     command: "${COMMAND_OPTS}"
     ports:
       - "2127:2127"
@@ -36,7 +36,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   dspythonfermata:
-    image: "bscdataclay/dspython:alpine"
+    image: "bscdataclay/dspython:develop-alpine"
     command: "${COMMAND_OPTS}"
     depends_on:
       - logicmodulefermata

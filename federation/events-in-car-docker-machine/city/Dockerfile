@@ -1,4 +1,4 @@
-FROM bscdataclay/client:alpine
+FROM bscdataclay/client:develop-alpine
 
 # Prepare environment
 ENV DEMO_HOME=/city

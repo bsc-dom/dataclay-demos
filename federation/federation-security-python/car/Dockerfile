@@ -9,7 +9,7 @@ ENV CERTIFICATES_DIR=$CERTIFICATES_DIR \
 COPY ./dataclay/get_certificates.sh .
 RUN ./get_certificates.sh
 
-FROM bscdataclay/client:alpine
+FROM bscdataclay/client:develop-alpine
 
 ## NOTE: GRPC security requires jdk 11 in alpine
 RUN apk --no-cache --update add openjdk11

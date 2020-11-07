@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   logicmodulecity:
-    image: "bscdataclay/logicmodule:develop-slim:develop-alpine:develop"
+    image: "bscdataclay/logicmodule:develop:develop-slim:develop-alpine:develop"
     command: "${COMMAND_OPTS}"
     container_name: city-logicmodule
     ports:
@@ -18,7 +18,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
               
   dsjavacity:
-    image: "bscdataclay/dsjava:develop-slim:develop-alpine:develop"
+    image: "bscdataclay/dsjava:develop:develop-slim:develop-alpine:develop"
     command: "${COMMAND_OPTS}"
     ports:
       - "2127:2127"
@@ -36,7 +36,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   dspythoncity:
-    image: "bscdataclay/dspython:develop-slim:develop-alpine:develop"
+    image: "bscdataclay/dspython:develop:develop-slim:develop-alpine:develop"
     command: "${COMMAND_OPTS}"
     depends_on:
       - logicmodulecity

@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   logicmoduletram:
-    image: "bscdataclay/logicmodule:alpine"
+    image: "bscdataclay/logicmodule:develop-alpine"
     container_name: tram-logicmodule
     command: "${COMMAND_OPTS}"
     ports:
@@ -18,7 +18,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
               
   dsjavatram:
-    image: "bscdataclay/dsjava:alpine"
+    image: "bscdataclay/dsjava:develop-alpine"
     command: "${COMMAND_OPTS}"
     ports:
       - "3127:3127"
@@ -36,7 +36,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   dspythontram:
-    image: "bscdataclay/dspython:alpine"
+    image: "bscdataclay/dspython:develop-alpine"
     command: "${COMMAND_OPTS}"
     ports:
       - "7878:7878"

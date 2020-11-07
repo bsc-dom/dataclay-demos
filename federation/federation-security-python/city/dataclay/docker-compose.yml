@@ -72,6 +72,8 @@ services:
       - DATASERVICE_JAVA_PORT_TCP=2127
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
+    volumes:
+      - /home/docker/dataclay/prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
     stop_grace_period: 5m
     healthcheck:
       interval: 5s
@@ -89,6 +91,8 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - LOGICMODULE_HOST=logicmodule
       - DEBUG=True
+    volumes:
+      - /home/docker/dataclay/prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
     stop_grace_period: 5m
     healthcheck:
       interval: 5s

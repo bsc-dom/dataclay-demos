@@ -18,7 +18,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
               
   dsjavacar:
-    image: "bscdataclay/dsjava-alpine"
+    image: "bscdataclay/dsjava:alpine"
     command: "--debug ${COMMAND_OPTS}"
     ports:
       - "3127:3127"

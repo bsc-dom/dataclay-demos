@@ -1,4 +1,4 @@
-FROM bscdataclay/client
+FROM bscdataclay/client:develop-slim:develop-alpine:develop
 
 # Prepare environment
 ENV DEMO_HOME=/tram

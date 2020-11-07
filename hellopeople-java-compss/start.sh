@@ -14,7 +14,7 @@ printMsg "Starting dataClay"
 docker-compose up -d
 # wait for dataClay to be alive
 docker run --rm --network=dataclaynet -v $PWD/app/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
-	 bscdataclay/client WaitForDataClayToBeAlive 10 5
+	 bscdataclay/client:develop-slim:develop-alpine:develop WaitForDataClayToBeAlive 10 5
 printMsg "dataClay successfully started!"
 
     

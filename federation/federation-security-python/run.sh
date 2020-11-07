@@ -63,13 +63,13 @@ eval $(docker-machine env dataclay-demo-city)
 docker run --rm --network=dataclay_default \
 		-v /home/docker/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
 		-v dataclay_dataclay-certs:/ssl/:ro \
-		bscdataclay/client-alpine WaitForDataClayToBeAlive 10 5
+		bscdataclay/client:develop-slim:develop-alpine:develop-alpine WaitForDataClayToBeAlive 10 5
 
 eval $(docker-machine env dataclay-demo-car)
 docker run --rm --network=dataclay_default \
 		-v /home/docker/cfgfiles/:/home/dataclayusr/dataclay/cfgfiles/:ro \
 		-v dataclay_dataclay-certs:/ssl/:ro \
-		bscdataclay/client-alpine WaitForDataClayToBeAlive 10 5
+		bscdataclay/client:develop-slim:develop-alpine:develop-alpine WaitForDataClayToBeAlive 10 5
 
 printMsg "City creates City object"
 eval $(docker-machine env dataclay-demo-city)

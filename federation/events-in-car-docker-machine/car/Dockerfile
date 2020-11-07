@@ -1,4 +1,4 @@
-FROM bscdataclay/client-alpine
+FROM bscdataclay/client:develop-slim:develop-alpine:develop-alpine
 LABEL maintainer dataClay team <support-dataclay@bsc.es>
 
 # Prepare environment

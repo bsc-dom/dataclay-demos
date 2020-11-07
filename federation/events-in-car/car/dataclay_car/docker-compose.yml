@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   logicmodulecar:
-    image: "bscdataclay/logicmodule"
+    image: "bscdataclay/logicmodule:develop-slim:develop-alpine:develop"
     container_name: car-logicmodule
     command: "--debug ${COMMAND_OPTS}"
     ports:
@@ -18,7 +18,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
               
   dsjavacar:
-    image: "bscdataclay/dsjava-alpine"
+    image: "bscdataclay/dsjava:develop-slim:develop-alpine:develop-alpine"
     command: "--debug ${COMMAND_OPTS}"
     ports:
       - "3127:3127"
@@ -36,7 +36,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
        
   dspythoncar:
-    image: "bscdataclay/dspython"
+    image: "bscdataclay/dspython:develop-slim:develop-alpine:develop"
     command: "--debug ${COMMAND_OPTS}"
     ports:
       - "7878:7878"

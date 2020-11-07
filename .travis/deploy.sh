@@ -16,8 +16,8 @@ if [ "$TRAVIS_BRANCH" == "master" ]; then
 	 find . -type f -exec sed -i 's/bscdataclay\/dspython\:develop-slim/bscdataclay\/dspython\:slim/g' {} \;
 	 find . -type f -exec sed -i 's/bscdataclay\/client\:develop-slim/bscdataclay\/client\:slim/g' {} \;
 	 
-	 find . -type f -exec sed -i 's/module load DATACLAY\/develop/module load DATACLAY/g' {} \;
-	 find . -type f -exec sed -i 's/module load COMPSs\/Trunk/module load COMPSs/g' {} \;
+	 find . -type f -exec sed -i 's/module load DATACLAY/develop\/develop/module load DATACLAY/develop/g' {} \;
+	 find . -type f -exec sed -i 's/module load COMPSs/Trunk\/Trunk/module load COMPSs/Trunk/g' {} \;
 
    git add -A
 	 git commit -m "Modified docker images"

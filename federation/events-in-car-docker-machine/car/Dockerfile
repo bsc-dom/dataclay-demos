@@ -1,5 +1,4 @@
-FROM bscdataclay/client-alpine
-LABEL maintainer dataClay team <support-dataclay@bsc.es>
+FROM bscdataclay/client:alpine
 
 # Prepare environment
 ENV DEMO_HOME=/car

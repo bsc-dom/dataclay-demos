@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.5'
 
 volumes:
   dataclay-certs:
@@ -35,7 +35,7 @@ services:
       - "443:443"
 
   logicmodule:
-    image: "bscdataclay/logicmodule-alpine"
+    image: "bscdataclay/logicmodule:alpine"
     command: "--debug"
     depends_on:
       - proxy
@@ -63,7 +63,7 @@ services:
       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
 
   dsjava:
-    image: "bscdataclay/dsjava-alpine"
+    image: "bscdataclay/dsjava:alpine"
     depends_on:
       - logicmodule
       - proxy
@@ -79,7 +79,7 @@ services:
       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
 
   dspython:
-    image: "bscdataclay/dspython-alpine"
+    image: "bscdataclay/dspython:alpine"
     command: "--debug"
     depends_on:
       - logicmodule

@@ -46,6 +46,7 @@ find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dsjava\:slim/bscdataclay\/dsj
 find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dspython\:slim/bscdataclay\/dspython-slim/g' {} \;
 find $BASEDIR -type f -exec sed -i 's/bscdataclay\/client\:slim/bscdataclay\/client-slim/g' {} \;
 
+# FIXME: do not replace :develop
 find $BASEDIR -type f -exec sed -i 's/bscdataclay\/logicmodule /bscdataclay\/logicmodule\:develop /g' {} \;
 find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dsjava /bscdataclay\/dsjava\:develop /g' {} \;
 find $BASEDIR -type f -exec sed -i 's/bscdataclay\/dspython /bscdataclay\/dspython\:develop /g' {} \;

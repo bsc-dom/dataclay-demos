@@ -32,7 +32,7 @@ dataclayprepare $(pwd)/model/src $(pwd)/app/src DemoNS python
 pyclay src/hellopeople.py forthepeople martin 33
 
 # Restart dataClay
-dataclaysrv restart --hosts "$HOSTS" --available-ports "3301 1234 1235"
+dataclaysrv restart --cleandeploy --hosts "$HOSTS" --available-ports "3301 1234 1235"
 
 # Register new model
 dataclayprepare $(pwd)/updated-model/src $(pwd)/app/src DemoNS python

@@ -35,8 +35,7 @@ services:
       - "443:443"
 
   logicmodule:
-    image: "bscdataclay/logicmodule:develop-alpine"
-    command: "--debug"
+    image: "bscdataclay/logicmodule:2.6.jdk11.dev-alpine"
     depends_on:
       - proxy
     environment:
@@ -44,16 +43,17 @@ services:
       - LOGICMODULE_PORT_TCP=11034
       - DATACLAY_ADMIN_USER=admin
       - DATACLAY_ADMIN_PASSWORD=admin
-      - LM_SERVICE_ALIAS_HEADERMSG=logicmodule
       - SSL_CLIENT_TRUSTED_CERTIFICATES=/ssl/dataclay-ca.crt
       - SSL_CLIENT_CERTIFICATE=/ssl/dataclay-agent.crt
       - SSL_CLIENT_KEY=/ssl/dataclay-agent.pem
+      - SSL_TARGET_LM_ALIAS=11034
+      - EXPOSED_IP_FOR_CLIENT=$EXPOSED_IP_FOR_CLIENT
     volumes:
       - dataclay-certs:/ssl/:ro
     labels:
       - "traefik.enable=true"
       - "traefik.backend=logicmodule"
-      - "traefik.frontend.rule=Headers: service-alias,logicmodule"
+      - "traefik.frontend.rule=Headers: service-alias,11034"
       - "traefik.port=11034"
       - "traefik.protocol=h2c"
     stop_grace_period: 5m
@@ -63,17 +63,28 @@ services:
       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
 
   dsjava:
-    image: "bscdataclay/dsjava:develop-alpine"
+    image: "bscdataclay/dsjava:2.6.jdk11.dev-alpine"
     depends_on:
       - logicmodule
       - proxy
     environment:
+      - DATASERVICE_HOST=$EXPOSED_IP_FOR_CLIENT
       - DATASERVICE_NAME=DS1
       - DATASERVICE_JAVA_PORT_TCP=2127
       - LOGICMODULE_PORT_TCP=11034
-      - LOGICMODULE_HOST=logicmodule
+      - LOGICMODULE_HOST=proxy
+      - SSL_CLIENT_TRUSTED_CERTIFICATES=/ssl/dataclay-ca.crt
+      - SSL_CLIENT_CERTIFICATE=/ssl/dataclay-agent.crt
+      - SSL_CLIENT_KEY=/ssl/dataclay-agent.pem
+      - SSL_TARGET_LM_ALIAS=11034
     volumes:
-      - /home/docker/dataclay/prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - dataclay-certs:/ssl/:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=dsjava"
+      - "traefik.frontend.rule=Headers: service-alias,2127"
+      - "traefik.port=2127"
+      - "traefik.protocol=h2c"
     stop_grace_period: 5m
     healthcheck:
       interval: 5s
@@ -81,18 +92,29 @@ services:
       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
 
   dspython:
-    image: "bscdataclay/dspython:develop-alpine"
+    image: "bscdataclay/dspython:2.6.py37.dev-alpine"
     command: "--debug"
     depends_on:
       - logicmodule
       - dsjava
     environment:
+      - DATASERVICE_HOST=$EXPOSED_IP_FOR_CLIENT
       - DATASERVICE_NAME=DS1
       - LOGICMODULE_PORT_TCP=11034
-      - LOGICMODULE_HOST=logicmodule
-      - DEBUG=True
+      - LOGICMODULE_HOST=proxy
+      - DATASERVICE_PYTHON_PORT_TCP=6867
+      - SSL_CLIENT_TRUSTED_CERTIFICATES=/ssl/dataclay-ca.crt
+      - SSL_CLIENT_CERTIFICATE=/ssl/dataclay-agent.crt
+      - SSL_CLIENT_KEY=/ssl/dataclay-agent.pem
+      - SSL_TARGET_LM_ALIAS=11034
     volumes:
-      - /home/docker/dataclay/prop/global.properties:/home/dataclayusr/dataclay/cfgfiles/global.properties:ro
+      - dataclay-certs:/ssl/:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=dspython"
+      - "traefik.frontend.rule=Headers: service-alias,6867"
+      - "traefik.port=6867"
+      - "traefik.protocol=h2c"
     stop_grace_period: 5m
     healthcheck:
       interval: 5s

@@ -74,7 +74,7 @@ docker run --rm --network=dataclay_default dataclaydemo/city src/create_dkb.py
 
 printMsg "Car creates and federates events "
 eval $(docker-machine env dataclay-demo-car)
-docker run --rm --network=dataclay_default -e DATACLAY_CITY_IP="$CITY_IP" dataclaydemo/car src/tracker_ekf_nodisplay.py
+docker run --rm --network=dataclay_default -e DATACLAY_CITY_IP="$CITY_IP" -e DEBUG=True dataclaydemo/car src/tracker_ekf_nodisplay.py
 
 printMsg "City get Events"
 eval $(docker-machine env dataclay-demo-city)

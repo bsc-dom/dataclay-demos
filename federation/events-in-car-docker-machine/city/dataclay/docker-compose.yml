@@ -21,6 +21,7 @@ services:
 
   dsjava:
     image: "bscdataclay/dsjava:develop-alpine"
+    command: "--debug"
     ports:
       - "2127:2127"
     depends_on:

@@ -38,14 +38,14 @@ docker build --network=dataclay_default --no-cache \
 echo " == Stopping dataClay in city  =="
 eval $(docker-machine env dataclay-demo-city)
 cd $SCRIPTDIR/city/dataclay
-docker-compose stop
+#docker-compose stop
 docker images
 
 
 echo " == Stopping dataClay in car  =="
 eval $(docker-machine env dataclay-demo-car)
 cd $SCRIPTDIR/car/dataclay
-docker-compose stop
+#docker-compose stop
 docker images
 
 cd $SCRIPTDIR

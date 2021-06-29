@@ -36,7 +36,7 @@ public class TextCollectionGen {
 			int id = 1;
 
 			// Distributed index among N collections, one per Backend.
-			for (BackendID locID : DataClay.getJBackends().keySet()) {
+			for (BackendID locID : DataClay.getJavaBackends()) {
 				String prefixForTexts = textColAlias + id;
 				TextCollection tc = new TextCollection(prefixForTexts);
 

@@ -1,4 +1,4 @@
-FROM bscdataclay/client:develop-alpine
+FROM bscdataclay/client:alpine
 
 # Prepare environment
 ENV DEMO_HOME=/car

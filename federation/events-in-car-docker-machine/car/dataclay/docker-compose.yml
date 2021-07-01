@@ -3,7 +3,7 @@ version: '3.5'
 services:
 
   logicmodule:
-    image: "bscdataclay/logicmodule:develop-alpine"
+    image: "bscdataclay/logicmodule:alpine"
     ports:
       - "11034:11034"
     environment:
@@ -19,7 +19,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
 
   dsjava:
-    image: "bscdataclay/dsjava:develop-alpine"
+    image: "bscdataclay/dsjava:alpine"
     ports:
       - "2127:2127"
     depends_on:
@@ -36,7 +36,7 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
 
   dspython:
-    image: "bscdataclay/dspython:develop-alpine"
+    image: "bscdataclay/dspython:alpine"
     ports:
       - "6867:6867"
     depends_on:

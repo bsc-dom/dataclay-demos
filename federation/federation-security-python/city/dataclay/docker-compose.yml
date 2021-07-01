@@ -35,7 +35,7 @@ services:
       - "443:443"
 
   logicmodule:
-    image: "bscdataclay/logicmodule:2.6.jdk11.dev-alpine"
+    image: "bscdataclay/logicmodule:alpine"
     depends_on:
       - proxy
     environment:
@@ -63,7 +63,7 @@ services:
       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
 
   dsjava:
-    image: "bscdataclay/dsjava:2.6.jdk11.dev-alpine"
+    image: "bscdataclay/dsjava:alpine"
     depends_on:
       - logicmodule
       - proxy
@@ -92,8 +92,8 @@ services:
       test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
 
   dspython:
-    image: "bscdataclay/dspython:2.6.py37.dev-alpine"
-    command: "--debug"
+    image: "bscdataclay/dspython:alpine"
+    command: ""
     depends_on:
       - logicmodule
       - dsjava

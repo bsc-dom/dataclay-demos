@@ -1,4 +1,4 @@
-FROM bscdataclay/client:develop
+FROM bscdataclay/client
 
 # Prepare environment
 ENV DEMO_HOME=/demo

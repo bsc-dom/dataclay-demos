@@ -10,7 +10,7 @@ function printMsg { echo "${cyan}======== $1 ========${end}"; }
 # MAIN
 #-----------------------------------------------------------------------
 
-export COMMAND_OPTS="--debug"
+export COMMAND_OPTS=""
 bash $SCRIPTDIR/clean.sh
 bash $SCRIPTDIR/start.sh
 bash $SCRIPTDIR/build.sh

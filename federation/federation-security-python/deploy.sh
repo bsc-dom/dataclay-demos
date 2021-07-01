@@ -12,7 +12,6 @@ printMsg() {
 # MAIN
 #-----------------------------------------------------------------------
 
-# Deploying certificates and configurations
 docker-machine scp -r $SCRIPTDIR/city/cfgfiles dataclay-demo-city:~/cfgfiles
 docker-machine scp -r $SCRIPTDIR/car/cfgfiles dataclay-demo-car:~/cfgfiles
 docker-machine scp -r $SCRIPTDIR/city/dataclay dataclay-demo-city:~/dataclay
@@ -41,6 +40,7 @@ export EXPOSED_IP_FOR_CLIENT=$CITY_IP
 export CERTIFICATE_AUTHORITY_HOST=$CERTIFICATE_AUTHORITY_IP
 docker-compose kill
 docker-compose down -v #sanity check
+docker-compose pull
 docker-compose up -d
 
 cd $SCRIPTDIR/city/
@@ -57,6 +57,7 @@ export EXPOSED_IP_FOR_CLIENT=$CAR_IP
 export CERTIFICATE_AUTHORITY_HOST=$CERTIFICATE_AUTHORITY_IP
 docker-compose kill
 docker-compose down -v #sanity check
+docker-compose pull
 docker-compose up -d
 
 cd $SCRIPTDIR/car/
@@ -70,13 +71,13 @@ cd "${SCRIPTDIR}"
 printMsg "Stopping dataClay in city"
 eval $(docker-machine env dataclay-demo-city)
 cd $SCRIPTDIR/city/dataclay
-docker-compose stop
+#docker-compose stop
 docker images
 
 printMsg "Stopping dataClay in car"
 eval $(docker-machine env dataclay-demo-car)
 cd $SCRIPTDIR/car/dataclay
-docker-compose stop
+#docker-compose stop
 docker images
 cd "${SCRIPTDIR}"
 

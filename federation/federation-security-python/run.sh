@@ -93,6 +93,7 @@ docker run --rm --network=dataclay_default \
 printMsg "Car leaves the city and unfederates events"
 eval $(docker-machine env dataclay-demo-car)
 docker run --rm --network=dataclay_default \
+     -e DATACLAY2_ADDR="$CITY_IP:$DATACLAY_PORT" \
      -v dataclay_dataclay-certs:/ssl/:ro \
      dataclaydemos/car src/unfederate.py
 
@@ -110,6 +111,6 @@ for MACHINE in ${MACHINES}; do
 	export LOGICMODULE_HOST=$MACHINE_IP
 	export EXPOSED_IP_FOR_CLIENT=$MACHINE_IP
 	eval $(docker-machine env dataclay-demo-$MACHINE)
-	docker-compose stop
+	#docker-compose stop
 	cd "${SCRIPTDIR}"
 done

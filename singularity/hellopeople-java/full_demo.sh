@@ -7,7 +7,7 @@ fi
 export PATH=$DATACLAY_HOME/bin:$PATH 
 
 # Deploy dataClay
-dataclaysrv start # --java-version 8
+dataclaysrv start --debug --python-ee-per-sl 0 # --java-version 8
 
 # Register accounts, model and store stubs in client node
 dataclayprepare $(pwd)/model/src $(pwd)/app/src model java

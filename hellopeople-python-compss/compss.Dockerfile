@@ -16,8 +16,13 @@ COPY --from=0 /usr/share/java/aspectjrt.jar ${DEMO_HOME}/aspectj/aspectjrt.jar
 COPY --from=0 /usr/share/java/aspectjtools.jar ${DEMO_HOME}/aspectj/aspectjtools.jar
 COPY --from=0 /usr/share/java/aspectjweaver.jar ${DEMO_HOME}/aspectj/aspectjweaver.jar
 
-# Get dataClay JAR
+# Install compss jar in maven local repository
+RUN mvn install:install-file -Dfile=/opt/COMPSs/Runtime/compss-engine.jar -DgroupId=es.bsc \
+	-DartifactId=compss -Dversion=latest -Dpackaging=jar -DcreateChecksum=true
+
+# Reuse all the Maven stuff
 COPY --from=0 /home/dataclayusr/dataclay/dataclay.jar ${DEMO_HOME}/dataclay.jar
+COPY --from=0 /root/.m2 /root/.m2
 
 # Reuse all the demo folder
 COPY --from=0 ${DEMO_HOME} ${DEMO_HOME}

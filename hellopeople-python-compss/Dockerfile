@@ -2,7 +2,11 @@ FROM bscdataclay/client
 
 # Prepare environment
 ENV DEMO_HOME=/demo
-WORKDIR ${DEMO_HOME} 
+WORKDIR ${DEMO_HOME}
+
+# Install dataclay jar in local repository
+RUN mvn install:install-file -Dfile=${DATACLAY_JAR} -DgroupId=es.bsc.dataclay \
+	-DartifactId=dataclay -Dversion=latest -Dpackaging=jar -DcreateChecksum=true
 
 # Prepare environment
 ENV DATACLAYCLIENTCONFIG=${DEMO_HOME}/cfgfiles/client.properties
@@ -38,6 +42,7 @@ RUN dataclaycmd NewModel ${USER} ${PASS} ${NAMESPACE} ${MODELBINPATH} python
 # Get stubs 
 RUN mkdir -p ${STUBSPATH}
 RUN dataclaycmd GetStubs ${USER} ${PASS} ${NAMESPACE} ${STUBSPATH}
+
 
 # Run 
 ENTRYPOINT ["dataclay-python-entry-point"] 

@@ -18,6 +18,7 @@ COPY --from=0 /usr/share/java/aspectjweaver.jar ${DEMO_HOME}/aspectj/aspectjweav
 
 # Get dataClay JAR
 COPY --from=0 /home/dataclayusr/dataclay/dataclay.jar ${DEMO_HOME}/dataclay.jar
+COPY --from=0 /root/.m2 /root/.m2
 
 # Reuse all the demo folder
 COPY --from=0 ${DEMO_HOME} ${DEMO_HOME}

@@ -4,6 +4,10 @@ FROM bscdataclay/client
 ENV DEMO_HOME=/demo
 WORKDIR ${DEMO_HOME} 
 
+# Install dataclay jar in local repository
+RUN mvn install:install-file -Dfile=${DATACLAY_JAR} -DgroupId=es.bsc.dataclay \
+	-DartifactId=dataclay -Dversion=latest -Dpackaging=jar -DcreateChecksum=true
+
 ENV DATACLAYCLIENTCONFIG=${DEMO_HOME}/cfgfiles/client.properties
 ENV DATACLAYGLOBALCONFIG=${DEMO_HOME}/cfgfiles/global.properties
 ENV DATACLAYSESSIONCONFIG=${DEMO_HOME}/cfgfiles/session.properties

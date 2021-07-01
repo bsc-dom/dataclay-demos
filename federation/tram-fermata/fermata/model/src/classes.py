@@ -4,7 +4,7 @@ from dataclay.contrib.synchronization import SequentialConsistencyMixin
 
 class CameraInFermata(DataClayObject, SequentialConsistencyMixin):
     """
-    @dclayReplication(afterUpdate='synchronize_federated', inMaster='False')
+    @dclayReplication(afterUpdate='synchronize', inMaster='False')
     @ClassField ambulances int
     """
 
@@ -23,7 +23,7 @@ class CameraInFermata(DataClayObject, SequentialConsistencyMixin):
 
 class SemaforoInFermata(DataClayObject, SequentialConsistencyMixin):
     """
-    @dclayReplication(afterUpdate='synchronize_federated', inMaster='False')
+    @dclayReplication(afterUpdate='synchronize', inMaster='False')
     @ClassField color str
     """
     @dclayMethod()

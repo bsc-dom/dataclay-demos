@@ -3,7 +3,7 @@ services:
   logicmodulecar:
     image: "bscdataclay/logicmodule"
     container_name: car-logicmodule
-    command: "--debug ${COMMAND_OPTS}"
+    command: "${COMMAND_OPTS}"
     ports:
       - "21034:21034"
     environment:
@@ -18,8 +18,8 @@ services:
        test: ["CMD-SHELL", "/home/dataclayusr/dataclay/health/health_check.sh"]
               
   dsjavacar:
-    image: "bscdataclay/dsjava:alpine"
-    command: "--debug ${COMMAND_OPTS}"
+    image: "bscdataclay/dsjava"
+    command: "${COMMAND_OPTS}"
     ports:
       - "3127:3127"
     depends_on:
@@ -37,7 +37,7 @@ services:
        
   dspythoncar:
     image: "bscdataclay/dspython"
-    command: "--debug ${COMMAND_OPTS}"
+    command: "${COMMAND_OPTS}"
     ports:
       - "7878:7878"
     depends_on:

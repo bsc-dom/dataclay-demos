@@ -40,5 +40,5 @@ RUN mkdir -p ${STUBSPATH}
 RUN dataclaycmd GetStubs ${USER} ${PASS} ${NAMESPACE} ${STUBSPATH}
 
 # Run 
-ENTRYPOINT ["dataclay-python-entry-point"] 
+ENTRYPOINT ["dataclay-python-entry-point"]
 

@@ -11,6 +11,7 @@
 # Configurations
 NETWORK_SUFFIX="-ib0"
 module load DATACLAY/DevelMarc
+module load EXTRAE/3.8.3
 
 # --- SLURM ---- 
 JOB_HOSTS=$(scontrol show hostname $SBATCH_JOB_NODELIST)
@@ -24,7 +25,7 @@ export DATACLAY_JOBID=$SLURM_JOBID
 
 # Deploy dataClay
 echo $'\e[1;32m' "dataclaysrv" $'\e[0m'
-dataclaysrv start --hosts "$HOSTS" $EXTRA_ARGS
+dataclaysrv start --hosts "$HOSTS" --debug $EXTRA_ARGS
 
 # Register accounts, model and store stubs in client node
 echo $'\e[1;32m' "dataclayprepare" $'\e[0m'

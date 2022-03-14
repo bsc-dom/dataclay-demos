@@ -1,7 +1,7 @@
 #!/bin/bash -e
 #SBATCH --job-name=dataclaydemo
-#SBATCH --output=job.out
-#SBATCH --error=job.out
+#SBATCH --output=job-%A-%a.out
+#SBATCH --error=job-%A-%a.out
 #SBATCH --nodes=3
 #SBATCH --time=00:10:00
 #SBATCH --exclusive 
